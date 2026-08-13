@@ -143,7 +143,7 @@
     <div class="modal fade" id="depositModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content bg-dark text-white gold-card" style="border: 1px solid #d4af37;">
-                <form id="depositForm" method="POST">
+                <form id="depositForm" method="POST" data-live-validation>
                     @csrf
                     <div class="modal-header">
                         <h5 class="modal-title">Add Funds to <span id="modalUserName" class="text-warning"></span></h5>
@@ -153,8 +153,9 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label class="form-label">Amount (₹)</label>
-                            <input type="number" step="0.01" name="amount" class="form-control text-white" required
-                                placeholder="Enter amount in ₹">
+                            <input type="number" step="0.01" min="0.01" name="amount" class="form-control text-white" required
+                                placeholder="Enter amount in ₹" data-validation-message="Please enter an amount greater than ₹0.">
+                            <div class="invalid-feedback"></div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Remark</label>
@@ -163,7 +164,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-gold" data-confirm-action
+                        <button type="button" class="btn btn-gold" data-confirm-action disabled
                             data-confirm-title="Confirm Direct Deposit"
                             data-confirm-text="This will add funds directly to the user's deposit wallet. Proceed?"
                             data-confirm-button="Deposit Now">Deposit Now</button>

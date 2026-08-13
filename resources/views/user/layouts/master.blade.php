@@ -62,12 +62,56 @@
             var confirmForm = null;
             var confirmButton = document.getElementById('confirmActionModalSubmit');
 
+            function setupLiveValidation(form) {
+                var fields = form.querySelectorAll('input[required], textarea[required], select[required]');
+                var actionButtons = form.querySelectorAll('button[data-confirm-action], button[onclick*="confirmAddition"]');
+
+                function validateField(field) {
+                    var value = field.value.trim();
+                    var message = '';
+                    if (!value) {
+                        message = field.dataset.validationMessage || 'This field is required.';
+                    } else if (field.type === 'number' && (!Number.isFinite(Number(value)) || Number(value) < Number(field.min || 0))) {
+                        message = field.dataset.validationMessage || 'Please enter a valid amount.';
+                    }
+
+                    field.setCustomValidity(message);
+                    var showMessage = field.dataset.touched === 'true';
+                    field.classList.toggle('is-invalid', Boolean(message) && showMessage);
+                    var feedback = field.parentElement.querySelector('.invalid-feedback');
+                    if (feedback) feedback.textContent = showMessage ? message : '';
+                    return !message && field.checkValidity();
+                }
+
+                function validateForm() {
+                    var valid = true;
+                    fields.forEach(function(field) { valid = validateField(field) && valid; });
+                    actionButtons.forEach(function(button) { button.disabled = !valid; });
+                    return valid;
+                }
+
+                fields.forEach(function(field) {
+                    field.addEventListener('input', function() { field.dataset.touched = 'true'; validateForm(); });
+                    field.addEventListener('change', function() { field.dataset.touched = 'true'; validateForm(); });
+                });
+                form.addEventListener('submit', function(event) {
+                    if (!validateForm()) event.preventDefault();
+                });
+                validateForm();
+            }
+
+            document.querySelectorAll('form[data-live-validation]').forEach(setupLiveValidation);
+
             document.querySelectorAll('[data-confirm-action]').forEach(function(button) {
                 button.addEventListener('click', function(event) {
                     event.preventDefault();
                     confirmForm = this.closest('form');
 
                     if (!confirmForm) return;
+                    if (!confirmForm.checkValidity()) {
+                        confirmForm.reportValidity();
+                        return;
+                    }
 
                     var title = this.dataset.confirmTitle || 'Please confirm';
                     var text = this.dataset.confirmText || 'Are you sure you want to continue?';
@@ -86,7 +130,7 @@
             confirmButton.addEventListener('click', function() {
                 if (confirmForm) {
                     confirmModal.hide();
-                    confirmForm.submit();
+                    if (confirmForm.checkValidity()) confirmForm.submit();
                 }
             });
         });

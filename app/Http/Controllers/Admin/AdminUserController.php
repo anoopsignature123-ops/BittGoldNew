@@ -192,7 +192,6 @@ class AdminUserController extends Controller
             'mobile' => $request->mobile,
             'country_code' => $request->country_code,
             'sponsor_id' => $sponsor->id,
-            'current_rank_name' => $user->current_rank_no > 0 ? $user->current_rank_name : 'Bronze',
         ]);
 
         UserReferral::updateOrCreate(

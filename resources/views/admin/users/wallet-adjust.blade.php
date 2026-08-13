@@ -38,19 +38,21 @@
                         <p class="text-muted small mb-1">User Email: <strong>{{ $user->email }}</strong></p>
                         <p class="text-muted small mb-4">Current Deposit Wallet Balance: <strong class="text-success">{{ number_format($user->deposit_wallet, 2) }}</strong></p>
 
-                        <form method="POST" action="{{ route('admin.users.wallet.update', $user->id) }}" id="fund-form">
+                        <form method="POST" action="{{ route('admin.users.wallet.update', $user->id) }}" id="fund-form" data-live-validation>
                             @csrf
                             <div class="mb-3">
                                 <label class="form-label">Amount (₹)</label>
-                                <input type="number" step="0.01" name="amount" class="form-control text-white" required placeholder="Enter amount in ₹...">
+                                <input type="number" step="0.01" min="0.01" name="amount" class="form-control text-white" required placeholder="Enter amount in ₹..." data-validation-message="Please enter an amount greater than ₹0.">
+                                <div class="invalid-feedback"></div>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Remark / Reason</label>
-                                <textarea name="remark" class="form-control text-white" rows="3" required placeholder="Enter reason (e.g. Bank wire transfer)..."></textarea>
+                                <textarea name="remark" class="form-control text-white" rows="3" required placeholder="Enter reason (e.g. Bank wire transfer)..." data-validation-message="Please enter a remark or reason."></textarea>
+                                <div class="invalid-feedback"></div>
                             </div>
 
-                            <button type="button" onclick="confirmAddition()" class="btn btn-gold w-100">Add Funds</button>
+                            <button type="button" onclick="confirmAddition()" class="btn btn-gold w-100" disabled>Add Funds</button>
                         </form>
                     </div>
                 </div>
@@ -62,8 +64,13 @@
 @push('scripts')
 <script>
     function confirmAddition() {
+        var form = document.getElementById('fund-form');
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
         if (confirm('Are you sure you want to add these funds to the user deposit wallet?')) {
-            document.getElementById('fund-form').submit();
+            form.submit();
         }
     }
 </script>

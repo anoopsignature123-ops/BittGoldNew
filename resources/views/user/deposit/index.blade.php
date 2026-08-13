@@ -20,6 +20,9 @@
         @if (session('error'))
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
+        @if ($errors->any())
+            <div class="alert alert-danger">{{ $errors->first() }}</div>
+        @endif
 
         <div class="row">
             {{-- Add Fund Form Card --}}
@@ -27,17 +30,19 @@
                 <div class="card gold-card">
                     <div class="card-body">
                         <h4 class="card-title mb-3">Request New Deposit</h4>
-                        <form action="{{ !empty($previewMode) ? route('admin.users.proxy.deposit', $user) : route('user.deposit.store') }}" method="POST" class="app-form">
+                        <form action="{{ !empty($previewMode) ? route('admin.users.proxy.deposit', $user) : route('user.deposit.store') }}" method="POST" class="app-form" data-live-validation>
                             @csrf
                             <div class="form-group mb-3">
                                 <label class="form-label">Amount (₹) <span>*</span></label>
-                                <input type="number" step="0.01" name="amount" class="form-control" placeholder="Enter amount in ₹" required>
+                                <input type="number" step="0.01" min="1" name="amount" class="form-control" placeholder="Enter amount in ₹" required data-validation-message="Please enter an amount of at least ₹1.">
+                                <div class="invalid-feedback"></div>
                             </div>
                             <div class="form-group mb-3">
                                 <label class="form-label">Reference / UTR No <span>*</span></label>
-                                <input type="text" name="reference_no" class="form-control" placeholder="Enter transaction reference" required>
+                                <input type="text" name="reference_no" class="form-control" placeholder="Enter transaction reference" required data-validation-message="Please enter your Reference / UTR number.">
+                                <div class="invalid-feedback"></div>
                             </div>
-                            <button type="button" class="btn btn-gold w-100" data-confirm-action
+                            <button type="button" class="btn btn-gold w-100" data-confirm-action disabled
                                 data-confirm-title="Confirm Deposit Request"
                                 data-confirm-text="This will submit the deposit request. Are you sure you want to continue?"
                                 data-confirm-button="Submit Request">

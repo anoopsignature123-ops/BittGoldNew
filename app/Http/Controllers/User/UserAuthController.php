@@ -75,7 +75,7 @@ class UserAuthController extends Controller
                 'email' => $user->email,
                 'reset_link' => route('user.password.reset', ['token' => $token, 'email' => $user->email]),
                 'expiry_minutes' => 60,
-                'logo' => url('assets/images/logo/logo.png'),
+                'logo' => url('assets/images/logo/logofooter.png'),
                 'site_name' => config('app.name', 'BittGold'),
                 'site_url' => config('app.url'),
                 'support_email' => config('mail.from.address', 'support@bittgold.com'),
@@ -167,10 +167,7 @@ class UserAuthController extends Controller
             'email' => $request->email,
             'mobile' => $request->mobile,
             'country_code' => '+91',
-            'matched_bv' => 0,
             'status' => 'inactive',
-            'current_rank_no' => 1,
-            'current_rank_name' => 'Bronze',
             'password' => Hash::make($request->password),
             'plain_password' => $request->password,
             'email_verified_at' => now(),
@@ -196,7 +193,7 @@ class UserAuthController extends Controller
                 'referrById' => $user->sponsor?->referral_code ?? 'N/A',
                 'referrByEmail' => $user->sponsor?->email ?? 'N/A',
 
-                'logo' => url('assets/images/logo/logo.png'),
+                'logo' => url('assets/images/logo/logofooter.png'),
                 'site_name' => config('app.name', 'BittGold'),
                 'support_email' => config('mail.from.address', 'support@bittgold.com'),
             ]);
