@@ -32983,6 +32983,16 @@ body.admin-dashboard {
   margin-left: 6px;
 }
 
+.registration-success-modal { text-align: left; }
+.success-mark { width:52px;height:52px;display:grid;place-items:center;margin:0 auto 15px;border-radius:50%;background:#f5bd25;color:#07101a;font-size:30px;box-shadow:0 0 20px rgba(245,189,37,.3); }
+.registration-success-modal > .eyebrow,.registration-success-modal > h2,.registration-success-modal > .success-intro { display:block;text-align:center; }
+.success-intro { color:#aebccc;font-size:.86rem;line-height:1.6;margin:9px 0 18px; }
+.success-details { margin:14px 0;padding:14px 16px;border:1px solid rgba(245,189,37,.32);border-radius:10px;background:rgba(7,16,26,.68); }
+.success-details-title { color:#f5bd25;font-weight:800;font-size:.78rem;text-transform:uppercase;letter-spacing:.07em;margin-bottom:9px; }
+.success-details > div:not(.success-details-title) { display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-top:1px solid rgba(255,255,255,.06);font-size:.8rem; }
+.success-details span { color:#95a5b7; }.success-details strong { color:#f5f8fc;text-align:right;overflow-wrap:anywhere; }.success-details .gold-value { color:#f5bd25; }.success-details .password-value { color:#ffdd72; }
+.success-note { color:#9db0c2;font-size:.75rem;line-height:1.5;margin:14px 0 18px; }.success-note i { color:#16c784;font-size:1rem;vertical-align:middle; }
+
 /* ---- bottom switch link ---- */
 .auth-switch {
   margin: 20px 0 0;

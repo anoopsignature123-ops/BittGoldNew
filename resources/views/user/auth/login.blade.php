@@ -30,10 +30,8 @@
                 placeholder="Enter your password" required><button type="button" class="password-toggle"
                 aria-label="Show password"><i class="mdi mdi-eye-outline"></i></button></div>
         <div class="auth-options"><label class="check-label"><input type="checkbox"> <span>Remember me</span></label><a
-                href="#" data-toast="info" data-toast-message="Password recovery will be available shortly.">Forgot
-                password?</a></div>
+                href="{{ route('user.password.request') }}">Forgot password?</a></div>
         <button class="btn auth-submit" type="submit">Login to Account <i class="mdi mdi-arrow-right"></i></button>
     </form>
     <p class="auth-switch">New to BittGold? <a href="{{ route('user.register') }}">Create an account</a></p>
 @endsection
-

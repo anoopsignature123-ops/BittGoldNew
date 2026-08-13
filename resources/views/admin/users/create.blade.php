@@ -36,7 +36,9 @@
                 </div>
             </div>
 
-            <form id="add-user-form" action="{{ route('admin.users.store') }}" method="POST">
+            <form id="add-user-form" action="{{ route('admin.users.store') }}" method="POST" autocomplete="off">
+                <input type="text" name="fake_username" autocomplete="username" tabindex="-1" aria-hidden="true" style="position:absolute;opacity:0;pointer-events:none;">
+                <input type="password" name="fake_password" autocomplete="new-password" tabindex="-1" aria-hidden="true" style="position:absolute;opacity:0;pointer-events:none;">
                 @csrf
                 @include('admin.users._form')
                 

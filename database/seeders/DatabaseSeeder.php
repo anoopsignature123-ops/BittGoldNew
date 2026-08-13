@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([RoleSeeder::class, RankSeeder::class]);
+        $this->call([RoleSeeder::class, RankSeeder::class, EmailTemplateSeeder::class]);
 
         $adminRole = Role::where('slug', 'admin')->first();
         $userRole = Role::where('slug', 'user')->first();

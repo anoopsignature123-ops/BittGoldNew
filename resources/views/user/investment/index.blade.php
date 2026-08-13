@@ -30,15 +30,18 @@
                         <p class="text-muted small mb-3">Available Deposit Wallet:
                             <strong>₹{{ number_format($user->deposit_wallet, 2) }}</strong></p>
 
+                        <p class="text-muted small mb-3">Minimum package: <strong>&#8377;10,000</strong> &middot; Maximum investable now: <strong>&#8377;{{ number_format(floor($user->deposit_wallet / 10000) * 10000, 2) }}</strong></p>
+
                         <form action="{{ !empty($previewMode) ? route('admin.users.proxy.investment', $user) : route('user.investment.store') }}" method="POST" class="app-form">
                             @csrf
                             <div class="form-group mb-3">
                                 <label class="form-label">Investment Amount (₹) <span>*</span></label>
-                                <input type="number" step="10000" min="10000" name="amount" class="form-control"
+                                <input type="number" step="10000" min="10000" name="amount" id="investment-amount" class="form-control" value="{{ old('amount') }}" inputmode="numeric"
                                     placeholder="Min ₹10,000 (Multiples of 10k)" required>
                                 <small class="text-muted">E.g., 10000, 20000, 30000...</small>
+                                <div id="investment-feedback" class="small mt-2" aria-live="polite"></div>
                             </div>
-                            <button type="button" class="btn btn-gold w-100" data-confirm-action
+                            <button type="button" class="btn btn-gold w-100" id="investment-submit" data-confirm-action
                                 data-confirm-title="Confirm Investment"
                                 data-confirm-text="This will deduct the selected amount from your deposit wallet and activate the package. Proceed?"
                                 data-confirm-button="Invest Now">
@@ -105,3 +108,30 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const amountInput = document.getElementById('investment-amount');
+    const feedback = document.getElementById('investment-feedback');
+    const submit = document.getElementById('investment-submit');
+    const wallet = {{ (float) $user->deposit_wallet }};
+    const minimum = 10000;
+    function validateInvestment() {
+        const amount = Number(amountInput.value);
+        let message, valid = false;
+        if (!amountInput.value) message = 'Enter an investment amount. Packages start from ₹10,000.';
+        else if (!Number.isFinite(amount) || amount < minimum) message = 'Minimum investment amount is ₹10,000.';
+        else if (amount % minimum !== 0) message = 'Choose a package in multiples of ₹10,000.';
+        else if (amount > wallet) message = 'Insufficient wallet balance. Available: ₹' + wallet.toLocaleString('en-IN', {minimumFractionDigits: 2}) + '.';
+        else { valid = true; message = 'You can invest ₹' + amount.toLocaleString('en-IN', {minimumFractionDigits: 2}) + '. Balance after investment: ₹' + (wallet - amount).toLocaleString('en-IN', {minimumFractionDigits: 2}) + '.'; }
+        feedback.textContent = message;
+        feedback.className = 'small mt-2 ' + (valid ? 'text-success' : 'text-warning');
+        submit.disabled = !valid;
+        submit.classList.toggle('disabled', !valid);
+    }
+    amountInput.addEventListener('input', validateInvestment);
+    validateInvestment();
+});
+</script>
+@endpush

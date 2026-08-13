@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-@push('title') Edit User - {{ $user->name }} @endpush
+@push('title') Edit User - {{ $editingUser->name }} @endpush
 
 @section('content')
 <div class="content-wrapper">
@@ -32,14 +32,14 @@
                 <span class="p-2 rounded bg-dark text-warning border border-warning me-3" style="font-size: 1.25rem;"><i class="mdi mdi-account-edit"></i></span>
                 <div>
                     <h4 class="card-title text-white mb-1">Update Member Details</h4>
-                    <p class="text-muted small mb-0">Modify information for {{ $user->name }}.</p>
+                    <p class="text-muted small mb-0">Modify information for {{ $editingUser->name }}.</p>
                 </div>
             </div>
 
-            <form action="{{ route('admin.users.update', $user) }}" method="POST">
+            <form action="{{ route('admin.users.update', $editingUser) }}" method="POST" autocomplete="off">
                 @csrf
                 @method('PUT')
-                @include('admin.users._form')
+                @include('admin.users._form', ['editingUser' => $editingUser])
 
                 <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top border-secondary" style="border-color: rgba(245, 185, 27, 0.15) !important;">
                     <a href="{{ route('admin.users.index') }}" class="btn btn-outline-secondary px-4" style="border-radius: 10px;">Cancel</a>

@@ -5,14 +5,14 @@
     <div class="col-md-6 form-group mb-3">
         <label class="form-label text-muted small fw-bold">FULL NAME <span class="text-warning">*</span></label>
         <input class="form-control bg-dark text-white" type="text" name="name"
-            value="{{ isset($user) ? old('name', $user->name) : '' }}" placeholder="Enter full name" autocomplete="off"
+            value="{{ isset($editingUser) ? old('name', $editingUser->name) : old('name') }}" placeholder="Enter full name" autocomplete="new-password"
             required style="border: 1px solid rgba(245, 185, 27, 0.3); border-radius: 10px; height: 42px;">
     </div>
     <div class="col-md-6 form-group mb-3">
         <label class="form-label text-muted small fw-bold">EMAIL ADDRESS <span class="text-warning">*</span></label>
         <input class="form-control bg-dark text-white" type="email" name="email"
-            value="{{ isset($user) ? old('email', $user->email) : '' }}" placeholder="member@example.com"
-            autocomplete="off" required
+            value="{{ isset($editingUser) ? old('email', $editingUser->email) : old('email') }}" placeholder="member@example.com"
+            autocomplete="new-password" required
             style="border: 1px solid rgba(245, 185, 27, 0.3); border-radius: 10px; height: 42px;">
     </div>
 </div>
@@ -24,8 +24,8 @@
             <span class="input-group-text bg-dark text-warning"
                 style="border: 1px solid rgba(245, 185, 27, 0.3); border-radius: 10px 0 0 10px;">+91</span>
             <input class="form-control bg-dark text-white" type="tel" name="mobile"
-                value="{{ isset($user) ? old('mobile', $user->mobile) : '' }}" placeholder="Enter mobile number"
-                autocomplete="off" required maxlength="10"
+                value="{{ isset($editingUser) ? old('mobile', $editingUser->mobile) : old('mobile') }}" placeholder="Enter mobile number"
+                autocomplete="new-password" required maxlength="10"
                 style="border: 1px solid rgba(245, 185, 27, 0.3); border-radius: 0 10px 10px 0; height: 42px;">
         </div>
     </div>
@@ -35,8 +35,8 @@
         <label class="form-label text-muted small fw-bold">SPONSOR REFERRAL CODE <span
                 class="text-warning">*</span></label>
         <input class="form-control bg-dark text-white font-monospace" type="text" name="sponsor_referral_code"
-            value="{{ old('sponsor_referral_code') }}" placeholder="Enter sponsor referral code (e.g. BG906518)"
-            autocomplete="off" required
+            value="{{ old('sponsor_referral_code', isset($editingUser) ? optional($editingUser->sponsor)->referral_code : '') }}" placeholder="Enter sponsor referral code (e.g. BG906518)"
+            autocomplete="new-password" required
             style="border: 1px solid rgba(245, 185, 27, 0.3); border-radius: 10px; height: 42px;">
 
     </div>
@@ -47,14 +47,14 @@
 </div>
 <div class="row mb-3">
     <div class="col-md-6 form-group mb-3">
-        <label class="form-label text-muted small fw-bold">PASSWORD @if (!isset($user))
+        <label class="form-label text-muted small fw-bold">PASSWORD @if (!isset($editingUser))
                 <span class="text-warning">*</span>
             @endif
         </label>
         <div style="position: relative;">
             <input class="form-control bg-dark text-white" type="password" name="password" id="password_field"
-                placeholder="{{ isset($user) ? 'Leave blank to keep current password' : 'Create password' }}"
-                autocomplete="new-password" {{ isset($user) ? '' : 'required' }}
+                placeholder="{{ isset($editingUser) ? 'Leave blank to keep current password' : 'Create password' }}"
+                autocomplete="new-password" {{ isset($editingUser) ? '' : 'required' }}
                 style="border: 1px solid rgba(245, 185, 27, 0.3); border-radius: 10px; height: 42px; padding-right: 40px;">
             <button type="button" class="password-toggle" onclick="togglePassword('password_field', this)"
                 style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #f5b91b; cursor: pointer;">
@@ -63,14 +63,14 @@
         </div>
     </div>
     <div class="col-md-6 form-group mb-3">
-        <label class="form-label text-muted small fw-bold">CONFIRM PASSWORD @if (!isset($user))
+        <label class="form-label text-muted small fw-bold">CONFIRM PASSWORD @if (!isset($editingUser))
                 <span class="text-warning">*</span>
             @endif
         </label>
         <div style="position: relative;">
             <input class="form-control bg-dark text-white" type="password" name="password_confirmation"
                 id="password_confirmation_field" placeholder="Confirm password" autocomplete="new-password"
-                {{ isset($user) ? '' : 'required' }}
+                {{ isset($editingUser) ? '' : 'required' }}
                 style="border: 1px solid rgba(245, 185, 27, 0.3); border-radius: 10px; height: 42px; padding-right: 40px;">
             <button type="button" class="password-toggle" onclick="togglePassword('password_confirmation_field', this)"
                 style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #f5b91b; cursor: pointer;">
@@ -80,7 +80,7 @@
     </div>
 </div>
 
-@if (!isset($user))
+@if (!isset($editingUser))
     <input type="hidden" name="role_id" value="2">
     <input type="hidden" name="status" value="inactive">
     <input type="hidden" name="country_code" value="+91">

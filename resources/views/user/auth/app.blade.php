@@ -45,6 +45,19 @@
             });
         });
     </script>
+    <script>
+        @if (session('success'))
+            BillGold.success(@json(session('success')));
+        @elseif (session('error'))
+            BillGold.error(@json(session('error')));
+        @elseif (session('warning'))
+            BillGold.toast('warning', @json(session('warning')));
+        @elseif (session('info'))
+            BillGold.toast('info', @json(session('info')));
+        @elseif ($errors->any())
+            BillGold.error(@json($errors->first()));
+        @endif
+    </script>
     @stack('scripts')
 </body>
 </html>

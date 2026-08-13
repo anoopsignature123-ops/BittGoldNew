@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Services\MLMService;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class AdminUserController extends Controller
@@ -126,7 +127,26 @@ class AdminUserController extends Controller
             'sponsor_referral_code' => $sponsor->referral_code,
         ]);
 
-        return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
+        try {
+            send_template_email('welcome-user', $user->email, [
+                'name' => $user->name,
+                'email' => $user->email,
+                'mobile' => $user->country_code . ' ' . $user->mobile,
+                'userId' => $user->referral_code,
+                'plain_password' => $request->password,
+                'activation_link' => route('user.login'),
+                'referrByName' => $sponsor->name,
+                'referrById' => $sponsor->referral_code,
+                'referrByEmail' => $sponsor->email,
+                'logo' => url('assets/images/logo/logo.png'),
+                'site_name' => config('app.name', 'BittGold'),
+                'support_email' => config('mail.from.address', 'support@bittgold.com'),
+            ]);
+        } catch (\Throwable $exception) {
+            Log::error('Admin-created user welcome email could not be sent.', ['user_id' => $user->id, 'exception' => $exception->getMessage()]);
+        }
+
+        return redirect()->route('admin.users.index')->with('success', 'User created successfully and welcome email sent.');
     }
 
     public function edit(User $user)
@@ -137,7 +157,7 @@ class AdminUserController extends Controller
             return $redirect;
         }
 
-        return view('admin.users.edit', compact('user'));
+        return view('admin.users.edit', ['editingUser' => $user]);
     }
     public function update(Request $request, User $user)
     {
@@ -150,8 +170,14 @@ class AdminUserController extends Controller
             'mobile' => ['required', 'string', 'max:30', 'unique:users,mobile,' . $user->id],
             'country_code' => ['nullable', 'string', 'max:10'],
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
-            'referral_code' => ['required', 'string', 'max:100', 'unique:users,referral_code,' . $user->id],
+
+            'sponsor_referral_code' => ['required', 'string', 'max:100', 'exists:users,referral_code'],
         ]);
+
+        $sponsor = User::where('referral_code', $request->sponsor_referral_code)->firstOrFail();
+        if ($sponsor->id === $user->id) {
+            return back()->withErrors(['sponsor_referral_code' => 'A user cannot be their own sponsor.'])->withInput();
+        }
 
         $referralCode = $request->referral_code ?: $user->referral_code;
         if ($referralCode !== $user->referral_code) {
@@ -161,13 +187,18 @@ class AdminUserController extends Controller
         }
 
         $user->update([
-            'referral_code' => $referralCode,
             'name' => $request->name,
             'email' => $request->email,
             'mobile' => $request->mobile,
             'country_code' => $request->country_code,
+            'sponsor_id' => $sponsor->id,
             'current_rank_name' => $user->current_rank_no > 0 ? $user->current_rank_name : 'Bronze',
         ]);
+
+        UserReferral::updateOrCreate(
+            ['user_id' => $user->id],
+            ['sponsor_id' => $sponsor->id, 'sponsor_referral_code' => $sponsor->referral_code]
+        );
 
         if ($request->filled('password')) {
             $user->update([

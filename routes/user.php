@@ -18,10 +18,18 @@ use Illuminate\Support\Facades\Route;
 
 /* Member panel routes: /user/... */
 Route::prefix('user')->name('user.')->group(function () {
+    // Registration confirmation is intentionally accessible after submit even if
+    // another panel session still exists in the browser.
+    Route::get('/registration-success', [UserAuthController::class, 'registrationSuccess'])->name('registration.success');
+
     Route::middleware([UserGuestMiddleware::class])->group(function () {
         Route::controller(UserAuthController::class)->group(function () {
             Route::get('/login', 'showLogin')->name('login');
             Route::post('/login', 'login')->name('login.submit');
+            Route::get('/forgot-password', 'showForgotPassword')->name('password.request');
+            Route::post('/forgot-password', 'sendResetLink')->name('password.email');
+            Route::get('/reset-password/{token}', 'showResetPassword')->name('password.reset');
+            Route::post('/reset-password', 'resetPassword')->name('password.update');
             Route::get('/register', 'showRegister')->name('register');
             Route::get('/sponsor-lookup', 'sponsorLookup')->name('sponsor.lookup');
             Route::post('/register', 'register')->name('register.submit');

@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'zeptomail' => [
+        'api_key' => env('ZEPTO_MAIL_API_KEY'),
+        'api_base' => env('ZEPTO_MAIL_API_BASE', 'https://api.zeptomail.com/v1'),
+        'verify' => filter_var(env('ZEPTO_MAIL_VERIFY', true), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE),
+    ],
+
 ];
