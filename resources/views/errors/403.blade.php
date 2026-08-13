@@ -1,0 +1,5 @@
+@extends('errors.layout')
+@section('code', '403')
+@section('icon', 'mdi-shield-lock-outline')
+@section('title', 'Access denied')
+@section('message', 'You do not have permission to access this page. Please sign in with the appropriate account.')

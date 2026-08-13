@@ -1,0 +1,5 @@
+@extends('errors.layout')
+@section('code', '419')
+@section('icon', 'mdi-clock-alert-outline')
+@section('title', 'Your session has expired')
+@section('message', 'For your security, this form session has expired. Please return to the previous page and try again.')

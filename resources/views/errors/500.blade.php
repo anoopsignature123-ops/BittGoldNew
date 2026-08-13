@@ -1,0 +1,5 @@
+@extends('errors.layout')
+@section('code', '500')
+@section('icon', 'mdi-alert-circle-outline')
+@section('title', 'Something went wrong')
+@section('message', 'We could not complete your request right now. Please try again shortly or contact support if the problem continues.')

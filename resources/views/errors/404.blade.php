@@ -1,0 +1,5 @@
+@extends('errors.layout')
+@section('code', '404')
+@section('icon', 'mdi-map-marker-question-outline')
+@section('title', 'Page not found')
+@section('message', 'The page you requested does not exist or may have been moved. Please check the link and try again.')

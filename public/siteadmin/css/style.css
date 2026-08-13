@@ -1,0 +1,4820 @@
+/* =====================================
+   BUBBLE BACKGROUND
+===================================== */
+
+.bubble-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Bubbles */
+.bubble-bg span {
+    position: absolute;
+    bottom: -120px;
+    display: block;
+    border-radius: 50%;
+
+    background: radial-gradient(
+        circle at 30% 30%,
+        rgba(255, 224, 120, 0.22),
+        rgba(212, 175, 55, 0.10) 40%,
+        rgba(212, 175, 55, 0.02) 70%,
+        transparent 75%
+    );
+
+    border: 1px solid rgba(212, 175, 55, 0.16);
+
+    box-shadow:
+        inset 0 0 20px rgba(255, 215, 100, 0.08),
+        0 0 25px rgba(212, 175, 55, 0.06);
+
+    animation: bubbleFloat linear infinite;
+}
+
+/* Different bubbles */
+
+.bubble-bg span:nth-child(1) {
+    width: 70px;
+    height: 70px;
+    left: 5%;
+    animation-duration: 14s;
+    animation-delay: 0s;
+}
+
+.bubble-bg span:nth-child(2) {
+    width: 35px;
+    height: 35px;
+    left: 14%;
+    animation-duration: 10s;
+    animation-delay: 2s;
+}
+
+.bubble-bg span:nth-child(3) {
+    width: 110px;
+    height: 110px;
+    left: 23%;
+    animation-duration: 18s;
+    animation-delay: 4s;
+}
+
+.bubble-bg span:nth-child(4) {
+    width: 45px;
+    height: 45px;
+    left: 34%;
+    animation-duration: 12s;
+    animation-delay: 1s;
+}
+
+.bubble-bg span:nth-child(5) {
+    width: 85px;
+    height: 85px;
+    left: 43%;
+    animation-duration: 16s;
+    animation-delay: 5s;
+}
+
+.bubble-bg span:nth-child(6) {
+    width: 30px;
+    height: 30px;
+    left: 52%;
+    animation-duration: 9s;
+    animation-delay: 3s;
+}
+
+.bubble-bg span:nth-child(7) {
+    width: 125px;
+    height: 125px;
+    left: 61%;
+    animation-duration: 20s;
+    animation-delay: 1s;
+}
+
+.bubble-bg span:nth-child(8) {
+    width: 55px;
+    height: 55px;
+    left: 72%;
+    animation-duration: 13s;
+    animation-delay: 4s;
+}
+
+.bubble-bg span:nth-child(9) {
+    width: 95px;
+    height: 95px;
+    left: 80%;
+    animation-duration: 17s;
+    animation-delay: 2s;
+}
+
+.bubble-bg span:nth-child(10) {
+    width: 40px;
+    height: 40px;
+    left: 90%;
+    animation-duration: 11s;
+    animation-delay: 6s;
+}
+
+.bubble-bg span:nth-child(11) {
+    width: 65px;
+    height: 65px;
+    left: 38%;
+    animation-duration: 15s;
+    animation-delay: 7s;
+}
+
+.bubble-bg span:nth-child(12) {
+    width: 50px;
+    height: 50px;
+    left: 95%;
+    animation-duration: 12s;
+    animation-delay: 5s;
+}
+
+
+/* =====================================
+   FLOATING ANIMATION
+===================================== */
+
+@keyframes bubbleFloat {
+
+    0% {
+        transform:
+            translateY(0)
+            translateX(0)
+            scale(0.7);
+
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.7;
+    }
+
+    30% {
+        transform:
+            translateY(-25vh)
+            translateX(30px)
+            scale(1);
+    }
+
+    55% {
+        transform:
+            translateY(-55vh)
+            translateX(-35px)
+            scale(1.05);
+    }
+
+    80% {
+        transform:
+            translateY(-85vh)
+            translateX(25px)
+            scale(0.9);
+
+        opacity: 0.5;
+    }
+
+    100% {
+        transform:
+            translateY(-115vh)
+            translateX(-20px)
+            scale(0.7);
+
+        opacity: 0;
+    }
+}
+
+
+/* =====================================
+   CONTENT ABOVE BUBBLES
+===================================== */
+
+.content-area {
+    position: relative;
+    z-index: 2;
+}
+/* =========================================================
+   HERO SECTION
+========================================================= */
+
+.bitgold-hero {
+    position: relative;
+    min-height: 550px;
+    padding: 55px 0 35px;
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 75% 40%,
+            rgba(220, 166, 42, 0.12),
+            transparent 35%
+        ),
+        #080909;
+}
+
+
+/* =========================================================
+   GOLD BACKGROUND IMAGE
+========================================================= */
+
+.gold-background {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    width: 64%;
+    height: 100%;
+
+    z-index: 1;
+
+    background-image: url("../images/gold-bg.png");
+    background-repeat: no-repeat;
+    background-position: center right;
+    background-size: cover;
+
+    pointer-events: none;
+
+    animation: goldReveal 1.4s ease-out forwards;
+}
+
+
+/* Dark overlay */
+
+.gold-background::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            #080909 0%,
+            rgba(8,9,9,.94) 12%,
+            rgba(8,9,9,.60) 42%,
+            rgba(8,9,9,.18) 75%,
+            transparent 100%
+        );
+}
+
+
+@keyframes goldReveal {
+
+    0% {
+        opacity: 0;
+        transform: translateX(80px) scale(1.05);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+
+/* =========================================================
+   GOLD GLOW
+========================================================= */
+
+.gold-glow {
+    position: absolute;
+
+    z-index: 2;
+
+    width: 450px;
+    height: 450px;
+
+    top: 8%;
+    right: 12%;
+
+    border-radius: 50%;
+
+    background: rgba(229, 168, 42, .08);
+
+    filter: blur(90px);
+
+    pointer-events: none;
+
+    animation: glowPulse 4s ease-in-out infinite;
+}
+
+
+@keyframes glowPulse {
+
+    0%,
+    100% {
+        transform: scale(.9);
+        opacity: .4;
+    }
+
+    50% {
+        transform: scale(1.15);
+        opacity: .85;
+    }
+}
+
+
+/* =========================================================
+   MAIN CONTAINER
+========================================================= */
+
+.bitgold-container {
+    position: relative;
+    z-index: 5;
+}
+
+
+/* =========================================================
+   HERO CONTENT
+========================================================= */
+
+.hero-content {
+    width: 100%;
+    max-width: 620px;
+    padding-top: 15px;
+}
+
+
+/* Small heading */
+
+.hero-label {
+    display: block;
+
+    margin-bottom: 10px;
+
+    color: #e7aa2d;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1.3px;
+
+    opacity: 0;
+
+    animation: fadeUp .8s .1s forwards;
+}
+
+
+/* Main heading */
+
+.hero-heading {
+    margin: 0;
+
+    color: #f5f5f5;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: clamp(58px, 6vw, 82px);
+
+    font-weight: 700;
+
+    line-height: .98;
+
+    letter-spacing: -3px;
+
+    opacity: 0;
+
+    animation: fadeUp .9s .25s forwards;
+}
+
+
+.hero-heading span {
+    color: #e5a72d;
+
+    text-shadow:
+        0 0 30px rgba(229,167,45,.18);
+}
+
+
+/* Description */
+
+.hero-description {
+    max-width: 560px;
+
+    margin: 22px 0 28px;
+
+    color: #d4d4d4;
+
+    font-size: 18px;
+
+    line-height: 1.65;
+
+    opacity: 0;
+
+    animation: fadeUp .9s .4s forwards;
+}
+
+
+/* =========================================================
+   FEATURES
+========================================================= */
+
+.hero-features {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 30px;
+
+    margin-bottom: 30px;
+
+    opacity: 0;
+
+    animation: fadeUp .9s .55s forwards;
+}
+
+
+.hero-feature {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.feature-icon {
+    width: 43px;
+    height: 43px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #e5a72d;
+
+    background: rgba(226,169,44,.04);
+
+    font-size: 19px;
+
+    transition: .3s;
+}
+
+
+.hero-feature:hover .feature-icon {
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 0 20px rgba(226,169,44,.22);
+}
+
+
+.feature-text strong {
+    display: block;
+
+    color: #fff;
+
+    font-size: 15px;
+
+    line-height: 1.2;
+}
+
+
+.feature-text small {
+        display: block;
+    /* margin-top: 4px; */
+    color: #999;
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.hero-buttons {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    opacity: 0;
+
+    animation: fadeUp .9s .7s forwards;
+}
+
+
+.btn-invest {
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 175px;
+
+    padding: 15px 25px;
+
+    border: none;
+    border-radius: 7px;
+
+    color: #17130a;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffd86d,
+            #e2a127
+        );
+
+    font-size: 15px;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    overflow: hidden;
+
+    transition: .3s;
+}
+
+
+.btn-invest::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -120%;
+
+    width: 80%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.55),
+            transparent
+        );
+
+    transform: skewX(-20deg);
+
+    transition: .7s;
+}
+
+
+.btn-invest:hover::before {
+    left: 140%;
+}
+
+
+.btn-invest:hover {
+    color: #17130a;
+
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 12px 30px rgba(225,160,35,.3);
+}
+
+
+.btn-explore {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 180px;
+
+    padding: 14px 24px;
+
+    border: 1px solid #555;
+    border-radius: 7px;
+
+    color: #fff;
+
+    background: rgba(255,255,255,.02);
+
+    font-size: 15px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition: .3s;
+}
+
+
+.btn-explore:hover {
+    color: #e6a92e;
+
+    border-color: #e6a92e;
+
+    transform: translateY(-3px);
+
+    background: rgba(230,169,46,.05);
+}
+
+
+/* =========================================================
+   PRICE CARD
+========================================================= */
+
+.price-card {
+    position: absolute;
+
+    z-index: 8;
+
+    top: 245px;
+    right: 7%;
+
+    width: 310px;
+
+    padding: 20px 22px;
+
+    border: 1px solid rgba(255,255,255,.08);
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(34,34,32,.96),
+            rgba(16,16,15,.95)
+        );
+
+    box-shadow:
+        0 18px 45px rgba(0,0,0,.5);
+
+    backdrop-filter: blur(12px);
+
+    opacity: 0;
+
+    animation:
+        priceAppear 1s 1s forwards,
+        priceFloat 4s 2s ease-in-out infinite;
+}
+
+
+.price-title {
+    color: #ddd;
+
+    font-size: 14px;
+
+    margin-bottom: 5px;
+}
+
+
+.price-value {
+    color: #fff;
+
+    font-size: 28px;
+
+    font-weight: 700;
+}
+
+
+.price-value span {
+    color: #999;
+
+    font-size: 14px;
+
+    font-weight: 400;
+}
+
+
+.price-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 3px;
+}
+
+
+.price-quality {
+    color: #aaa;
+
+    font-size: 13px;
+}
+
+
+.price-change {
+    color: #55d679;
+
+    font-size: 14px;
+
+    font-weight: 700;
+}
+
+
+@keyframes priceAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(35px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+@keyframes priceFloat {
+
+    0%,
+    100% {
+        margin-top: 0;
+    }
+
+    50% {
+        margin-top: -8px;
+    }
+}
+
+
+/* =========================================================
+   BOTTOM STATS BAR
+========================================================= */
+
+.stats-wrapper {
+    position: relative;
+
+    z-index: 10;
+
+    margin-top: 70px;
+}
+
+
+.stats-bar {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    align-items: center;
+
+    width: 100%;
+
+    min-height: 82px;
+
+    padding: 13px 22px;
+
+    border: 1px solid rgba(255,255,255,.09);
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(36,36,33,.95),
+            rgba(20,20,19,.96)
+        );
+
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.35);
+
+    backdrop-filter: blur(10px);
+
+    opacity: 0;
+
+    animation: fadeUp 1s 1s forwards;
+}
+
+
+.stat-box {
+    display: flex;
+    align-items: center;
+
+    min-width: 0;
+
+    padding: 8px 20px;
+
+    border-right: 1px solid rgba(255,255,255,.12);
+}
+
+
+.stat-box:first-child {
+    padding-left: 3px;
+}
+
+
+.stat-box:last-child {
+    border-right: 0;
+}
+
+
+.stat-icon {
+    width: 46px;
+    height: 46px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-right: 13px;
+
+    border: 1px solid rgba(226,168,43,.5);
+
+    border-radius: 50%;
+
+    color: #e5a82d;
+
+    font-size: 19px;
+}
+
+
+.stat-content {
+    min-width: 0;
+}
+
+
+.stat-content strong {
+    display: block;
+
+    color: #fff;
+
+    font-size: 16px;
+
+    line-height: 1.2;
+
+    white-space: nowrap;
+}
+
+
+.stat-content span {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #999;
+
+    font-size: 16px;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   GENERAL ANIMATION
+========================================================= */
+
+@keyframes fadeUp {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(35px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+
+/* =========================================================
+   LAPTOP
+========================================================= */
+
+@media (max-width: 1199px) {
+
+    .gold-background {
+        width: 66%;
+    }
+
+    .hero-heading {
+        font-size: clamp(56px, 6vw, 76px);
+    }
+
+    .price-card {
+        right: 3%;
+    }
+
+    .stats-bar {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .stat-box {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+}
+
+
+/* =========================================================
+   TABLET
+   768px - 991px
+========================================================= */
+
+@media (max-width: 991.98px) {
+
+    .bitgold-hero {
+        min-height: auto;
+
+        padding-top: 50px;
+        padding-bottom: 30px;
+    }
+
+
+    /* Background full width */
+
+    .gold-background {
+        width: 100%;
+        height: 680px;
+
+        opacity: .35;
+
+        background-position: center right;
+        background-size: cover;
+    }
+
+
+    .gold-background::after {
+        background:
+            linear-gradient(
+                90deg,
+                #080909 0%,
+                rgba(8,9,9,.82) 35%,
+                rgba(8,9,9,.35) 100%
+            );
+    }
+
+
+    .hero-content {
+        max-width: 680px;
+    }
+
+
+    .hero-heading {
+        font-size: clamp(55px, 8vw, 72px);
+    }
+
+
+    .hero-description {
+        font-size: 17px;
+    }
+
+
+    /*
+       Price becomes normal flow
+    */
+
+    .price-card {
+        position: relative;
+
+        top: auto;
+        right: auto;
+
+        width: 310px;
+
+        margin:
+            45px 3% 0 auto;
+    }
+
+
+    /* Stats 2 columns */
+
+    .stats-wrapper {
+        margin-top: 35px;
+    }
+
+
+    .stats-bar {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        padding: 8px 12px;
+    }
+
+
+    .stat-box {
+        min-height: 70px;
+
+        padding: 10px 12px;
+    }
+
+
+    .stat-box:nth-child(2) {
+        border-right: 0;
+    }
+
+
+    .stat-box:nth-child(3),
+    .stat-box:nth-child(4) {
+        border-top:
+            1px solid rgba(255,255,255,.1);
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 767.98px) {
+
+    .bitgold-hero {
+        padding-top: 38px;
+        padding-bottom: 25px;
+    }
+
+
+    /* Background */
+
+    .gold-background {
+        width: 100%;
+        height: 620px;
+
+        opacity: .28;
+
+        background-position: 68% center;
+        background-size: auto 100%;
+    }
+
+
+    .gold-background::after {
+        background:
+            linear-gradient(
+                180deg,
+                #080909 0%,
+                rgba(8,9,9,.50) 42%,
+                #080909 100%
+            );
+    }
+
+
+    .gold-glow {
+        width: 280px;
+        height: 280px;
+
+        right: -70px;
+        top: 15%;
+    }
+
+
+    /* Heading */
+
+    .hero-content {
+        max-width: 100%;
+    }
+
+
+    .hero-label {
+        font-size: 12px;
+
+        letter-spacing: 1px;
+    }
+
+
+    .hero-heading {
+        font-size: clamp(44px, 13vw, 58px);
+
+        line-height: 1.02;
+
+        letter-spacing: -1.5px;
+    }
+
+
+    .hero-description {
+        margin-top: 17px;
+
+        font-size: 15px;
+
+        line-height: 1.6;
+    }
+
+
+    /* Features 2 columns */
+
+    .hero-features {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 15px 10px;
+
+        margin-bottom: 26px;
+    }
+
+
+    .hero-feature {
+        min-width: 0;
+
+        gap: 8px;
+    }
+
+
+    .feature-icon {
+        width: 37px;
+        height: 37px;
+
+        font-size: 16px;
+    }
+
+
+    .feature-text {
+        min-width: 0;
+    }
+
+
+    .feature-text strong {
+        font-size: 12px;
+
+        white-space: nowrap;
+    }
+
+
+    .feature-text small {
+        font-size: 10px;
+
+        white-space: nowrap;
+    }
+
+
+    /* Buttons */
+
+    .hero-buttons {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 9px;
+    }
+
+
+    .btn-invest,
+    .btn-explore {
+        width: 100%;
+
+        min-width: 0;
+
+        padding: 13px 7px;
+
+        font-size: 13px;
+
+        text-align: center;
+    }
+
+
+    /* Price */
+
+    .price-card {
+        position: relative;
+
+        top: auto;
+        right: auto;
+
+        width: 100%;
+
+        margin:
+            32px 0 0;
+
+        padding: 17px;
+    }
+
+
+    .price-title {
+        font-size: 14px;
+    }
+
+
+    .price-value {
+        font-size: 25px;
+    }
+
+
+    .price-value span {
+        font-size: 13px;
+    }
+
+
+    .price-quality {
+        font-size: 12px;
+    }
+
+
+    .price-change {
+        font-size: 13px;
+    }
+
+
+    /* Stats */
+
+    .stats-wrapper {
+        margin-top: 25px;
+    }
+
+
+    .stats-bar {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 0;
+
+        padding: 7px;
+    }
+
+
+    .stat-box {
+        min-height: 70px;
+
+        padding: 9px;
+
+        border-right:
+            1px solid rgba(255,255,255,.1);
+    }
+
+
+    .stat-box:nth-child(2) {
+        border-right: 0;
+    }
+
+
+    .stat-box:nth-child(3),
+    .stat-box:nth-child(4) {
+        border-top:
+            1px solid rgba(255,255,255,.1);
+    }
+
+
+    .stat-icon {
+        width: 36px;
+        height: 36px;
+
+        margin-right: 8px;
+
+        font-size: 15px;
+    }
+
+
+    .stat-content strong {
+        font-size: 12px;
+    }
+
+
+    .stat-content span {
+        font-size: 9px;
+
+        margin-top: 3px;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .bitgold-hero {
+        padding-top: 32px;
+    }
+
+
+    .hero-label {
+        font-size: 11px;
+    }
+
+
+    .hero-heading {
+        font-size: 42px;
+    }
+
+
+    .hero-description {
+        font-size: 14px;
+    }
+
+
+    .hero-features {
+        gap: 13px 6px;
+    }
+
+
+    .feature-icon {
+        width: 33px;
+        height: 33px;
+
+        font-size: 14px;
+    }
+
+
+    .feature-text strong {
+        font-size: 11px;
+    }
+
+
+    .feature-text small {
+        font-size: 9px;
+    }
+
+
+    .btn-invest,
+    .btn-explore {
+        padding: 12px 5px;
+
+        font-size: 12px;
+    }
+
+
+    .price-card {
+        margin-top: 28px;
+    }
+
+
+    .price-value {
+        font-size: 23px;
+    }
+
+
+    .stats-bar {
+        padding: 6px;
+    }
+
+
+    .stat-box {
+        min-height: 65px;
+
+        padding: 7px;
+    }
+
+
+    .stat-icon {
+        width: 31px;
+        height: 31px;
+
+        margin-right: 6px;
+
+        font-size: 13px;
+    }
+
+
+    .stat-content strong {
+        font-size: 10px;
+    }
+
+
+    .stat-content span {
+        font-size: 8px;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 360px) {
+
+    .hero-heading {
+        font-size: 37px;
+    }
+
+
+    .hero-description {
+        font-size: 13px;
+    }
+
+
+    .hero-features {
+        grid-template-columns: 1fr;
+    }
+
+
+    .hero-buttons {
+        grid-template-columns: 1fr;
+    }
+
+
+    .stats-bar {
+        grid-template-columns: 1fr;
+    }
+
+
+    .stat-box {
+        border-right: 0 !important;
+
+        border-bottom:
+            1px solid rgba(255,255,255,.1);
+    }
+
+
+    .stat-box:last-child {
+        border-bottom: 0;
+    }
+
+
+    .stat-box:nth-child(3),
+    .stat-box:nth-child(4) {
+        border-top: 0;
+    }
+
+}
+@media (max-width: 420px) {
+    .bitgold-hero {
+        padding-top: 50px;
+    }
+}
+
+@media (max-width: 767px) {
+    .bitgold-hero {
+        padding: 65px 15px 45px;
+    }
+}
+@media (max-width: 991px) {
+    .bitgold-hero {
+        min-height: auto;
+        padding: 90px 0 60px;
+    }
+}
+.bitgold-hero {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background: radial-gradient(circle at 10% 50%, rgba(255, 196, 0, 0.08), transparent 30%), radial-gradient(circle at 85% 55%, rgba(255, 196, 0, 0.06), transparent 30%), #030303;
+}
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   WHY GOLD SECTION
+========================================================= */
+
+.why-gold-section {
+    position: relative;
+    width: 100%;
+    padding: 25px 0 0;
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(218, 165, 43, 0.07),
+            transparent 40%
+        ),
+        #090a0a;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.why-gold-header {
+    position: relative;
+    z-index: 2;
+
+    text-align: center;
+
+    padding: 0 20px;
+
+    margin-bottom: 15px;
+}
+
+
+/* Main Heading */
+
+.why-gold-title {
+    margin: 0;
+
+    color: #eeeeee;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 30px;
+
+    font-weight: 700;
+
+    line-height: 1.1;
+
+    letter-spacing: -0.5px;
+}
+
+
+.why-gold-title span {
+    color: #e5a72d;
+
+    text-shadow:
+        0 0 18px rgba(229, 167, 45, .15);
+}
+
+
+/* Description */
+
+.why-gold-description {
+    max-width: 700px;
+
+    margin: 7px auto 0;
+
+    color: #cfcfcf;
+
+    font-size: 17px;
+
+    line-height: 1.45;
+
+    font-weight: 400;
+}
+
+
+/* =========================================================
+   FEATURES GRID
+========================================================= */
+
+.why-gold-features {
+    position: relative;
+    z-index: 2;
+
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, minmax(0, 1fr));
+
+    border-top:
+        1px solid rgba(255,255,255,.055);
+
+    border-bottom:
+        1px solid rgba(255,255,255,.055);
+}
+
+
+/* =========================================================
+   FEATURE ITEM
+========================================================= */
+
+.why-gold-item {
+    position: relative;
+
+    min-width: 0;
+
+    min-height: 155px;
+
+    padding: 18px 20px 15px;
+
+    text-align: center;
+
+    border-right:
+        1px solid rgba(255,255,255,.11);
+
+    opacity: 0;
+
+    transform: translateY(25px);
+
+    animation:
+        goldItemReveal .7s ease forwards;
+
+    transition:
+        background .3s ease,
+        transform .3s ease;
+}
+
+
+/* Last item */
+
+.why-gold-item:last-child {
+    border-right: none;
+}
+
+
+/* =========================================================
+   ANIMATION DELAYS
+========================================================= */
+
+.why-gold-item:nth-child(1) {
+    animation-delay: .1s;
+}
+
+.why-gold-item:nth-child(2) {
+    animation-delay: .2s;
+}
+
+.why-gold-item:nth-child(3) {
+    animation-delay: .3s;
+}
+
+.why-gold-item:nth-child(4) {
+    animation-delay: .4s;
+}
+
+.why-gold-item:nth-child(5) {
+    animation-delay: .5s;
+}
+
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+.why-gold-item:hover {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(229,167,45,.045),
+            transparent
+        );
+
+    transform: translateY(-3px);
+}
+
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.why-gold-icon {
+    width: 36px;
+    height: 36px;
+
+    margin: 0 auto 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #e5a72d;
+
+    font-size: 25px;
+
+    line-height: 1;
+
+    transition:
+        transform .3s ease,
+        filter .3s ease;
+}
+
+
+.why-gold-item:hover .why-gold-icon {
+    transform:
+        translateY(-4px)
+        scale(1.08);
+
+    filter:
+        drop-shadow(
+            0 0 7px
+            rgba(229,167,45,.65)
+        );
+}
+
+
+/* =========================================================
+   CARD TITLE
+========================================================= */
+
+.why-gold-item h3 {
+    margin: 0 0 8px;
+
+    color: #f1f1f1;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    line-height: 1.3;
+}
+
+
+/* =========================================================
+   CARD DESCRIPTION
+========================================================= */
+
+.why-gold-item p {
+    max-width: 190px;
+
+    margin: 0 auto;
+
+    color: #a9a9a9;
+
+    font-size: 16px;
+
+    font-weight: 400;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+@keyframes goldItemReveal {
+
+    0% {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================================================
+   TABLET
+   768px - 991px
+========================================================= */
+
+@media (max-width: 991.98px) {
+
+    .why-gold-section {
+        padding-top: 30px;
+    }
+
+
+    .why-gold-title {
+        font-size: 28px;
+    }
+
+
+    .why-gold-description {
+        font-size: 16px;
+    }
+
+
+    .why-gold-features {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+
+
+    .why-gold-item {
+        min-height: 170px;
+
+        padding:
+            20px 15px 17px;
+    }
+
+
+    /* Third column */
+
+    .why-gold-item:nth-child(3) {
+        border-right: none;
+    }
+
+
+    /* Second row */
+
+    .why-gold-item:nth-child(4),
+    .why-gold-item:nth-child(5) {
+        border-top:
+            1px solid rgba(255,255,255,.11);
+    }
+
+
+    .why-gold-item:nth-child(5) {
+        grid-column: 2 / 3;
+
+        border-right: none;
+    }
+
+
+    .why-gold-icon {
+        font-size: 24px;
+    }
+
+
+    .why-gold-item h3 {
+        font-size: 14px;
+    }
+
+
+    .why-gold-item p {
+        font-size: 11px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   <= 767px
+========================================================= */
+
+@media (max-width: 767.98px) {
+
+    .why-gold-section {
+        padding-top: 30px;
+    }
+
+
+    .why-gold-header {
+        margin-bottom: 15px;
+    }
+
+
+    .why-gold-title {
+        font-size: 27px;
+    }
+
+
+    .why-gold-description {
+        max-width: 500px;
+
+        font-size: 11px;
+
+        line-height: 1.5;
+    }
+
+
+    .why-gold-features {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    .why-gold-item {
+        min-height: 170px;
+
+        padding:
+            20px 12px 17px;
+    }
+
+
+    /* Reset borders */
+
+    .why-gold-item:nth-child(3) {
+        border-right:
+            1px solid rgba(255,255,255,.11);
+    }
+
+
+    .why-gold-item:nth-child(4) {
+        border-right: none;
+    }
+
+
+    .why-gold-item:nth-child(3),
+    .why-gold-item:nth-child(4) {
+        border-top:
+            1px solid rgba(255,255,255,.11);
+    }
+
+
+    .why-gold-item:nth-child(5) {
+
+        grid-column: 1 / 3;
+
+        border-right: none;
+
+        border-top:
+            1px solid rgba(255,255,255,.11);
+    }
+
+
+    .why-gold-icon {
+        width: 34px;
+        height: 34px;
+
+        margin-bottom: 9px;
+
+        font-size: 23px;
+    }
+
+
+    .why-gold-item h3 {
+        font-size: 14px;
+
+        margin-bottom: 8px;
+    }
+
+
+    .why-gold-item p {
+        max-width: 190px;
+
+        font-size: 11px;
+
+        line-height: 1.5;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   <= 480px
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .why-gold-section {
+        padding-top: 25px;
+    }
+
+
+    .why-gold-title {
+        font-size: 25px;
+    }
+
+
+    .why-gold-description {
+        font-size: 10px;
+
+        padding: 0 10px;
+    }
+
+
+    .why-gold-item {
+        min-height: 160px;
+
+        padding:
+            18px 8px 15px;
+    }
+
+
+    .why-gold-icon {
+        width: 32px;
+        height: 32px;
+
+        font-size: 22px;
+    }
+
+
+    .why-gold-item h3 {
+        font-size: 13px;
+    }
+
+
+    .why-gold-item p {
+        max-width: 165px;
+
+        font-size: 10px;
+
+        line-height: 1.45;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 360px) {
+
+    .why-gold-title {
+        font-size: 23px;
+    }
+
+
+    .why-gold-description {
+        font-size: 9px;
+    }
+
+
+    .why-gold-features {
+        grid-template-columns: 1fr;
+    }
+
+
+    .why-gold-item,
+    .why-gold-item:nth-child(3),
+    .why-gold-item:nth-child(4),
+    .why-gold-item:nth-child(5) {
+
+        grid-column: auto;
+
+        min-height: auto;
+
+        padding:
+            22px 20px;
+
+        border-right: none;
+
+        border-top:
+            1px solid rgba(255,255,255,.11);
+    }
+
+
+    .why-gold-item:first-child {
+        border-top: none;
+    }
+
+
+    .why-gold-item p {
+        max-width: 240px;
+
+        font-size: 10px;
+    }
+
+}
+
+
+
+
+/* =========================================================
+   SERVICES SECTION
+========================================================= */
+
+.gold-services-section {
+    position: relative;
+
+    width: 100%;
+
+    padding: 35px 0 40px;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(218, 165, 43, 0.07),
+            transparent 40%
+        ),
+        #080909;
+}
+
+
+/* Background glow */
+
+.gold-services-section::before {
+    content: "";
+
+    position: absolute;
+
+    width: 500px;
+    height: 300px;
+
+    top: -180px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    background: rgba(225, 165, 40, .07);
+
+    filter: blur(90px);
+
+    border-radius: 50%;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   SECTION HEADING
+========================================================= */
+
+.services-heading {
+    position: relative;
+
+    z-index: 2;
+
+    text-align: center;
+
+    margin-bottom: 20px;
+}
+
+
+.services-heading h2 {
+    margin: 0;
+
+    color: #eeeeee;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 30px;
+
+    font-weight: 700;
+
+    line-height: 1.1;
+}
+
+
+.services-heading h2 span {
+    color: #e5a72d;
+}
+
+
+/* =========================================================
+   CARDS ROW
+========================================================= */
+
+.services-row {
+    position: relative;
+
+    z-index: 2;
+}
+
+
+/* =========================================================
+   SERVICE CARD
+========================================================= */
+
+.gold-service-card {
+    position: relative;
+
+    height: 100%;
+
+    overflow: hidden;
+
+    border: 1px solid rgba(225, 167, 45, .35);
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #252521,
+            #151614
+        );
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, .35);
+
+    transition:
+        transform .4s ease,
+        box-shadow .4s ease,
+        border-color .4s ease;
+
+    opacity: 0;
+
+    transform: translateY(35px);
+
+    animation:
+        cardReveal .8s ease forwards;
+}
+
+
+/* Animation delay */
+
+.col-xl-3:nth-child(1) .gold-service-card {
+    animation-delay: .1s;
+}
+
+.col-xl-3:nth-child(2) .gold-service-card {
+    animation-delay: .2s;
+}
+
+.col-xl-3:nth-child(3) .gold-service-card {
+    animation-delay: .3s;
+}
+
+.col-xl-3:nth-child(4) .gold-service-card {
+    animation-delay: .4s;
+}
+
+
+/* Hover */
+
+.gold-service-card:hover {
+    transform: translateY(-8px);
+
+    border-color: rgba(229, 167, 45, .75);
+
+    box-shadow:
+        0 18px 40px rgba(0, 0, 0, .55),
+        0 0 25px rgba(225, 165, 40, .08);
+}
+
+
+/* =========================================================
+   IMAGE
+========================================================= */
+
+.service-image {
+    position: relative;
+
+    width: 100%;
+
+    height: 155px;
+
+    overflow: hidden;
+}
+
+
+.service-image img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    transition:
+        transform .7s ease,
+        filter .7s ease;
+}
+
+
+.gold-service-card:hover .service-image img {
+    transform: scale(1.08);
+
+    filter:
+        brightness(1.08);
+}
+
+
+/* Image dark overlay */
+
+.service-image::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            to bottom,
+            transparent 55%,
+            rgba(15, 15, 14, .85) 100%
+        );
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   CARD CONTENT
+========================================================= */
+
+.service-content {
+    padding: 14px 20px 16px;
+}
+
+
+.service-content h3 {
+    margin: 0 0 7px;
+
+    color: #f5f5f5;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    line-height: 1.25;
+}
+
+
+.service-content p {
+    margin: 0 0 12px;
+
+    color: #c1c1c1;
+
+    font-size: 16px;
+
+    line-height: 1.4;
+
+    font-weight: 400;
+}
+
+
+/* =========================================================
+   LEARN MORE
+========================================================= */
+
+.learn-more {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    color: #e5a72d;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition:
+        color .3s ease,
+        gap .3s ease;
+}
+
+
+.learn-more i {
+    font-size: 18px;
+
+    transition:
+        transform .3s ease;
+}
+
+
+.learn-more:hover {
+    color: #ffd66d;
+
+    gap: 13px;
+}
+
+
+.learn-more:hover i {
+    transform: translateX(3px);
+}
+
+
+/* =========================================================
+   GOLD SHINE EFFECT
+========================================================= */
+
+.gold-service-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -120%;
+
+    width: 70%;
+    height: 100%;
+
+    z-index: 5;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, .07),
+            transparent
+        );
+
+    transform: skewX(-20deg);
+
+    pointer-events: none;
+
+    transition: left .8s ease;
+}
+
+
+.gold-service-card:hover::before {
+    left: 140%;
+}
+
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+@keyframes cardReveal {
+
+    0% {
+        opacity: 0;
+
+        transform:
+            translateY(35px);
+    }
+
+    100% {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+
+/* =========================================================
+   LARGE LAPTOP
+========================================================= */
+
+@media (max-width: 1199.98px) {
+
+    .service-image {
+        height: 145px;
+    }
+
+
+    .service-content {
+        padding:
+            14px 16px 16px;
+    }
+
+}
+
+
+/* =========================================================
+   TABLET
+   768px - 991px
+========================================================= */
+
+@media (max-width: 991.98px) {
+
+    .gold-services-section {
+        padding:
+            35px 0 40px;
+    }
+
+
+    .services-heading h2 {
+        font-size: 28px;
+    }
+
+
+    .service-image {
+        height: 170px;
+    }
+
+
+    .service-content h3 {
+        font-size: 16px;
+    }
+
+
+    .service-content p {
+        font-size: 16px;
+    }
+
+
+    .learn-more {
+        font-size: 16px;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   <= 767px
+========================================================= */
+
+@media (max-width: 767.98px) {
+
+    .gold-services-section {
+        padding:
+            30px 0 35px;
+    }
+
+
+    .services-heading {
+        margin-bottom: 18px;
+    }
+
+
+    .services-heading h2 {
+        font-size: 26px;
+    }
+
+
+    .service-image {
+        height: 190px;
+    }
+
+
+    .service-content {
+        padding:
+            16px 18px 18px;
+    }
+
+
+    .service-content h3 {
+        font-size: 16px;
+    }
+
+
+    .service-content p {
+        font-size: 16px;
+
+        line-height: 1.45;
+    }
+
+
+    .learn-more {
+        font-size: 16px;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .gold-services-section {
+        padding:
+            25px 0 30px;
+    }
+
+
+    .services-heading h2 {
+        font-size: 24px;
+    }
+
+
+    .service-image {
+        height: 180px;
+    }
+
+
+    .service-content {
+        padding:
+            15px 16px 17px;
+    }
+
+
+    .service-content h3 {
+        font-size: 16px;
+    }
+
+
+    .service-content p {
+        font-size: 16px;
+    }
+
+
+    .learn-more {
+        font-size: 16px;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   PERFORMANCE SECTION
+========================================================= */
+
+.gold-performance-section {
+    position: relative;
+
+    width: 100%;
+
+    padding: 12px 0;
+
+    background: #080909;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   MAIN BOX
+========================================================= */
+
+.performance-box {
+    position: relative;
+
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        1.35fr
+        repeat(4, 1fr);
+
+    align-items: stretch;
+
+    min-height: 112px;
+
+    border: 1px solid rgba(224, 165, 42, .75);
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(25,25,23,.96),
+            rgba(10,11,10,.98)
+        );
+
+    box-shadow:
+        inset 0 0 25px rgba(221,163,42,.025),
+        0 5px 20px rgba(0,0,0,.35);
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   LEFT CONTENT
+========================================================= */
+
+.performance-intro {
+    min-width: 0;
+
+    padding:
+        11px 20px;
+
+    border-right:
+        1px solid rgba(255,255,255,.09);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    opacity: 0;
+
+    transform: translateX(-20px);
+
+    animation:
+        introReveal .7s ease forwards;
+}
+
+
+/* Heading */
+
+.performance-intro h2 {
+
+    margin: 0 0 5px;
+
+    color: #e8e8e8;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 17px;
+
+    font-weight: 700;
+
+    line-height: 1.05;
+}
+
+
+.performance-intro h2 span {
+    color: #e5a72d;
+}
+
+
+/* Description */
+
+.performance-intro p {
+
+    margin: 0 0 8px;
+
+    max-width: 210px;
+
+    color: #b5b5b5;
+
+    font-size: 14px;
+
+    line-height: 1.35;
+}
+
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.market-btn {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    width: fit-content;
+
+    min-width: 155px;
+
+    padding:
+        5px 10px;
+
+    border: 0;
+
+    border-radius: 5px;
+
+    color: #17130b;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffd260,
+            #e3a329
+        );
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition:
+        transform .3s ease,
+        box-shadow .3s ease;
+}
+
+
+.market-btn i {
+    font-size: 12px;
+}
+
+
+.market-btn:hover {
+
+    color: #17130b;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 5px 15px rgba(226,163,39,.3);
+}
+
+
+/* =========================================================
+   PERFORMANCE ITEM
+========================================================= */
+
+.performance-item {
+
+    position: relative;
+
+    min-width: 0;
+
+    padding:
+        10px 13px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    border-right:
+        1px solid rgba(255,255,255,.08);
+
+    opacity: 0;
+
+    transform: translateY(15px);
+
+    animation:
+        itemReveal .7s ease forwards;
+}
+
+
+.performance-item:last-child {
+    border-right: none;
+}
+
+
+/* Animation delays */
+
+.performance-item:nth-child(2) {
+    animation-delay: .12s;
+}
+
+.performance-item:nth-child(3) {
+    animation-delay: .22s;
+}
+
+.performance-item:nth-child(4) {
+    animation-delay: .32s;
+}
+
+.performance-item:nth-child(5) {
+    animation-delay: .42s;
+}
+
+
+/* =========================================================
+   YEAR
+========================================================= */
+
+.performance-year {
+
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: #d9a22a;
+
+    font-size: 10px;
+
+    font-weight: 500;
+}
+
+
+/* =========================================================
+   PERCENTAGE
+========================================================= */
+
+.performance-percent {
+
+    display: block;
+
+    margin-bottom: 2px;
+
+    color: #e5a72d;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 19px;
+
+    font-weight: 700;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   CHART
+========================================================= */
+
+.performance-chart {
+
+    position: relative;
+
+    width: 100%;
+
+    height: 43px;
+
+    margin-top: 2px;
+
+    overflow: hidden;
+}
+
+
+/* SVG */
+
+.performance-chart svg {
+
+    width: 100%;
+
+    height: 100%;
+
+    overflow: visible;
+}
+
+
+/* Chart line */
+
+.chart-line {
+
+    fill: none;
+
+    stroke: #e6a82b;
+
+    stroke-width: 1.5;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+
+    stroke-dasharray: 400;
+
+    stroke-dashoffset: 400;
+
+    animation:
+        drawChart 2s ease forwards;
+}
+
+
+/* Different delays */
+
+.performance-item:nth-child(2) .chart-line {
+    animation-delay: .45s;
+}
+
+.performance-item:nth-child(3) .chart-line {
+    animation-delay: .55s;
+}
+
+.performance-item:nth-child(4) .chart-line {
+    animation-delay: .65s;
+}
+
+.performance-item:nth-child(5) .chart-line {
+    animation-delay: .75s;
+}
+
+
+/* Chart glow */
+
+.chart-glow {
+
+    fill: none;
+
+    stroke: rgba(230,168,43,.18);
+
+    stroke-width: 5;
+
+    stroke-linecap: round;
+
+    stroke-linejoin: round;
+
+    filter: blur(2px);
+}
+
+
+/* =========================================================
+   CHART DOT
+========================================================= */
+
+.chart-dot {
+
+    fill: #f1b633;
+
+    filter:
+        drop-shadow(
+            0 0 4px rgba(231,169,44,.7)
+        );
+
+    animation:
+        dotPulse 2s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes introReveal {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateX(0);
+    }
+}
+
+
+@keyframes itemReveal {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+
+@keyframes drawChart {
+
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+
+@keyframes dotPulse {
+
+    0%,
+    100% {
+        opacity: .7;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 991.98px) {
+
+    .gold-performance-section {
+        padding:
+            20px 0;
+    }
+
+
+    .performance-box {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        min-height: auto;
+    }
+
+
+    .performance-intro {
+
+        grid-column:
+            1 / -1;
+
+        min-height: 125px;
+
+        border-right: none;
+
+        border-bottom:
+            1px solid rgba(255,255,255,.09);
+
+        text-align: center;
+
+        align-items: center;
+    }
+
+
+    .performance-intro p {
+        max-width: 400px;
+    }
+
+
+    .performance-item {
+
+        min-height: 120px;
+
+        border-bottom:
+            1px solid rgba(255,255,255,.08);
+    }
+
+
+    .performance-item:nth-child(3) {
+        border-right: none;
+    }
+
+
+    .performance-item:nth-child(4),
+    .performance-item:nth-child(5) {
+        border-bottom: none;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 767.98px) {
+
+    .gold-performance-section {
+        padding:
+            20px 0;
+    }
+
+
+    .performance-box {
+
+        grid-template-columns: 1fr;
+
+        border-radius: 9px;
+    }
+
+
+    .performance-intro {
+
+        grid-column: auto;
+
+        min-height: 135px;
+
+        padding:
+            18px 20px;
+    }
+
+
+    .performance-intro h2 {
+        font-size: 20px;
+    }
+
+
+    .performance-intro p {
+        font-size: 11px;
+
+        max-width: 300px;
+
+        text-align: center;
+    }
+
+
+    .market-btn {
+        font-size: 11px;
+
+        min-width: 165px;
+
+        padding:
+            7px 12px;
+    }
+
+
+    .performance-item {
+
+        min-height: 120px;
+
+        padding:
+            15px 20px;
+
+        border-right: none;
+
+        border-bottom:
+            1px solid rgba(255,255,255,.08);
+    }
+
+
+    .performance-item:last-child {
+        border-bottom: none;
+    }
+
+
+    .performance-year {
+        font-size: 11px;
+    }
+
+
+    .performance-percent {
+        font-size: 22px;
+    }
+
+
+    .performance-chart {
+        height: 45px;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .performance-intro h2 {
+        font-size: 19px;
+    }
+
+
+    .performance-intro p {
+        font-size: 10px;
+    }
+
+
+    .performance-item {
+        min-height: 115px;
+
+        padding:
+            14px 16px;
+    }
+
+
+    .performance-percent {
+        font-size: 21px;
+    }
+
+
+    .performance-year {
+        font-size: 10px;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 360px) {
+
+    .performance-intro {
+        padding:
+            16px 12px;
+    }
+
+
+    .performance-intro h2 {
+        font-size: 18px;
+    }
+
+
+    .performance-percent {
+        font-size: 20px;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ /* =====================================================
+       GLOBAL
+    ===================================================== */
+
+    .bittgold-section {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        background:
+            radial-gradient(
+                circle at 88% 65%,
+                rgba(218, 169, 55, .07),
+                transparent 24%
+            ),
+            #0a0b0b;
+
+        color: #fff;
+        font-family: Arial, Helvetica, sans-serif;
+        padding: 0 0 10px;
+    }
+
+
+    .bittgold-inner {
+        position: relative;
+        z-index: 5;
+        max-width: 1080px;
+        margin: auto;
+    }
+
+
+    /* =====================================================
+       HOW BITTGOLD WORKS
+    ===================================================== */
+
+    .works-heading {
+        text-align: center;
+        color: #fff;
+
+        font-size: 30px;
+        line-height: 1.2;
+
+        font-weight: 700;
+
+        margin: 0 0 8px;
+    }
+
+    .works-heading span {
+        color: #dcae3f;
+    }
+
+
+    .works-timeline {
+        position: relative;
+        width: 100%;
+
+        margin-bottom: 9px;
+    }
+
+
+    /* dotted horizontal line */
+
+    .timeline-line {
+        position: absolute;
+
+        top: 20px;
+        left: 7.5%;
+        right: 7.5%;
+
+        height: 1px;
+
+        border-top:
+            2px dotted
+            rgba(206, 159, 52, .75);
+
+        z-index: 1;
+    }
+
+
+    .work-item {
+        position: relative;
+        z-index: 2;
+
+        text-align: center;
+    }
+
+
+    .work-icon {
+        width: 42px;
+        height: 42px;
+
+        margin: 0 auto 3px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border: 1px solid #a57b23;
+        border-radius: 50%;
+
+        background: #0e1010;
+
+        color: #e2b33d;
+
+        font-size: 17px;
+
+        box-shadow:
+            0 0 15px rgba(211, 165, 53, .07);
+    }
+
+
+    .work-number {
+        color: #d5a438;
+
+        font-size: 8px;
+        font-weight: 700;
+
+        line-height: 1;
+
+        margin-bottom: 2px;
+    }
+
+
+    .work-name {
+        color: #fff;
+
+        font-size: 10px;
+        line-height: 1.15;
+
+        font-weight: 700;
+    }
+
+
+    .work-description {
+        color: #bdbdbd;
+
+        font-size: 13px;
+        line-height: 1.25;
+
+        max-width: 115px;
+
+        margin: 2px auto 0;
+    }
+
+
+    /* =====================================================
+       MARKET AREA
+    ===================================================== */
+
+    .market-row {
+        position: relative;
+        z-index: 4;
+    }
+
+
+    .market-card {
+        position: relative;
+
+        width: 100%;
+
+        border:
+            1px solid
+            rgba(178, 137, 48, .38);
+
+        border-radius: 10px;
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(31, 32, 32, .98),
+                rgba(15, 16, 16, .98)
+            );
+
+        box-shadow:
+            inset 0 0 30px rgba(255,255,255,.012),
+            0 8px 25px rgba(0,0,0,.22);
+
+        overflow: hidden;
+    }
+
+
+    /* =====================================================
+       GOLD MARKET CARD
+    ===================================================== */
+
+    .gold-card {
+        height: 190px;
+        padding: 9px 13px;
+    }
+
+
+    .card-heading {
+        color: #fff;
+
+        font-size: 12px;
+        line-height: 1;
+
+        font-weight: 700;
+
+        margin-bottom: 8px;
+    }
+
+
+    /* =====================================================
+       PURITY BUTTONS
+    ===================================================== */
+
+    .purity-tabs {
+        display: flex;
+        align-items: center;
+
+        gap: 3px;
+
+        margin-bottom: 7px;
+    }
+
+
+    .purity-tab {
+        border: 0;
+
+        background: transparent;
+
+        color: #d7d7d7;
+
+        font-size: 13px;
+
+        line-height: 1;
+
+        padding: 7px 9px;
+
+        border-radius: 5px;
+
+        cursor: pointer;
+
+        transition: all .25s ease;
+    }
+
+
+    .purity-tab:hover {
+        color: #f1c04a;
+    }
+
+
+    .purity-tab.active {
+        color: #fff;
+
+        background:
+            linear-gradient(
+                135deg,
+                #a4731c,
+                #d5a43b
+            );
+
+        box-shadow:
+            0 3px 10px
+            rgba(211,163,49,.18);
+    }
+
+
+    /* =====================================================
+       MARKET BODY
+    ===================================================== */
+
+    .market-body {
+        display: flex;
+
+        width: 100%;
+        height: 100px;
+    }
+
+
+    /* =====================================================
+       PRICE
+    ===================================================== */
+
+    .price-section {
+        width: 40%;
+
+        padding-right: 17px;
+
+        border-right:
+            1px solid
+            rgba(255,255,255,.09);
+    }
+
+
+    .price-line {
+        display: flex;
+        align-items: baseline;
+
+        gap: 4px;
+
+        white-space: nowrap;
+    }
+
+
+    .price-value {
+        color: #f4f4f4;
+
+        font-size: 22px;
+        line-height: 1;
+
+        font-weight: 700;
+    }
+
+
+    .price-unit {
+        color: #ddd;
+
+        font-size: 12px;
+    }
+
+
+    .price-change {
+        color: #21d05d;
+
+        font-size: 10px;
+        line-height: 1;
+
+        font-weight: 700;
+
+        margin-top: 10px;
+    }
+
+
+    .change-text {
+        color: #a8a8a8;
+        font-size: 13px;
+        margin-top: 1px;
+    }
+
+
+    .high-low {
+        display: flex;
+        gap: 26px;
+        /*margin-top: 11px;*/
+    }
+
+
+    .high-low-item span {
+        display: block;
+        color: #aaa;
+        font-size: 10px;
+        margin-bottom: 2px;
+    }
+
+
+    .high-low-item strong {
+        display: block;
+
+        color: #eee;
+
+        font-size: 12px;
+        line-height: 1;
+    }
+
+
+    /* =====================================================
+       CHART
+    ===================================================== */
+
+    .chart-section {
+        position: relative;
+
+        width: 60%;
+
+        padding-left: 14px;
+    }
+
+
+    .chart-periods {
+        position: absolute;
+
+        top: -1px;
+        right: 0;
+
+        display: flex;
+
+        align-items: center;
+        gap: 2px;
+
+        z-index: 20;
+    }
+
+
+    .period-btn {
+        min-width: 25px;
+        height: 24px;
+
+        padding: 0 5px;
+
+        border:
+            1px solid transparent;
+
+        border-radius: 4px;
+
+        background: transparent;
+
+        color: #bbb;
+
+        font-size: 8px;
+
+        cursor: pointer;
+
+        transition: all .2s ease;
+    }
+
+
+    .period-btn:hover {
+        color: #e4b23c;
+    }
+
+
+    .period-btn.active {
+        color: #e8b63f;
+
+        border-color: #bb8928;
+
+        background:
+            rgba(201,151,42,.04);
+    }
+
+
+    .chart-wrap {
+        width: 100%;
+        height: 95px;
+
+        padding-top: 18px;
+    }
+
+
+    .gold-chart {
+        display: block;
+
+        width: 100%;
+        height: 77px;
+
+        overflow: visible;
+    }
+
+
+    .chart-line {
+        fill: none;
+
+        stroke: #dcaa36;
+
+        stroke-width: 1.7;
+
+        stroke-linecap: round;
+        stroke-linejoin: round;
+
+        filter:
+            drop-shadow(
+                0 0 3px
+                rgba(220,170,55,.3)
+            );
+
+        transition: d .45s ease;
+    }
+
+
+    .chart-area-fill {
+        fill: url(#goldArea);
+
+        opacity: .24;
+
+        transition: d .45s ease;
+    }
+
+
+    .chart-point {
+        fill: #e4b33e;
+
+        stroke: #fff;
+
+        stroke-width: 1;
+
+        opacity: 0;
+
+        pointer-events: none;
+    }
+
+
+    /* =====================================================
+       CHART LABELS
+    ===================================================== */
+
+    .chart-labels {
+        position: absolute;
+
+        left: 14px;
+        right: 0;
+
+        /*bottom: -1px;*/
+
+        display: flex;
+        justify-content: space-between;
+        color: #777;
+        font-size: 12px;
+    }
+
+
+    /* =====================================================
+       INSIGHTS
+    ===================================================== */
+
+    .insights-card {
+        height: 190px;
+
+        padding: 9px 13px;
+    }
+
+
+    .insights-heading {
+        color: #fff;
+
+        font-size: 12px;
+        line-height: 1;
+
+        font-weight: 700;
+
+        margin-bottom: 7px;
+    }
+
+
+    .insight-item {
+        display: flex;
+        align-items: flex-start;
+
+        gap: 7px;
+
+        margin-bottom: 5px;
+    }
+
+
+    .insight-icon {
+        flex: 0 0 16px;
+
+        width: 16px;
+        height: 16px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border:
+            1px solid #a17721;
+
+        border-radius: 50%;
+
+        color: #e0ad37;
+
+        font-size: 7px;
+    }
+
+
+    .insight-text {
+    color: #ddd;
+    font-size: 14px;
+    line-height: 1.25;
+}
+
+
+    .insight-date {
+    display: block;
+    color: #999;
+    font-size: 11.5px;
+    margin-top: 1px;
+}
+
+
+    .insight-button {
+        width: 100%;
+        height: 25px;
+
+        border:
+            1px solid #a47720;
+
+        border-radius: 4px;
+
+        background: transparent;
+
+        color: #e1b33e;
+
+        font-size: 13px;
+
+        margin-top: 1px;
+
+        cursor: pointer;
+
+        transition: all .25s ease;
+    }
+
+
+    .insight-button:hover {
+        background: #a47720;
+        color: #fff;
+    }
+
+
+    /* =====================================================
+       GOLD BULL
+    ===================================================== */
+
+    .gold-bull-image {
+        position: absolute;
+
+        z-index: 2;
+
+        width: 165px;
+
+        right: -3px;
+        top: 62px;
+
+        opacity: .98;
+
+        pointer-events: none;
+
+        filter:
+            drop-shadow(
+                0 8px 15px
+                rgba(0,0,0,.5)
+            );
+    }
+
+
+    /* =====================================================
+       LARGE LAPTOP
+    ===================================================== */
+
+    @media (max-width: 1199.98px) {
+
+        .bittgold-inner {
+            max-width: 1000px;
+        }
+
+        .gold-bull-image {
+            width: 145px;
+            right: -10px;
+        }
+
+        .work-description {
+            max-width: 105px;
+        }
+    }
+
+
+    /* =====================================================
+       TABLET
+    ===================================================== */
+
+    @media (max-width: 991.98px) {
+
+        .bittgold-inner {
+            max-width: 850px;
+        }
+
+
+        .gold-bull-image {
+            opacity: .25;
+            width: 150px;
+        }
+
+
+        .gold-card {
+            height: auto;
+            min-height: 170px;
+        }
+
+
+        .insights-card {
+            height: auto;
+            min-height: 170px;
+        }
+
+
+        .market-body {
+            height: 112px;
+        }
+
+
+        .chart-wrap {
+            height: 107px;
+        }
+
+
+        .gold-chart {
+            height: 90px;
+        }
+    }
+
+
+    /* =====================================================
+       MOBILE
+    ===================================================== */
+
+    @media (max-width: 767.98px) {
+
+        .bittgold-section {
+            padding-top: 12px;
+            padding-bottom: 20px;
+        }
+
+
+        .bittgold-inner {
+            width: 100%;
+        }
+
+
+        /* WORKS */
+
+        .works-heading {
+            font-size: 18px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .timeline-line {
+            display: none;
+        }
+
+
+        .works-timeline .row {
+            row-gap: 18px;
+        }
+
+
+        .work-icon {
+            width: 39px;
+            height: 39px;
+
+            font-size: 15px;
+        }
+
+
+        .work-name {
+            font-size: 10px;
+        }
+
+
+        .work-description {
+            font-size: 8px;
+
+            max-width: 100px;
+        }
+
+
+        /* MARKET */
+
+        .gold-card {
+            height: auto;
+
+            padding: 13px;
+        }
+
+
+        .card-heading {
+            font-size: 14px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .purity-tab {
+            font-size: 9px;
+
+            padding: 8px 10px;
+        }
+
+
+        .market-body {
+            display: block;
+
+            height: auto;
+        }
+
+
+        /* PRICE */
+
+        .price-section {
+            width: 100%;
+
+            padding-right: 0;
+            padding-bottom: 13px;
+
+            border-right: 0;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,.09);
+        }
+
+
+        .price-value {
+            font-size: 26px;
+        }
+
+
+        .price-unit {
+            font-size: 9px;
+        }
+
+
+        .price-change {
+            font-size: 11px;
+        }
+
+
+        .change-text {
+            font-size: 8px;
+        }
+
+
+        .high-low {
+            gap: 40px;
+        }
+
+
+        .high-low-item span {
+            font-size: 8px;
+        }
+
+
+        .high-low-item strong {
+            font-size: 11px;
+        }
+
+
+        /* CHART */
+
+        .chart-section {
+            width: 100%;
+
+            padding-left: 0;
+            padding-top: 10px;
+        }
+
+
+        .chart-periods {
+            position: relative;
+
+            top: auto;
+            right: auto;
+
+            justify-content: flex-end;
+
+            margin-bottom: 2px;
+        }
+
+
+        .chart-wrap {
+            height: 145px;
+
+            padding-top: 4px;
+        }
+
+
+        .gold-chart {
+            height: 120px;
+        }
+
+
+        .chart-labels {
+            left: 0;
+
+            bottom: 0;
+
+            font-size: 7px;
+        }
+
+
+        /* INSIGHTS */
+
+        .insights-card {
+            height: auto;
+            min-height: 185px;
+
+            margin-top: 2px;
+
+            padding: 13px;
+        }
+
+
+        .insights-heading {
+            font-size: 14px;
+        }
+
+
+        .insight-text {
+            font-size: 9px;
+        }
+
+
+        .insight-date {
+            font-size: 7.5px;
+        }
+
+
+        .insight-button {
+            height: 28px;
+
+            font-size: 9px;
+        }
+
+
+        /* BULL */
+
+        .gold-bull-image {
+            display: none;
+        }
+    }
+
+
+    /* =====================================================
+       SMALL MOBILE
+    ===================================================== */
+
+    @media (max-width: 400px) {
+
+        .works-heading {
+            font-size: 17px;
+        }
+
+
+        .work-name {
+            font-size: 9px;
+        }
+
+
+        .work-description {
+            font-size: 7px;
+            max-width: 88px;
+        }
+
+
+        .purity-tab {
+            padding-left: 7px;
+            padding-right: 7px;
+        }
+
+
+        .price-value {
+            font-size: 23px;
+        }
+
+
+        .high-low {
+            gap: 25px;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /* =========================================
+   SECTION
+========================================= */
+
+.bittgold-cta-section {
+    width: 100%;
+    background: #050505;
+    padding: 8px 0;
+    overflow: hidden;
+}
+
+
+/* =========================================
+   MAIN BANNER
+========================================= */
+
+.bittgold-cta {
+    position: relative;
+
+    width: 100%;
+    max-width: 1020px;
+
+    min-height: 82px;
+
+    margin: 0 auto;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    border: 1px solid rgba(218, 168, 48, 0.65);
+
+    background:
+        radial-gradient(
+            circle at 25% 50%,
+            rgba(180, 130, 30, 0.28),
+            transparent 35%
+        ),
+        linear-gradient(
+            90deg,
+            #49350d 0%,
+            #33270f 35%,
+            #201a0e 70%,
+            #2a210f 100%
+        );
+
+    box-shadow:
+        0 0 18px rgba(218, 168, 48, 0.10),
+        inset 0 0 20px rgba(255, 190, 50, 0.06);
+}
+
+
+/* Golden top shine */
+
+.bittgold-cta::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 5%;
+    right: 5%;
+
+    height: 1px;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #e7b744,
+        transparent
+    );
+
+    opacity: .7;
+}
+
+
+/* =========================================
+   GOLD IMAGE
+========================================= */
+
+.gold-image {
+    height: 82px;
+
+    display: flex;
+    align-items: center;
+
+    padding-left: 8px;
+
+    overflow: hidden;
+}
+
+.gold-image img {
+    width: 263px;
+    max-width: 100%;
+
+    height: auto;
+
+    object-fit: contain;
+
+    filter:
+        drop-shadow(0 4px 5px rgba(0,0,0,.4));
+}
+
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.cta-content {
+    padding: 5px 10px;
+}
+
+.cta-content h2 {
+    margin: 0 0 3px;
+
+    color: #e9b63c;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: 24px;
+
+    font-weight: 500;
+
+    line-height: 1.15;
+
+    white-space: nowrap;
+
+    text-shadow:
+        0 1px 2px rgba(0,0,0,.5);
+}
+
+.cta-content p {
+    margin: 0;
+
+    color: #ddd0ae;
+
+    font-size: 12px;
+
+    line-height: 1.4;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   BUTTON AREA
+========================================= */
+
+.cta-action {
+    height: 82px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding-right: 8px;
+}
+
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.bittgold-btn {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    width: 230px;
+
+    padding: 11px 15px;
+
+    border-radius: 7px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f8cc58,
+            #d99c20
+        );
+
+    border: 1px solid #e9b53b;
+
+    color: #171006 !important;
+
+    text-decoration: none;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    box-shadow:
+        0 4px 10px rgba(0,0,0,.25),
+        inset 0 1px rgba(255,255,255,.25);
+
+    transition: all .3s ease;
+}
+
+.bittgold-btn b {
+    font-size: 19px;
+
+    font-weight: 400;
+
+    line-height: 0;
+
+    transition: transform .3s ease;
+}
+
+.bittgold-btn:hover {
+
+    transform: translateY(-2px);
+
+    color: #000 !important;
+
+    box-shadow:
+        0 6px 15px rgba(218,166,43,.3);
+}
+
+.bittgold-btn:hover b {
+    transform: translateX(4px);
+}
+
+
+/* =========================================
+   LARGE SCREEN
+========================================= */
+
+@media (min-width: 1200px) {
+
+    .bittgold-cta {
+        max-width: 1020px;
+    }
+
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 991.98px) {
+
+    .bittgold-cta {
+        min-height: 80px;
+    }
+
+    .gold-image {
+        height: 80px;
+    }
+
+    .gold-image img {
+        width: 150px;
+    }
+
+    .cta-content h2 {
+        font-size: 20px;
+    }
+
+    .cta-content p {
+        font-size: 10px;
+    }
+
+    .bittgold-btn {
+        width: 190px;
+        font-size: 10px;
+        padding: 10px 12px;
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 767.98px) {
+
+    .bittgold-cta-section {
+        padding: 10px 8px;
+    }
+
+    .bittgold-cta {
+        padding: 18px 12px;
+
+        min-height: auto;
+
+        border-radius: 9px;
+    }
+
+
+    /* Gold image */
+
+    .gold-image {
+        height: auto;
+
+        justify-content: center;
+
+        padding: 0 0 10px;
+    }
+
+    .gold-image img {
+        width: 145px;
+    }
+
+
+    /* Content */
+
+    .cta-content {
+        padding: 0 5px;
+
+        text-align: center;
+    }
+
+    .cta-content h2 {
+
+        font-size: 20px;
+
+        line-height: 1.3;
+
+        white-space: normal;
+
+        margin-bottom: 6px;
+    }
+
+    .cta-content p {
+
+        font-size: 10px;
+
+        line-height: 1.5;
+
+        white-space: normal;
+    }
+
+
+    /* Button */
+
+    .cta-action {
+
+        height: auto;
+
+        padding: 14px 0 0;
+    }
+
+    .bittgold-btn {
+
+        width: 100%;
+
+        max-width: 250px;
+
+        padding: 12px 15px;
+
+        font-size: 11px;
+    }
+
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 480px) {
+
+    .bittgold-cta {
+        padding: 15px 10px;
+    }
+
+    .gold-image img {
+        width: 125px;
+    }
+
+    .cta-content h2 {
+        font-size: 18px;
+    }
+
+    .cta-content p {
+        font-size: 9px;
+    }
+
+    .bittgold-btn {
+        max-width: 220px;
+        font-size: 10px;
+    }
+
+}
+
+
+/* =========================================
+   EXTRA SMALL MOBILE
+========================================= */
+
+@media (max-width: 360px) {
+
+    .cta-content h2 {
+        font-size: 16px;
+    }
+
+    .cta-content p {
+        font-size: 8.5px;
+    }
+
+    .gold-image img {
+        width: 110px;
+    }
+
+    .bittgold-btn {
+        max-width: 205px;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+/* ==========================================
+   BITT GOLD COPYRIGHT BAR
+========================================== */
+
+.copyright-area {
+    position: relative;
+    width: 100%;
+    background: #050505;
+    border-top: 1px solid rgba(212, 175, 55, 0.35);
+    overflow: hidden;
+}
+
+/* Gold glow line */
+.copyright-area::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #d4af37,
+        #f5d76e,
+        #d4af37,
+        transparent
+    );
+}
+
+/* Inner */
+.copyright-inner {
+    min-height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+}
+
+/* ==========================================
+   LEFT SIDE
+========================================== */
+
+.copyright-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.footer-logo img {
+    width: 48px;
+    height: auto;
+    max-height: 38px;
+    object-fit: contain;
+}
+
+.copyright-left p {
+    margin: 0;
+    color: #c8a951;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+}
+
+/* ==========================================
+   RIGHT LINKS
+========================================== */
+
+.copyright-links {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 28px;
+}
+
+.copyright-links a {
+    position: relative;
+    color: #b9a66a;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 400;
+    transition: all 0.3s ease;
+}
+
+.copyright-links a:hover {
+    color: #f2d675;
+}
+
+/* Small separator */
+.copyright-links a:not(:last-child)::after {
+    content: "|";
+    position: absolute;
+    right: -16px;
+    color: rgba(212, 175, 55, 0.35);
+}
+
+/* ==========================================
+   TABLET
+========================================== */
+
+@media (max-width: 767px) {
+
+    .copyright-inner {
+        min-height: auto;
+        padding: 14px 0;
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .copyright-left {
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .footer-logo img {
+        width: 42px;
+    }
+
+    .copyright-left p {
+        font-size: 10px;
+    }
+
+    .copyright-links {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px 20px;
+    }
+
+    .copyright-links a {
+        font-size: 9px;
+    }
+
+    .copyright-links a:not(:last-child)::after {
+        right: -12px;
+    }
+}
+
+/* ==========================================
+   SMALL MOBILE
+========================================== */
+
+@media (max-width: 480px) {
+
+    .copyright-inner {
+        padding: 12px 10px;
+    }
+
+    .copyright-left {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .footer-logo img {
+        width: 45px;
+    }
+
+    .copyright-left p {
+        font-size: 9px;
+    }
+
+    .copyright-links {
+        gap: 7px 15px;
+    }
+
+    .copyright-links a {
+        font-size: 8px;
+    }
+
+    .copyright-links a:not(:last-child)::after {
+        right: -9px;
+    }
+}

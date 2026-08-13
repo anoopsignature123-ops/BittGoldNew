@@ -1,0 +1,5 @@
+@extends('errors.layout')
+@section('code', '429')
+@section('icon', 'mdi-speedometer-slow')
+@section('title', 'Too many requests')
+@section('message', 'Please wait a moment before trying again. This helps us keep the platform secure and reliable.')
