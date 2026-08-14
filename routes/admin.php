@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DepositController;
 use App\Http\Controllers\Admin\IncomeController;
@@ -75,6 +76,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('/withdrawals/{id}/reject', 'reject')->name('withdrawals.reject');
         });
 
+        // Contact Us Inquiries (from website)
+        Route::name('contacts.')->controller(ContactController::class)->group(function () {
+            Route::get('/contacts', 'index')->name('index');
+            Route::get('/contacts/{id}', 'show')->name('show');
+            Route::post('/contacts/{id}/reply', 'reply')->name('reply');
+            Route::delete('/contacts/{id}', 'delete')->name('delete');
+        });
+
+        // Support Tickets (from users)
         Route::name('supports.')->controller(SupportController::class)->group(function () {
             Route::get('/supports', 'index')->name('index');
             Route::get('/supports/{ticket_id}', 'show')->name('show');

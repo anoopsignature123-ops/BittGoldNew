@@ -19,14 +19,16 @@
         </li>
 
         {{-- User Management --}}
-        <li class="nav-item menu-items {{ request()->routeIs('admin.users.*', 'admin.direct.deposit.*') ? 'active' : '' }}">
+        <li
+            class="nav-item menu-items {{ request()->routeIs('admin.users.*', 'admin.direct.deposit.*') ? 'active' : '' }}">
             <a class="nav-link" data-bs-toggle="collapse" href="#user-management"
                 aria-expanded="{{ request()->routeIs('admin.users.*', 'admin.direct.deposit.*') ? 'true' : 'false' }}">
                 <span class="menu-icon"><i class="mdi mdi-account-multiple"></i></span>
                 <span class="menu-title">User Management</span>
                 <i class="menu-arrow"></i>
             </a>
-            <div class="collapse {{ request()->routeIs('admin.users.*', 'admin.direct.deposit.*') ? 'show' : '' }}" id="user-management">
+            <div class="collapse {{ request()->routeIs('admin.users.*', 'admin.direct.deposit.*') ? 'show' : '' }}"
+                id="user-management">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('admin.users.index') }}">Users List</a>
@@ -80,7 +82,8 @@
         </li>
 
         {{-- Commission & Income History --}}
-        <li class="nav-item menu-items {{ request()->routeIs('admin.commissions.*') && !request('type') ? 'active' : '' }}">
+        <li
+            class="nav-item menu-items {{ request()->routeIs('admin.commissions.*') && !request('type') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.commissions.index') }}">
                 <span class="menu-icon"><i class="mdi mdi-cash-multiple"></i></span>
                 <span class="menu-title">Commission History</span>
@@ -96,13 +99,16 @@
         </li>
 
         {{-- Dedicated Financial Reports (Referral, Level, Trade Profit, Leadership) --}}
-        <li class="nav-item menu-items {{ request()->routeIs('admin.commissions.*') && request('type') ? 'active' : '' }}">
-            <a class="nav-link" data-bs-toggle="collapse" href="#admin-reports" aria-expanded="{{ request()->routeIs('admin.commissions.*') && request('type') ? 'true' : 'false' }}">
+        <li
+            class="nav-item menu-items {{ request()->routeIs('admin.commissions.*') && request('type') ? 'active' : '' }}">
+            <a class="nav-link" data-bs-toggle="collapse" href="#admin-reports"
+                aria-expanded="{{ request()->routeIs('admin.commissions.*') && request('type') ? 'true' : 'false' }}">
                 <span class="menu-icon"><i class="mdi mdi-chart-bar"></i></span>
                 <span class="menu-title">Reports</span>
                 <i class="menu-arrow"></i>
             </a>
-            <div class="collapse {{ request()->routeIs('admin.commissions.*') && request('type') ? 'show' : '' }}" id="admin-reports">
+            <div class="collapse {{ request()->routeIs('admin.commissions.*') && request('type') ? 'show' : '' }}"
+                id="admin-reports">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item">
                         <a class="nav-link"
@@ -127,6 +133,22 @@
             </div>
         </li>
 
+        {{-- Website Contact Inquiries --}}
+        @php
+            $unreadContactCount = \App\Models\Contact::where('is_read', false)->count();
+        @endphp
+        <li class="nav-item menu-items {{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.contacts.index') }}">
+                <span class="menu-icon"><i class="mdi mdi-email-multiple"></i></span>
+                <span class="menu-title">Contact Us</span>
+                @if ($unreadContactCount > 0)
+                    <span class="badge sidebar-count-badge ms-auto">
+                        {{ $unreadContactCount }}
+                    </span>
+                @endif
+            </a>
+        </li>
+
         {{-- Support Ticket System --}}
         @php
             $openSupportCount = \App\Models\Support::where('status', 'open')->count();
@@ -134,7 +156,7 @@
         <li class="nav-item menu-items {{ request()->routeIs('admin.supports.*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.supports.index') }}">
                 <span class="menu-icon"><i class="mdi mdi-headset"></i></span>
-                <span class="menu-title">Support</span>
+                <span class="menu-title">Support Tickets</span>
                 @if ($openSupportCount > 0)
                     <span class="badge sidebar-count-badge ms-auto">
                         {{ $openSupportCount }}

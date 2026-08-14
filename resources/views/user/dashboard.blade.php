@@ -998,8 +998,8 @@
                                 Referral Income
                             </span>
                         </td>
-                        <td>{{ number_format($earnings['referral']['today'], 2) }}</td>
-                        <td>{{ number_format($earnings['referral']['total'], 2) }}</td>
+                        <td>₹ {{ number_format($earnings['referral']['today'], 2) }}</td>
+                        <td>₹ {{ number_format($earnings['referral']['total'], 2) }}</td>
                     </tr>
                     <tr>
                         <td>
@@ -1008,8 +1008,8 @@
                                 Level Income
                             </span>
                         </td>
-                        <td>{{ number_format($earnings['level']['today'], 2) }}</td>
-                        <td>{{ number_format($earnings['level']['total'], 2) }}</td>
+                        <td>₹ {{ number_format($earnings['level']['today'], 2) }}</td>
+                        <td>₹ {{ number_format($earnings['level']['total'], 2) }}</td>
                     </tr>
                     <tr>
                         <td>
@@ -1018,8 +1018,8 @@
                                 Trade Profit Income
                             </span>
                         </td>
-                        <td>{{ number_format($earnings['trade_profit']['today'], 2) }}</td>
-                        <td>{{ number_format($earnings['trade_profit']['total'], 2) }}</td>
+                        <td>₹ {{ number_format($earnings['trade_profit']['today'], 2) }}</td>
+                        <td>₹ {{ number_format($earnings['trade_profit']['total'], 2) }}</td>
                     </tr>
                     <tr>
                         <td>
@@ -1028,8 +1028,8 @@
                                 Leadership Report / Bonus
                             </span>
                         </td>
-                        <td>{{ number_format($earnings['leadership']['today'], 2) }}</td>
-                        <td>{{ number_format($earnings['leadership']['total'], 2) }}</td>
+                        <td>₹ {{ number_format($earnings['leadership']['today'], 2) }}</td>
+                        <td>₹ {{ number_format($earnings['leadership']['total'], 2) }}</td>
                     </tr>
                 </tbody>
             </table>

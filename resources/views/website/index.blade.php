@@ -106,7 +106,8 @@
                                         </a>
                                     </li>-->
                                     <li>
-                                        <a class="list-group-item list-group-item-action" href="#contact">
+                                        <a class="list-group-item list-group-item-action" 
+                                        href="{{ route('contact') }}">
                                             Contact Us
                                         </a>
                                     </li>
@@ -195,7 +196,7 @@
                 </li>-->
 
                 <li>
-                    <a href="contact.html">
+                    <a href="{{ route('contact') }}">
                         Contact Us
                     </a>
                 </li>
@@ -339,20 +340,14 @@
                      BUTTONS
                 ================================================== -->
                 <div class="hero-buttons">
-
-                    <a href="#" class="btn-invest">
+                    <a href="{{ route('user.investment.index') }}" class="btn-invest">
                         Start Investing
-
                         <i class="bi bi-arrow-right ms-2"></i>
                     </a>
-
-                    <a href="#" class="btn-explore">
+                    <a href="{{ route('user.investment.index') }}" class="btn-explore">
                         Explore Gold Plans
-
                     </a>
-
                 </div>
-
             </div>
 
             <!-- =====================================================

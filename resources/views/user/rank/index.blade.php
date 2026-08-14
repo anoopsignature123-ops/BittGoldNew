@@ -90,7 +90,7 @@
                         </thead>
                         <tbody>
                             @foreach($allRanks as $r)
-                                <tr class="{{ optional($currentRank)->id === $r->id ? 'table-active border-warning' : '' }}">
+                                <tr class="{{ optional($currentRank)->id === $r->id ? ' active-rank border-warning' : '' }}">
                                     <td><strong>{{ $r->name }}</strong></td>
                                     <td>{{ number_format($r->power_leg_target, 2) }}</td>
                                     <td>{{ number_format($r->weaker_leg_target, 2) }}</td>

@@ -11413,6 +11413,10 @@ progress {
   --bs-table-accent-bg: var(--bs-table-active-bg);
   color: var(--bs-table-active-color);
 }
+.active-rank {
+      --bs-table-accent-bg: #433418;
+    color: #2ac94f;
+}
 
 .table-hover>tbody>tr:hover>* {
   --bs-table-accent-bg: var(--bs-table-hover-bg);

@@ -302,6 +302,116 @@ HTML;
 </div>
 HTML;
 
+        /*
+        |--------------------------------------------------------------------------
+        | database/seeders/EmailTemplateSeeder.php mein badlaav
+        |--------------------------------------------------------------------------
+        | $templates array (jisme 'welcome-user' aur 'user-password-reset' already
+        | hain) ke turant baad, ye poora block copy-paste kar do — ye code
+        | $templates[] = [...]; se naya (teesra) template array mein push karta hai.
+        |
+        | Ye us jagah jaana chahiye jahan tumhare current do templates already
+        | define ho chuke hain, lekin foreach($templates as $template) loop se
+        | PEHLE (jo neeche seeder ke end mein hai).
+        */
+
+        $templates[] = [
+            'name' => 'Contact Us Notification - BittGold',
+            'key' => 'contact-us',
+            'subject' => 'New Contact Message from {{ name }} - {{ site_name }}',
+            'body' => <<<'HTML'
+<div style="margin:0;padding:32px 12px;background:#030609;font-family:Arial,Helvetica,sans-serif;color:#eaf0f7;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td align="center">
+    <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:600px;background:#09131f;border:1px solid #765b05;border-radius:18px;overflow:hidden;">
+      <tr><td style="padding:26px 30px;background:#07101a;border-bottom:1px solid #765b05;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr>
+          <td><img src="{{ logo }}" alt="BittGold" width="132" style="display:block;width:132px;height:auto;border:0;outline:none;text-decoration:none;"></td>
+          <td align="right" style="color:#9eb0c3;font-size:11px;font-weight:bold;letter-spacing:1px;">CONTACT FORM</td>
+        </tr></table>
+      </td></tr>
+      <tr><td style="padding:34px 30px 18px;background:linear-gradient(135deg,#0b1725,#07101a);">
+        <p style="margin:0 0 9px;color:#f5bd25;font-size:12px;font-weight:bold;letter-spacing:1.2px;">NEW ENQUIRY RECEIVED</p>
+        <h1 style="margin:0;color:#ffffff;font-size:26px;line-height:1.25;">New message from {{ name }}</h1>
+        <p style="margin:14px 0 0;color:#b4c1cf;font-size:14px;line-height:1.7;">Someone has submitted the Contact Us form on {{ site_name }}. Details are below.</p>
+      </td></tr>
+      <tr><td style="padding:0 30px 30px;background:#09131f;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:8px 0 20px;border:1px solid #5f4a08;border-radius:12px;background:#0b1623;"><tr><td style="padding:18px 20px;">
+          <p style="margin:0 0 12px;color:#f5bd25;font-size:11px;font-weight:bold;letter-spacing:1px;">SENDER DETAILS</p>
+          <p style="margin:0 0 7px;color:#9eb0c3;font-size:13px;">Name <span style="color:#ffffff;font-weight:bold;float:right;">{{ name }}</span></p>
+          <p style="margin:0 0 7px;color:#9eb0c3;font-size:13px;">Email <span style="color:#ffffff;font-weight:bold;float:right;">{{ email }}</span></p>
+          <p style="margin:0 0 7px;color:#9eb0c3;font-size:13px;">Phone <span style="color:#ffffff;font-weight:bold;float:right;">{{ phone }}</span></p>
+          <p style="margin:0;color:#9eb0c3;font-size:13px;">Subject <span style="color:#f5bd25;font-weight:bold;float:right;">{{ subject }}</span></p>
+        </td></tr></table>
+
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border:1px solid #263443;border-radius:12px;background:#0b1623;"><tr><td style="padding:18px 20px;">
+          <p style="margin:0 0 10px;color:#f5bd25;font-size:11px;font-weight:bold;letter-spacing:1px;">MESSAGE</p>
+          <p style="margin:0;color:#e5ecf3;font-size:14px;line-height:1.7;white-space:pre-line;">{{ message }}</p>
+        </td></tr></table>
+
+        <div style="text-align:center;padding:26px 0 4px;">
+          <a href="mailto:{{ email }}" style="display:inline-block;padding:14px 30px;border-radius:8px;background:#f5bd25;color:#07101a;text-decoration:none;font-weight:800;font-size:14px;">Reply to {{ name }} &nbsp;→</a>
+        </div>
+      </td></tr>
+      <tr><td align="center" style="padding:18px 20px;background:#050a10;border-top:1px solid #263443;color:#718195;font-size:11px;">This message was submitted via the {{ site_name }} Contact Us page.<br><span style="display:block;margin-top:8px;">© {{ site_name }}. All rights reserved.</span></td></tr>
+    </table>
+  </td></tr></table>
+</div>
+HTML,
+            'variables' => [
+                'name',
+                'email',
+                'phone',
+                'subject',
+                'message',
+                'logo',
+                'site_name',
+            ],
+        ];
+
+        $templates[] = [
+            'name' => 'Contact Reply - BittGold',
+            'key' => 'contact-reply',
+            'subject' => 'Re: {{ subject }} - {{ site_name }}',
+            'body' => <<<'HTML'
+<div style="margin:0;padding:32px 12px;background:#030609;font-family:Arial,Helvetica,sans-serif;color:#eaf0f7;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td align="center">
+    <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:600px;background:#09131f;border:1px solid #765b05;border-radius:18px;overflow:hidden;">
+      <tr><td style="padding:26px 30px;background:#07101a;border-bottom:1px solid #765b05;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr>
+          <td><img src="{{ logo }}" alt="BittGold" width="132" style="display:block;width:132px;height:auto;border:0;outline:none;text-decoration:none;"></td>
+          <td align="right" style="color:#9eb0c3;font-size:11px;font-weight:bold;letter-spacing:1px;">SUPPORT REPLY</td>
+        </tr></table>
+      </td></tr>
+      <tr><td style="padding:34px 30px 18px;background:linear-gradient(135deg,#0b1725,#07101a);">
+        <p style="margin:0 0 9px;color:#f5bd25;font-size:12px;font-weight:bold;letter-spacing:1.2px;">RESPONSE TO YOUR INQUIRY</p>
+        <h1 style="margin:0;color:#ffffff;font-size:26px;line-height:1.25;">Hello {{ name }}</h1>
+        <p style="margin:14px 0 0;color:#b4c1cf;font-size:14px;line-height:1.7;">Thank you for reaching out to {{ site_name }}. We have reviewed your message and here is our response.</p>
+      </td></tr>
+      <tr><td style="padding:0 30px 30px;background:#09131f;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:8px 0 20px;border:1px solid #5f4a08;border-radius:12px;background:#0b1623;"><tr><td style="padding:18px 20px;">
+          <p style="margin:0 0 10px;color:#f5bd25;font-size:11px;font-weight:bold;letter-spacing:1px;">REGARDING: {{ subject }}</p>
+          <p style="margin:0;color:#e5ecf3;font-size:14px;line-height:1.7;white-space:pre-line;">{{ message }}</p>
+        </td></tr></table>
+
+        <div style="text-align:center;padding:26px 0 4px;">
+          <p style="margin:0;color:#b4c1cf;font-size:13px;">Have more questions? Feel free to reply to this email or visit our website.</p>
+        </div>
+      </td></tr>
+      <tr><td align="center" style="padding:18px 20px;background:#050a10;border-top:1px solid #263443;color:#718195;font-size:11px;">Need immediate assistance? Contact us at <a href="mailto:{{ support_email }}" style="color:#f5bd25;text-decoration:none;">{{ support_email }}</a><br><span style="display:block;margin-top:8px;">© {{ site_name }}. All rights reserved.</span></td></tr>
+    </table>
+  </td></tr></table>
+</div>
+HTML,
+            'variables' => [
+                'name',
+                'subject',
+                'message',
+                'logo',
+                'site_name',
+                'support_email',
+            ],
+        ];
+
         foreach ($templates as $template) {
             EmailTemplate::updateOrCreate(
                 ['key' => $template['key']],
