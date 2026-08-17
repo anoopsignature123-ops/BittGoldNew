@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([RoleSeeder::class, RankSeeder::class, EmailTemplateSeeder::class]);
+        $this->call([RoleSeeder::class, RankSeeder::class, EmailTemplateSeeder::class, UserSeeder::class]);
 
         $adminRole = Role::where('slug', 'admin')->first();
         $userRole = Role::where('slug', 'user')->first();
@@ -39,21 +39,7 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        $defaultUser = User::updateOrCreate(
-            ['email' => 'root@BittGold.com'],
-            [
-                'role_id' => $userRole?->id,
-                'name' => 'Root User',
-                'email' => 'root@BittGold.com',
-                'mobile' => '1234567890',
-                'sponsor_id' => null,
-                'referral_code' => 'BG906518',
-                'status' => 'inactive',
-                'password' => Hash::make('Root@123'),
-                'plain_password' => 'Root@123',
-                'email_verified_at' => now(),
-            ]
-        );
+        
 
         // UserReferral::updateOrCreate(
         //     ['user_id' => $defaultUser->id],

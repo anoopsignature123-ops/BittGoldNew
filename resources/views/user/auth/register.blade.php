@@ -3,20 +3,20 @@
     Create Account
 @endpush
 @push('card_class')
-auth-card-wide
+    auth-card-wide
 @endpush
 
 @section('content')
     <div class="auth-form-head">
-        
-     {{-- Logo --}}
+
+        {{-- Logo --}}
         <div class="auth-center-logo">
             <a href="{{ route('user.login') }}">
                 <img src="{{ asset('assets/images/logo/logo.png') }}" alt="BittGold" width="120" height="96">
             </a>
         </div>
-    
-    <span class="eyebrow">CREATE
+
+        <span class="eyebrow">CREATE
             MEMBER ACCOUNT</span>
         <h2>Join BittGold</h2>
         <p>Complete your details to begin your member journey.</p>
@@ -27,27 +27,41 @@ auth-card-wide
             <div><label>Full Name<span>*</span></label>
                 <div class="auth-input"><i class="mdi mdi-account-outline"></i><input type="text" name="name"
                         placeholder="Your full name" value="{{ old('name') }}" required></div>
-                        @error('name')<div class="text-danger small">{{ $message }}</div>@enderror
+                @error('name')
+                    <div class="text-danger small">{{ $message }}</div>
+                @enderror
             </div>
             <div><label>Email address<span>*</span></label>
                 <div class="auth-input"><i class="mdi mdi-email-outline"></i><input type="email" name="email"
                         placeholder="you@example.com" value="{{ old('email') }}" required></div>
-                        @error('email')<div class="text-danger small">{{ $message }}</div>@enderror
+                @error('email')
+                    <div class="text-danger small">{{ $message }}</div>
+                @enderror
             </div>
         </div>
         <div class="auth-grid">
             <div><label>Mobile No.<span>*</span></label>
                 <div class="auth-input"><span class="country-prefix">+91</span>
                     {{-- <i class="mdi mdi-phone-outline"></i> --}}
-                    <input type="tel" name="mobile"
-                        placeholder="10-digit mobile number" value="{{ old('mobile') }}" required maxlength="10" ></div>
-                        @error('mobile')<div class="text-danger small">{{ $message }}</div>@enderror
+                    <input type="tel" name="mobile" placeholder="10-digit mobile number" value="{{ old('mobile') }}"
+                        required maxlength="10">
+                </div>
+                @error('mobile')
+                    <div class="text-danger small">{{ $message }}</div>
+                @enderror
             </div>
-            <div><label>Sponsor Referral Code<span>*</span></label>
-                <div class="auth-input"><i class="mdi mdi-account-supervisor-outline"></i><input type="text"
-                        name="referral_code" id="sponsor-referral-code" value="{{ old('referral_code') }}" placeholder="Enter sponsor referral code" required></div>
+            <div>
+                <label>Sponsor Referral Code<span>*</span></label>
+                <div class="auth-input">
+                    <i class="mdi mdi-account-supervisor-outline"></i>
+                    <input type="text" name="referral_code" id="sponsor-referral-code"
+                        value="{{ old('referral_code', request()->get('ref')) }}" placeholder="Enter sponsor referral code"
+                        required {{ request()->filled('ref') ? 'readonly' : '' }}>
+                </div>
                 <div id="sponsor-preview" class="sponsor-preview" hidden></div>
-                        @error('referral_code')<div class="text-danger small">{{ $message }}</div>@enderror
+                @error('referral_code')
+                    <div class="text-danger small">{{ $message }}</div>
+                @enderror
             </div>
         </div>
         <div class="auth-grid">
@@ -71,58 +85,67 @@ auth-card-wide
 @endsection
 
 @push('scripts')
-<script>
-    (function () {
-        const input = document.getElementById('sponsor-referral-code');
-        const preview = document.getElementById('sponsor-preview');
-        let timer;
-        let requestNumber = 0;
+    <script>
+        (function() {
+            const input = document.getElementById('sponsor-referral-code');
+            const preview = document.getElementById('sponsor-preview');
+            let timer;
+            let requestNumber = 0;
 
-        function clearPreview() {
-            preview.hidden = true;
-            preview.replaceChildren();
-        }
-
-        function showPreview(icon, text, isError) {
-            preview.hidden = false;
-            preview.classList.toggle('is-error', isError);
-            preview.replaceChildren();
-            const iconElement = document.createElement('i');
-            iconElement.className = 'mdi ' + icon;
-            const content = document.createElement('span');
-            content.textContent = text;
-            preview.append(iconElement, content);
-        }
-
-        function lookup() {
-            const code = input.value.trim();
-            if (code.length < 2) {
-                clearPreview();
-                return;
+            function clearPreview() {
+                preview.hidden = true;
+                preview.replaceChildren();
             }
 
-            const currentRequest = ++requestNumber;
-            fetch('{{ route('user.sponsor.lookup') }}?referral_code=' + encodeURIComponent(code), {
-                headers: { 'Accept': 'application/json' }
-            })
-            .then(response => response.ok ? response.json() : { found: false })
-            .then(data => {
-                if (currentRequest !== requestNumber) return;
-                if (data.found) {
-                    showPreview('mdi-check-circle-outline', 'Sponsor: ' + data.name + ' (' + data.email + ')', false);
-                } else {
-                    showPreview('mdi-alert-circle-outline', 'No sponsor found for this referral code.', true);
+            function showPreview(icon, text, isError) {
+                preview.hidden = false;
+                preview.classList.toggle('is-error', isError);
+                preview.replaceChildren();
+                const iconElement = document.createElement('i');
+                iconElement.className = 'mdi ' + icon;
+                const content = document.createElement('span');
+                content.textContent = text;
+                preview.append(iconElement, content);
+            }
+
+            function lookup() {
+                const code = input.value.trim();
+                if (code.length < 2) {
+                    clearPreview();
+                    return;
                 }
-            })
-            .catch(clearPreview);
-        }
 
-        input.addEventListener('input', function () {
-            clearTimeout(timer);
-            timer = setTimeout(lookup, 350);
-        });
+                const currentRequest = ++requestNumber;
+                fetch('{{ route('user.sponsor.lookup') }}?referral_code=' + encodeURIComponent(code), {
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(response => response.ok ? response.json() : {
+                        found: false
+                    })
+                    .then(data => {
+                        if (currentRequest !== requestNumber) return;
+                        if (data.found) {
+                            showPreview('mdi-check-circle-outline', 'Sponsor: ' + data.name + ' (' + data.email +
+                                ')', false);
+                        } else {
+                            showPreview('mdi-alert-circle-outline', 'No sponsor found for this referral code.',
+                                true);
+                        }
+                    })
+                    .catch(clearPreview);
+            }
 
-        if (input.value.trim()) lookup();
-    })();
-</script>
+            // Agar input mein pehle se value hai (URL ref ke through), toh turant lookup chalao
+            if (input.value.trim()) {
+                lookup();
+            }
+
+            input.addEventListener('input', function() {
+                clearTimeout(timer);
+                timer = setTimeout(lookup, 350);
+            });
+        })();
+    </script>
 @endpush

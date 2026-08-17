@@ -69,8 +69,8 @@ class AdminUserController extends Controller
         }
 
         $users = $memberQuery->withCount('referrals')
-            ->orderByDesc('created_at')
-            ->paginate(10)
+            // ->orderByDesc('created_at')
+            ->paginate(15)
             ->withQueryString();
 
         return view('admin.users.index', compact('users', 'stats'));

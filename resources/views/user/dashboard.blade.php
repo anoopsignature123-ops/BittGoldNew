@@ -796,6 +796,68 @@
     border-bottom-color: var(--g3);
 }
 
+/* Quick Action Referral Link Card */
+.db-quick-ref-box {
+    grid-column: span 2; /* Ise poori row mein failane ke liye */
+    background: rgba(5, 14, 28, 0.85);
+    border: 1px solid rgba(184, 140, 30, 0.3);
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.db-quick-ref-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--g1);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.db-quick-ref-input-group {
+    display: flex;
+    align-items: center;
+    background: rgba(2, 7, 15, 0.9);
+    border: 1px solid rgba(184, 140, 30, 0.25);
+    border-radius: 8px;
+    padding: 0.25rem 0.25rem 0.25rem 0.7rem;
+    gap: 8px;
+}
+.db-quick-ref-input {
+    background: transparent;
+    border: none;
+    color: var(--text-hi);
+    font-size: 0.76rem;
+    width: 100%;
+    outline: none;
+    font-family: monospace;
+}
+.db-quick-ref-btn {
+    background: linear-gradient(135deg, var(--g1) 0%, var(--g2) 100%);
+    border: none;
+    color: #0d1a25;
+    font-weight: 700;
+    font-size: 0.72rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+.db-quick-ref-btn:hover {
+    background: linear-gradient(135deg, var(--g3) 0%, var(--g1) 100%);
+}
+
+@media (max-width: 575px) {
+    .db-quick-ref-box { grid-column: span 1; }
+}
+
 /* ============================================================
    RESPONSIVE
    ============================================================ */
@@ -1036,6 +1098,7 @@
         </div>
 
         {{-- Quick Actions --}}
+        {{-- Quick Actions --}}
         <div class="db-quick-card">
             <h4>Quick Actions</h4>
             <div class="db-quick-grid">
@@ -1098,6 +1161,20 @@
                         <i class="mdi mdi-arrow-right"></i>
                     </div>
                 </a>
+
+                {{-- Referral Link Box inside Quick Actions --}}
+                <div class="db-quick-ref-box">
+                    <span class="db-quick-ref-label">
+                        <i class="mdi mdi-link-variant"></i> Your Referral Link
+                    </span>
+                    <div class="db-quick-ref-input-group">
+                        <input type="text" id="userReferralLink" class="db-quick-ref-input" value="{{ route('user.register', ['ref' => $user->referral_code]) }}" readonly>
+                        <button type="button" class="db-quick-ref-btn" onclick="copyReferralLink()">
+                            <i class="mdi mdi-content-copy"></i> Copy
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -1250,5 +1327,19 @@
         }
     });
 })();
+
+function copyReferralLink() {
+    var copyText = document.getElementById("userReferralLink");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(copyText.value);
+    
+    var btn = event.currentTarget;
+    var originalHTML = btn.innerHTML;
+    btn.innerHTML = '<i class="mdi mdi-check"></i> Copied!';
+    setTimeout(function() {
+        btn.innerHTML = originalHTML;
+    }, 2000);
+}
 </script>
 @endpush

@@ -20,7 +20,11 @@ class DashboardController extends Controller
         }
 
         $totalUsers = User::where('role_id', 2)->count();
-        $activeUsers = User::where('status', 'active')->count();
+        $activeUsers = User::where('role_id', 2)
+            ->whereHas('investments', function ($query) {
+                $query->where('status', 'active'); // Agar sirf active investments dekhni hain
+            })
+            ->count();
         
         $totalDepositsWallet = User::sum('deposit_wallet');
         $totalCommission = Income::sum('amount');
