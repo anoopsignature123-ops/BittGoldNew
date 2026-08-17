@@ -100,6 +100,12 @@
                                             Market Insights
                                         </a>
                                     </li>
+                                    <li>
+                                        <a class="list-group-item list-group-item-action"
+                                           href="siteadmin/images/plan.pdf" target="_blank">
+                                            Business Plan
+                                        </a>
+                                    </li>
                                     <!--<li>
                                         <a class="list-group-item list-group-item-action" href="#resources">
                                             Resources
@@ -189,6 +195,12 @@
                         Market Insights
                     </a>
                 </li>
+                <li>
+                                        <a class="list-group-item list-group-item-action"
+                                           href="siteadmin/images/plan.pdf" target="_blank">
+                                            Business Plan
+                                        </a>
+                                    </li>
                 <!--<li>
                     <a href="#resources">
                         Resources
@@ -355,47 +367,9 @@
             ====================================================== -->
             <div class="price-card">
 
-                <div class="price-title">
-                    Gold Price Today
-                </div>
-
-                <div class="price-value">
-                    ₹ 6,245
-                    <span>/gm</span>
-                </div>
-
-                <div class="price-footer">
-
-                    <div class="price-quality">
-                        24K (995)
-                    </div>
-
-                    <div class="price-change">
-                        <i class="bi bi-arrow-up"></i>
-                        1.28%
-                    </div>
-
-                </div>
-
-                <!-- Gold Price Graph -->
-                <div class="price-graph">
-                    <svg viewBox="0 0 130 55" preserveAspectRatio="none">
-
-                        <polyline
-                            points="2,45 12,42 22,46 32,35 42,39 52,28 62,32 72,23 82,27 92,18 102,22 112,10 122,15 128,7"
-                            fill="none" stroke="#f5b82e" stroke-width="1.8" stroke-linecap="round"
-                            stroke-linejoin="round" />
-
-                        <circle cx="22" cy="46" r="1.5" />
-                        <circle cx="32" cy="35" r="1.5" />
-                        <circle cx="52" cy="28" r="1.5" />
-                        <circle cx="72" cy="23" r="1.5" />
-                        <circle cx="92" cy="18" r="1.5" />
-                        <circle cx="112" cy="10" r="1.5" />
-                        <circle cx="128" cy="7" r="1.5" />
-
-                    </svg>
-                </div>
+                <img src="siteadmin/images/bittgold-card.png"
+                     alt="BittGold Debit Card"
+                     class="bittgold-debit-card">
 
             </div>
 
@@ -610,6 +584,206 @@
                     </p>
                 </div>
 
+            </div>
+        </div>
+    </section>
+
+
+    <section class="roc-roi-section">
+        <div class="roc-roi-bg"></div>
+        <div class="container position-relative">
+            <div class="roc-roi-text">
+                <h2>
+                    WHAT IS ROC =
+                    <span>RETURN ON CAPITAL</span>
+                </h2>
+                <h2>
+                    WHAT IS ROI =
+                    <span>RETURN ON INVESTMENT</span>
+                </h2>
+            </div>
+        </div>
+    </section>
+
+    <!-- =========================================
+         ROC INFORMATION SECTION
+    ========================================= -->
+    <section class="roc-info-section">
+        <!-- Subtle Golden Background -->
+        <div class="bubble-bg">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="container position-relative">
+            <div class="roc-info-content">
+                <!-- Main Heading -->
+                <h2 class="roc-main-title">
+                    Understanding Return of Capital (ROC):
+                    <span>Tax Implications and Examples</span>
+                </h2>
+
+                <!-- Content -->
+                <div class="roc-content">
+                    <!-- Sub Heading -->
+                    <h3>What Is Return of Capital (ROC)?</h3>
+
+                    <!-- Paragraph 1 -->
+                    <p>
+                        Return of capital (ROC) is a payment, or return, received
+                        from an investment that is not considered a taxable event
+                        and is not taxed as income.
+                    </p>
+
+                    <!-- Paragraph 2 -->
+                    <p>
+                        Return of capital reduces an investor's adjusted cost basis
+                        and is not considered capital gains from the investment.
+                        It's nontaxable until the cost basis is reduced to zero,
+                        at which point any subsequent return will be taxable as
+                        a capital gain.
+                    </p>
+
+                    <!-- Paragraph 3 -->
+                    <p>
+                        Common ROC scenarios or investments include retirement
+                        accounts and real estate investment trusts (REITs).
+                    </p>
+
+                    <!-- Paragraph 4 -->
+                    <p>
+                        While return of capital is a nontaxable repayment of your
+                        original investment, income and capital gains are taxable
+                        earnings and profits from that investment. This distinction
+                        is important for tax planning, because it affects when and
+                        how much tax you pay.
+                    </p>
+                    <!-- Paragraph 5 -->
+                    <p>
+                        We are giving the best business opportunity in the market 
+                        with our very unique BitGold Card (Prepaid Debit Card).
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="bittgold-video-section">
+        <div class="container">
+            <!-- Section Heading -->
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8 text-center">
+                    <span class="video-label">
+                        EXPERIENCE BITTGOLD
+                    </span>
+                    <h2 class="video-title">
+                        Discover the Power of
+                        <span>Gold Investment.</span>
+                    </h2>
+                 
+                </div>
+            </div>
+
+            <!-- =================================================
+                 TWO VIDEOS
+            ================================================== -->
+            <div class="row g-4">
+
+                <!-- VIDEO 1 -->
+                <div class="col-lg-6 col-md-6">
+                    <div class="video-card">
+                        <div class="video-box">
+                            <video class="w-100 h-100 bitt-video"
+                                   autoplay
+                                   muted
+                                   loop
+                                   playsinline
+                                   webkit-playsinline
+                                   preload="auto">
+                                <source src="siteadmin/images/video/vid1.mp4"
+                                        type="video/mp4">
+                                Your browser does not support
+                                the video tag.
+
+                            </video>
+
+                            <!-- Overlay -->
+                            <div class="video-overlay"></div>
+
+                            <!-- Content -->
+                            <div class="video-content">
+                                <small>
+                                    GOLD INVESTMENT
+                                </small>
+                                <h3>
+                                    Timeless Value.
+                                    <br>
+                                    Smarter Investment.
+                                </h3>
+                            </div>
+
+                            <!-- Playing Badge -->
+                            <div class="playing-badge">
+                                <span></span>
+                                Now Playing
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIDEO 2 -->
+                <div class="col-lg-6 col-md-6">
+                    <div class="video-card">
+                        <div class="video-box">
+                            <video class="w-100 h-100 bitt-video"
+                                   autoplay
+                                   muted
+                                   loop
+                                   playsinline
+                                   webkit-playsinline
+                                   preload="auto">
+                                <source src="siteadmin/images/video/vid2.mp4"
+                                        type="video/mp4">
+                                Your browser does not support
+                                the video tag.
+
+                            </video>
+
+                            <!-- Overlay -->
+                            <div class="video-overlay"></div>
+
+                            <!-- Content -->
+                            <div class="video-content">
+                                <small>
+                                    BITTGOLD
+                                </small>
+                                <h3>
+                                    Secure Your Future.
+                                    <br>
+                                    Invest in Gold.
+                                </h3>
+                            </div>
+
+                            <!-- Playing Badge -->
+                            <div class="playing-badge">
+                                <span></span>
+                                Now Playing
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

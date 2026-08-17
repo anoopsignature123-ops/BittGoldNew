@@ -68,7 +68,7 @@
                                     style="border: 1px solid rgba(245, 185, 27, 0.2); border-radius: 10px; height: 42px; cursor: not-allowed;">
                             </div>
 
-                            <div class="form-group mb-3">
+                            <div class="form-group mb-3 d-none">
                                 <label class="form-label text-muted small fw-bold">WALLET ADDRESS (BEP20)</label>
                                 <input class="form-control bg-dark text-white" type="text" name="wallet_address"
                                     value="{{ old('wallet_address', $user->wallet_address) }}"

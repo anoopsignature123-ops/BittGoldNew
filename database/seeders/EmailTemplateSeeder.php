@@ -412,6 +412,57 @@ HTML,
             ],
         ];
 
+        $templates[] = [
+            'name' => 'User Login OTP - BittGold',
+            'key' => 'user-login-otp',
+            'subject' => 'Your {{ site_name }} Login OTP Code',
+            'body' => <<<'HTML'
+<div style="margin:0;padding:32px 12px;background:#030609;font-family:Arial,Helvetica,sans-serif;color:#eaf0f7;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td align="center">
+    <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:600px;background:#09131f;border:1px solid #765b05;border-radius:18px;overflow:hidden;">
+      <tr><td style="padding:26px 30px;background:#07101a;border-bottom:1px solid #765b05;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr>
+          <td><img src="{{ logo }}" alt="BittGold" width="132" style="display:block;width:132px;height:auto;border:0;outline:none;text-decoration:none;"></td>
+          <td align="right" style="color:#9eb0c3;font-size:11px;font-weight:bold;letter-spacing:1px;">SECURE LOGIN</td>
+        </tr></table>
+      </td></tr>
+      <tr><td style="padding:34px 30px 18px;background:linear-gradient(135deg,#0b1725,#07101a);">
+        <p style="margin:0 0 9px;color:#f5bd25;font-size:12px;font-weight:bold;letter-spacing:1.2px;">TWO-FACTOR VERIFICATION</p>
+        <h1 style="margin:0;color:#ffffff;font-size:28px;line-height:1.25;">Your OTP Code</h1>
+        <p style="margin:14px 0 0;color:#b4c1cf;font-size:14px;line-height:1.7;">Hello {{ name }}, your one-time password (OTP) for login verification is below. This code will expire in {{ expiry_minutes }} minutes.</p>
+      </td></tr>
+      <tr><td style="padding:0 30px 30px;background:#09131f;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin:8px 0 24px;border:1px solid #5f4a08;border-radius:12px;background:#0b1623;"><tr><td style="padding:28px 20px;text-align:center;">
+          <p style="margin:0 0 14px;color:#9eb0c3;font-size:13px;font-weight:bold;letter-spacing:1px;">YOUR OTP CODE</p>
+          <div style="background:#07101a;border:2px solid #f5bd25;border-radius:10px;padding:20px;display:inline-block;">
+            <p style="margin:0;color:#f5bd25;font-size:32px;font-weight:bold;letter-spacing:4px;">{{ otp_code }}</p>
+          </div>
+          <p style="margin:14px 0 0;color:#9eb0c3;font-size:12px;font-weight:bold;">Never share this code with anyone</p>
+        </td></tr></table>
+
+        <div style="padding:16px;border-left:3px solid #f5bd25;background:#0b1623;border-radius:6px;">
+          <p style="margin:0;color:#b4c1cf;font-size:13px;line-height:1.6;"><strong style="color:#f5bd25;">⏱️ Expires in:</strong> {{ expiry_minutes }} minutes<br><strong style="color:#f5bd25;">🔒 Security Tip:</strong> Never share your OTP with anyone, including {{ site_name }} staff.</p>
+        </div>
+
+        <div style="text-align:center;padding:24px 0 6px;">
+          <p style="margin:0;color:#b4c1cf;font-size:13px;">Enter this code on the login verification screen to complete your login.</p>
+        </div>
+      </td></tr>
+      <tr><td align="center" style="padding:18px 20px;background:#050a10;border-top:1px solid #263443;color:#718195;font-size:11px;">If you did not attempt to log in, please secure your account immediately.<br>Contact us at <a href="mailto:{{ support_email }}" style="color:#f5bd25;text-decoration:none;">{{ support_email }}</a><br><span style="display:block;margin-top:8px;">© {{ site_name }}. All rights reserved.</span></td></tr>
+    </table>
+  </td></tr></table>
+</div>
+HTML,
+            'variables' => [
+                'name',
+                'otp_code',
+                'expiry_minutes',
+                'logo',
+                'site_name',
+                'support_email',
+            ],
+        ];
+
         foreach ($templates as $template) {
             EmailTemplate::updateOrCreate(
                 ['key' => $template['key']],

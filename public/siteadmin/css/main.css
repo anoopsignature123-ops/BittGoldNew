@@ -63,7 +63,7 @@ CSS LIST
  TYPOGRAPHY AREA CSS
 ::::::::::::::::::::::::::
 */
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;display=swap");
 /*
  ::::::::::::::::::::::::::
   ANIMATION AREA CSS
@@ -164,7 +164,7 @@ CSS LIST
 }
 .logomin{
   
-    width:400px;
+    width:200px;
 }
 .shape-animaiton1 {
   position: relative;
@@ -8859,7 +8859,7 @@ body.body2 {
   top: 0;
   height: 100%;
   width: 100%;
-  background-image: url(../images/about-team-icon1.png);
+  background-image: url(../images/about-team-icon1.html);
   z-index: -2;
   background-position: center center;
   background-size: contain;
@@ -9933,7 +9933,7 @@ body.body2 {
   width: 100%;
 }
 .testimonial4-section-area .scetion-background {
-  background-image: url(../../img/bg/tes8-bg-img.png);
+  background-image: url(../../img/bg/tes8-bg-img.html);
   position: absolute;
   left: 0;
 }
@@ -13019,7 +13019,7 @@ li.has-dropdown1 span {
   font-size: 16px;
   display: block;
   font-weight: 500;
-  padding: 8px 15px;
+  padding: 8px 5px;
   transition: all 0.3s;
 }
 .header-area.header-area2 .header-elements .main-menu-ex ul li a:hover {

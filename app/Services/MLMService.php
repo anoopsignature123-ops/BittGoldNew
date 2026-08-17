@@ -9,30 +9,22 @@ use App\Models\User;
 class MLMService
 {
     /**
-     * Process referral income up to 5 levels.
+     * Process referral income strictly for Level 1 only.
      * Notebook rule: every eligible upline must have at least one active direct.
      */
     public function distributeReferralIncome(User $buyer, float $investmentAmount)
     {
-        $percentages = [
-            1 => 5.00,
-            2 => 4.00,
-            3 => 3.00,
-            4 => 2.00,
-            5 => 1.00,
-        ];
-
         $currentSponsor = $buyer->sponsor;
         $level = 1;
 
-        while ($currentSponsor && $level <= 5) {
+        if ($currentSponsor && $level === 1) {
             if ($currentSponsor->status === 'active') {
                 $activeDirectsCount = User::where('sponsor_id', $currentSponsor->id)
                     ->where('status', 'active')
                     ->count();
 
                 if ($activeDirectsCount >= 1) {
-                    $percentage = $percentages[$level];
+                    $percentage = 5.00;
                     $commissionAmount = ($investmentAmount * $percentage) / 100;
 
                     if ($commissionAmount > 0) {
@@ -59,9 +51,6 @@ class MLMService
                     }
                 }
             }
-
-            $currentSponsor = $currentSponsor->sponsor;
-            $level++;
         }
     }
 

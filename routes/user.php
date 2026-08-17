@@ -26,6 +26,10 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::controller(UserAuthController::class)->group(function () {
             Route::get('/login', 'showLogin')->name('login');
             Route::post('/login', 'login')->name('login.submit');
+            Route::post('/send-otp', 'sendOtp')->name('send.otp');
+            Route::get('/verify-otp', 'showOtpVerify')->name('otp.verify');
+            Route::post('/resend-otp', 'resendOtp')->name('otp.resend');
+            Route::post('/verify-otp', 'verifyOtp')->name('otp.submit');
             Route::get('/forgot-password', 'showForgotPassword')->name('password.request');
             Route::post('/forgot-password', 'sendResetLink')->name('password.email');
             Route::get('/reset-password/{token}', 'showResetPassword')->name('password.reset');
