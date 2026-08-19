@@ -9,30 +9,22 @@ use App\Models\User;
 class MLMService
 {
     /**
-     * Process Referral Income up to 5 levels.
-     * L1: 5%, L2: 4%, L3: 3%, L4: 2%, L5: 1% (Each needs at least 1 active direct).
+     * Process referral income strictly for Level 1 only.
+     * Notebook rule: every eligible upline must have at least one active direct.
      */
     public function distributeReferralIncome(User $buyer, float $investmentAmount)
     {
-        $levelPercentages = [
-            1 => 5.00,
-            2 => 4.00,
-            3 => 3.00,
-            4 => 2.00,
-            5 => 1.00,
-        ];
-
         $currentSponsor = $buyer->sponsor;
         $level = 1;
 
-        while ($currentSponsor && $level <= 5) {
+        if ($currentSponsor && $level === 1) {
             if ($currentSponsor->status === 'active') {
                 $activeDirectsCount = User::where('sponsor_id', $currentSponsor->id)
                     ->where('status', 'active')
                     ->count();
 
                 if ($activeDirectsCount >= 1) {
-                    $percentage = $levelPercentages[$level] ?? 1.00;
+                    $percentage = 5.00;
                     $commissionAmount = ($investmentAmount * $percentage) / 100;
 
                     if ($commissionAmount > 0) {
@@ -54,59 +46,61 @@ class MLMService
                             'wallet_type' => 'earning_wallet',
                             'type' => 'credit',
                             'amount' => $commissionAmount,
-                            'remark' => 'Referral commission Level ' . $level . ' from ' . $buyer->name,
+                            'remark' => 'Referral commission from ' . $buyer->name,
                         ]);
                     }
                 }
             }
-
-            $currentSponsor = $currentSponsor->sponsor;
-            $level++;
         }
     }
 
     /**
-     * Process Level Income up to 30 levels with Notebook Rules:
-     * L1: 10% (3 Directs)
-     * L2: 8% (6 Directs)
-     * L3: 3% (9 Directs)
-     * L4: 2% (10 Directs)
-     * L5-L30: 1% (11 Directs)
+     * Process Level Income up to 10 levels with Notebook Rules:
+     * L1: 3 Directs
+     * L2: 6 Directs, Self-Investment >= 50,000
+     * L3: 9 Directs, Self-Investment >= 100,000 (1 Lac)
+     * L4: 10 Directs, Self-Investment >= 200,000 (2 Lac)
+     * L5-L10: 11 Directs, Self-Investment >= 250,000 (2.5 Lac)
      */
     public function distributeLevelIncome(User $buyer, float $investmentAmount)
     {
         $levelPercentages = [
             1 => 10.00,
-            2 => 5.00,
+            2 => 8.00,
             3 => 3.00,
             4 => 2.00,
+            5 => 2.00,
+            6 => 1.00,
+            7 => 1.00,
+            8 => 1.00,
+            9 => 1.00,
+            10 => 1.00,
         ];
-
-        // L5 se L30 tak 1.00% automatically set karne ke liye
-        for ($i = 5; $i <= 30; $i++) {
-            $levelPercentages[$i] = 1.00;
-        }
 
         $currentUpline = $buyer->sponsor;
         $level = 1;
 
-        while ($currentUpline && $level <= 30) {
+        while ($currentUpline && $level <= 10) {
             if ($currentUpline->status === 'active') {
                 $activeDirectsCount = User::where('sponsor_id', $currentUpline->id)
                     ->where('status', 'active')
                     ->count();
 
+                $selfInvestment = $currentUpline->investments()
+                    ->where('status', 'active')
+                    ->sum('amount');
+
                 $isEligible = false;
 
                 if ($level == 1 && $activeDirectsCount >= 3) {
                     $isEligible = true;
-                } elseif ($level == 2 && $activeDirectsCount >= 6) {
+                } elseif ($level == 2 && $activeDirectsCount >= 6 && $selfInvestment >= 50000) {
                     $isEligible = true;
-                } elseif ($level == 3 && $activeDirectsCount >= 9) {
+                } elseif ($level == 3 && $activeDirectsCount >= 9 && $selfInvestment >= 100000) {
                     $isEligible = true;
-                } elseif ($level == 4 && $activeDirectsCount >= 10) {
+                } elseif ($level == 4 && $activeDirectsCount >= 10 && $selfInvestment >= 200000) {
                     $isEligible = true;
-                } elseif ($level >= 5 && $level <= 30 && $activeDirectsCount >= 11) {
+                } elseif ($level >= 5 && $level <= 10 && $activeDirectsCount >= 11 && $selfInvestment >= 250000) {
                     $isEligible = true;
                 }
 
@@ -133,7 +127,7 @@ class MLMService
                             'wallet_type' => 'earning_wallet',
                             'type' => 'credit',
                             'amount' => $commissionAmount,
-                            'remark' => 'Level ' . $level . ' commission from ' . $buyer->name,
+                            'remark' => 'Level commission from ' . $buyer->name,
                         ]);
                     }
                 }
