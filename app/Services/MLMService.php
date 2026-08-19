@@ -56,7 +56,7 @@ class MLMService
 
     /**
      * Process Level Income up to 10 levels with Notebook Rules:
-     * L1: 3 Directs, Self-Investment >= 25,000
+     * L1: 3 Directs
      * L2: 6 Directs, Self-Investment >= 50,000
      * L3: 9 Directs, Self-Investment >= 100,000 (1 Lac)
      * L4: 10 Directs, Self-Investment >= 200,000 (2 Lac)
@@ -92,7 +92,7 @@ class MLMService
 
                 $isEligible = false;
 
-                if ($level == 1 && $activeDirectsCount >= 3 && $selfInvestment >= 25000) {
+                if ($level == 1 && $activeDirectsCount >= 3) {
                     $isEligible = true;
                 } elseif ($level == 2 && $activeDirectsCount >= 6 && $selfInvestment >= 50000) {
                     $isEligible = true;

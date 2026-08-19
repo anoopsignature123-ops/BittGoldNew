@@ -45,6 +45,11 @@ Route::prefix('user')->name('user.')->group(function () {
             Route::post('/logout', 'logout')->name('logout');
         });
 
+        Route::controller(\App\Http\Controllers\User\UserKycController::class)->group(function () {
+            Route::get('/kyc', 'index')->name('kyc.index');
+            Route::post('/kyc', 'store')->name('kyc.store');
+        });
+
         Route::controller(ProfileController::class)->group(function () {
             Route::get('/profile', 'profile')->name('profile');
             Route::put('/profile/update', 'updateProfile')->name('profile.update');

@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Services\MLMService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class InvestmentController extends Controller
 {
@@ -68,7 +69,25 @@ class InvestmentController extends Controller
         $mlmService->distributeReferralIncome($user, $amount);
         $mlmService->distributeLevelIncome($user, $amount);
         $mlmService->distributeTradeProfitIncome($user, $amount);
-        
+
+        // Send investment confirmation email to user
+        try {
+            $latestInvestment = Investment::where('user_id', $user->id)->latest()->first();
+            send_template_email('investment-confirmation', $user->email, [
+                'user_name' => $user->name,
+                'user_email' => $user->email,
+                'amount' => number_format($amount, 2),
+                'investment_id' => $latestInvestment ? $latestInvestment->id : 'N/A',
+                'activated_at' => now()->format('d M Y, h:i A'),
+                'status' => 'Active',
+                'site_name' => config('app.name'),
+                'support_email' => config('mail.from.address', 'support@bittgold.com'),
+                'logo' => asset('siteadmin/images/logo.png'),
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Failed to send investment confirmation email: ' . $e->getMessage());
+        }
+
         return redirect()->route('user.investment.index')->with('success', 'Successfully invested ' . number_format($amount, 2) . '! Your account is now active.');
     }
 }

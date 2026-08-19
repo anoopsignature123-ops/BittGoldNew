@@ -17,9 +17,10 @@ class WithdrawalController extends Controller
             return redirect()->route('user.login');
         }
 
+        $kycApproved = $user->kyc()->where('status', 'approved')->exists();
         $withdrawals = Withdrawal::where('user_id', $user->id)->latest()->paginate(10);
 
-        return view('user.withdrawal.index', compact('user', 'withdrawals'));
+        return view('user.withdrawal.index', compact('user', 'withdrawals', 'kycApproved'));
     }
 
     public function store(Request $request)
@@ -30,6 +31,16 @@ class WithdrawalController extends Controller
         ]);
 
         $user = $this->authenticatedUser();
+
+        if (!$user || $user->role?->slug !== 'user') {
+            return redirect()->route('user.login');
+        }
+
+        $kycApproved = $user->kyc()->where('status', 'approved')->exists();
+
+        if (!$kycApproved) {
+            return back()->with('error', 'Withdrawal is allowed only after your KYC is approved.');
+        }
 
         if ($user->earning_wallet < $request->amount) {
             return back()->with('error', 'Insufficient balance in your earning wallet.');
@@ -62,6 +73,28 @@ class WithdrawalController extends Controller
                 'remark' => 'Withdrawal request submitted (10% fee applied)',
             ]);
         });
+
+        $adminEmails = \App\Models\User::whereHas('role', fn($query) => $query->where('slug', 'admin'))
+            ->pluck('email')
+            ->filter()
+            ->values()
+            ->all();
+
+        if (empty($adminEmails)) {
+            $adminEmails = [config('mail.from.address', 'admin@bittgold.com')];
+        }
+
+        send_template_email('withdrawal-submitted-admin', $adminEmails, [
+            'user_name' => $user->name,
+            'user_email' => $user->email,
+            'member_id' => $user->unique_id ?? $user->referral_code ?? 'N/A',
+            'referral_code' => $user->referral_code ?? $user->unique_id ?? 'N/A',
+            'amount' => number_format($request->amount, 2),
+            'bank_details' => $request->bank_details,
+            'site_name' => config('app.name'),
+            'support_email' => config('mail.from.address', 'support@bittgold.com'),
+            'logo' => asset('siteadmin/images/logo.png'),
+        ]);
 
         return back()->with('success', 'Withdrawal request submitted successfully.');
     }

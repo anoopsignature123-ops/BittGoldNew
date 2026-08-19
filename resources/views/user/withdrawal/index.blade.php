@@ -27,28 +27,39 @@
                 <div class="card gold-card h-100">
                     <div class="card-body">
                         <h4 class="card-title mb-3">New Withdrawal Request</h4>
-                        <p class="text-muted small">Earning Wallet Balance: <strong class="text-success">₹{{ number_format($user->earning_wallet, 2) }}</strong></p>
-                        
-                        <form method="POST" action="{{ !empty($previewMode) ? route('admin.users.proxy.withdrawal', $user) : route('user.withdrawal.store') }}">
-                            @csrf
-                            <div class="mb-3">
-                                <label class="form-label">Amount (₹)</label>
-                                <input type="number" step="0.01" name="amount" class="form-control text-white" required placeholder="Enter amount in ₹">
-                                <small class="text-muted">10% fee will be deducted.</small>
-                            </div>
 
-                            <div class="mb-3">
-                                <label class="form-label">Bank / UPI / USDT Details</label>
-                                <textarea name="bank_details" class="form-control text-white" rows="3" required placeholder="Enter account details..."></textarea>
+                        @if (!$kycApproved)
+                            <div class="alert alert-warning">
+                                Your withdrawal is blocked until KYC is approved by admin.
                             </div>
-
-                            <button type="button" class="btn btn-gold w-100" data-confirm-action
-                                data-confirm-title="Confirm Withdrawal"
-                                data-confirm-text="This will submit your withdrawal request and deduct the amount (10% fee applies). Proceed?"
-                                data-confirm-button="Submit Request">
-                                Submit Request
+                            <p class="text-muted small">Earning Wallet Balance: <strong class="text-success">₹{{ number_format($user->earning_wallet, 2) }}</strong></p>
+                            <button type="button" class="btn btn-gold w-100" disabled>
+                                Withdrawal Locked
                             </button>
-                        </form>
+                        @else
+                            <p class="text-muted small">Earning Wallet Balance: <strong class="text-success">₹{{ number_format($user->earning_wallet, 2) }}</strong></p>
+
+                            <form method="POST" action="{{ !empty($previewMode) ? route('admin.users.proxy.withdrawal', $user) : route('user.withdrawal.store') }}">
+                                @csrf
+                                <div class="mb-3">
+                                    <label class="form-label">Amount (₹)</label>
+                                    <input type="number" step="0.01" name="amount" class="form-control text-white" required placeholder="Enter amount in ₹">
+                                    <small class="text-muted">10% fee will be deducted.</small>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Bank / UPI / USDT Details</label>
+                                    <textarea name="bank_details" class="form-control text-white" rows="3" required placeholder="Enter account details..."></textarea>
+                                </div>
+
+                                <button type="button" class="btn btn-gold w-100" data-confirm-action
+                                    data-confirm-title="Confirm Withdrawal"
+                                    data-confirm-text="This will submit your withdrawal request and deduct the amount (10% fee applies). Proceed?"
+                                    data-confirm-button="Submit Request">
+                                    Submit Request
+                                </button>
+                            </form>
+                        @endif
                     </div>
                 </div>
             </div>

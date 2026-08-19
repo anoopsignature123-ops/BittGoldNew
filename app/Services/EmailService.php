@@ -78,20 +78,40 @@ class EmailService
         ];
 
         try {
+            Log::info('EmailService: attempting to send email', [
+                'template' => $templateKey,
+                'to' => array_column($recipients, 'email'),
+                'subject' => $subject,
+            ]);
+
             $res = Http::withHeaders([
                 'Authorization' => 'Zoho-enczapikey ' . $apiKey,
                 'Content-Type' => 'application/json',
             ])->withOptions(['verify' => $verify])->post($apiBase, $payload);
 
             if ($res->successful()) {
-                Log::info('EmailService: sent email via ZeptoMail', ['to' => $recipients, 'status' => $res->status()]);
+                Log::info('EmailService: email sent successfully via ZeptoMail', [
+                    'template' => $templateKey,
+                    'to' => array_column($recipients, 'email'),
+                    'subject' => $subject,
+                    'status' => $res->status(),
+                ]);
                 return true;
             }
 
-            Log::error('EmailService: failed sending email via ZeptoMail', ['to' => $recipients, 'status' => $res->status(), 'response' => $res->json()]);
+            Log::error('EmailService: failed sending email via ZeptoMail', [
+                'template' => $templateKey,
+                'to' => array_column($recipients, 'email'),
+                'status' => $res->status(),
+                'response' => $res->json(),
+            ]);
             return false;
         } catch (\Throwable $e) {
-            Log::error('EmailService: exception when sending email via ZeptoMail', ['exception' => $e->getMessage()]);
+            Log::error('EmailService: exception when sending email via ZeptoMail', [
+                'template' => $templateKey,
+                'to' => array_column($recipients, 'email'),
+                'exception' => $e->getMessage(),
+            ]);
             return false;
         }
     }

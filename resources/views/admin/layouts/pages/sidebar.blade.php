@@ -20,18 +20,21 @@
 
         {{-- User Management --}}
         <li
-            class="nav-item menu-items {{ request()->routeIs('admin.users.*', 'admin.direct.deposit.*') ? 'active' : '' }}">
+            class="nav-item menu-items {{ request()->routeIs('admin.users.*', 'admin.direct.deposit.*', 'admin.kycs.*') ? 'active' : '' }}">
             <a class="nav-link" data-bs-toggle="collapse" href="#user-management"
-                aria-expanded="{{ request()->routeIs('admin.users.*', 'admin.direct.deposit.*') ? 'true' : 'false' }}">
+                aria-expanded="{{ request()->routeIs('admin.users.*', 'admin.direct.deposit.*', 'admin.kycs.*') ? 'true' : 'false' }}">
                 <span class="menu-icon"><i class="mdi mdi-account-multiple"></i></span>
                 <span class="menu-title">User Management</span>
                 <i class="menu-arrow"></i>
             </a>
-            <div class="collapse {{ request()->routeIs('admin.users.*', 'admin.direct.deposit.*') ? 'show' : '' }}"
+            <div class="collapse {{ request()->routeIs('admin.users.*', 'admin.direct.deposit.*', 'admin.kycs.*') ? 'show' : '' }}"
                 id="user-management">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('admin.users.index') }}">Users List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('admin.kycs.index') }}">KYC Review</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('admin.direct.deposit.index') }}">Wallet History</a>
@@ -45,6 +48,14 @@
         @php
             $pendingDepositCount = \App\Models\Deposit::where('status', 'pending')->count();
         @endphp
+
+        {{-- Payment Master Settings --}}
+        <li class="nav-item menu-items {{ request()->routeIs('admin.payment-methods.*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.payment-methods.index') }}">
+                <span class="menu-icon"><i class="mdi mdi-credit-card-settings"></i></span>
+                <span class="menu-title">Payment Methods</span>
+            </a>
+        </li>
 
         {{-- Deposits & Funds (Admin Approval System) --}}
         <li class="nav-item menu-items {{ request()->routeIs('admin.deposits.*') ? 'active' : '' }}">

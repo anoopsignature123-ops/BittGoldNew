@@ -397,8 +397,8 @@ class UserAuthController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
-            'mobile' => ['required', 'string', 'max:30', 'unique:users,mobile'],
+            'email' => ['required', 'email', 'max:255'],
+            'mobile' => ['required', 'string', 'max:30'],
             'referral_code' => ['required', 'string', 'max:100', 'exists:users,referral_code'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);

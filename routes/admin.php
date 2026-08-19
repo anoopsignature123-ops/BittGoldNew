@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DepositController;
 use App\Http\Controllers\Admin\IncomeController;
 use App\Http\Controllers\Admin\GlobalSearchController;
 use App\Http\Controllers\Admin\InvestmentController;
+use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RankController;
 use App\Http\Controllers\Admin\SupportController;
@@ -28,6 +29,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware([AdminMiddleware::class])->group(function () {
         Route::controller(AdminAuthController::class)->group(function () {
             Route::post('/logout', 'logout')->name('logout');
+        });
+
+        Route::controller(\App\Http\Controllers\Admin\AdminKycController::class)->group(function () {
+            Route::get('/kycs', 'index')->name('kycs.index');
+            Route::post('/kycs/{kyc}/approve', 'approve')->name('kycs.approve');
+            Route::post('/kycs/{kyc}/reject', 'reject')->name('kycs.reject');
         });
 
         Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
@@ -59,6 +66,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::put('/profile/update', 'updateProfile')->name('profile.update');
             Route::put('/profile/password', 'updatePassword')->name('profile.password');
         });
+
+
+        // Custom Diagnostics route must be placed ABOVE Route::resource to avoid routing conflict
+        Route::get('payment-methods/diagnostics/status', [PaymentMethodController::class, 'diagnostics'])->name('payment-methods.diagnostics');
+        Route::patch('payment-methods/{paymentMethod}/toggle', [PaymentMethodController::class, 'toggle'])->name('payment-methods.toggle');
+
+        // Payment Methods Resource Routes
+        Route::resource('payment-methods', PaymentMethodController::class)->except(['show', 'create', 'edit']);
+ 
+
         Route::controller(DepositController::class)->group(function () {
             Route::get('/deposits', 'index')->name('deposits.index');
             Route::post('/deposits/{id}/approve', 'approve')->name('deposits.approve');

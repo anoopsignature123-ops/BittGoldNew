@@ -21,6 +21,13 @@
             </a>
         </li>
 
+        <li class="nav-item menu-items {{ request()->routeIs('user.kyc.*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('user.kyc.index') }}">
+                <span class="menu-icon"><i class="mdi mdi-clipboard-check"></i></span>
+                <span class="menu-title">KYC</span>
+            </a>
+        </li>
+
         {{-- My Wallet & Add Fund (Deposit Request Page) --}}
         @php
             $sidebarUserId = $headerUser?->id;

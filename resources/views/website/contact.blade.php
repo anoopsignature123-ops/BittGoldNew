@@ -50,9 +50,8 @@
 
         /* Same gold background image used on homepage hero */
         .contact-hero .gold-background {
-            position: absolute;
-            inset: 0;
-            background-image: url('{{ asset("siteadmin/images/gold_bars.png") }}');
+            position: absolute;  
+            background-image: url('{{ asset('siteadmin/images/gold_bars.png') }}');
             background-size: cover;
             background-position: center right;
             opacity: 0.35;
@@ -239,6 +238,35 @@
             filter: grayscale(1) invert(0.9) contrast(0.85);
         }
 
+        @media (min-width: 768px) and (max-width: 1024px) {
+
+            .btn_theme {
+                padding: 4px 5px;
+            }
+
+        }
+
+        .contact-form-wrap {
+            background: #050505;
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.25), 0 0 25px rgba(212, 175, 55, 0.18), 0 0 50px rgba(212, 175, 55, 0.10);
+            background: #1a1a1a;
+            border: 1px solid rgba(220, 174, 63, 0.15);
+            border-radius: 20px;
+            padding: 45px;
+        }
+
+        .contact-info-card {
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.25), 0 0 25px rgb(212 175 55 / 0%), 0 0 50px rgba(212, 175, 55, 0.10);
+            background: #1a1a1a;
+            background: #1a1a1a;
+            border: 1px solid rgba(220, 174, 63, 0.15);
+            border-radius: 16px;
+            padding: 35px 30px;
+            height: 100%;
+            transition: 0.3s ease;
+        }
+
         @media (max-width: 991px) {
             .contact-hero {
                 padding: 140px 0 70px;
@@ -295,22 +323,26 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="list-group-item list-group-item-action" href="{{ url('/#gold_nvestment') }}">
+                                        <a class="list-group-item list-group-item-action"
+                                            href="{{ url('/#gold_nvestment') }}">
                                             Gold Investment
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="list-group-item list-group-item-action" href="{{ url('/#live_prices') }}">
+                                        <a class="list-group-item list-group-item-action"
+                                            href="{{ url('/#live_prices') }}">
                                             Live Prices
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="list-group-item list-group-item-action" href="{{ url('/#market_nsights') }}">
+                                        <a class="list-group-item list-group-item-action"
+                                            href="{{ url('/#market_nsights') }}">
                                             Market Insights
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="list-group-item list-group-item-action active" href="{{ route('contact') }}">
+                                        <a class="list-group-item list-group-item-action active"
+                                            href="{{ route('contact') }}">
                                             Contact Us
                                         </a>
                                     </li>
@@ -318,12 +350,14 @@
                             </div>
                             <div class="header2-buttons">
                                 <div class="button">
-                                    <a href="{{ route('user.login') }}" class="btn_theme btn_theme_active mt_40 wow fadeInDown"
+                                    <a href="{{ route('user.login') }}"
+                                        class="btn_theme btn_theme_active mt_40 wow fadeInDown"
                                         data-wow-duration="0.8s">
                                         <i class="fa-solid fa-user"></i>Sign In
                                         <span></span>
                                     </a>
-                                    <a href="{{ route('user.register') }}" class="btn_theme btn_theme_active mt_40 wow fadeInDown ms-2"
+                                    <a href="{{ route('user.register') }}"
+                                        class="btn_theme btn_theme_active mt_40 wow fadeInDown ms-2"
                                         data-wow-duration="0.8s">
                                         <i class="fa-solid fa-user"></i>Sign Up
                                         <span></span>
@@ -399,14 +433,16 @@
                 </li>
             </ul>
             <div class="mobile-button">
-                <a href="{{ route('user.login') }}" class="btn_theme btn_theme_active mt_40 wow fadeInDown" data-wow-duration="0.8s">
+                <a href="{{ route('user.login') }}" class="btn_theme btn_theme_active mt_40 wow fadeInDown"
+                    data-wow-duration="0.8s">
                     Login
                     <i class="fa-solid fa-arrow-right">
                     </i>
                     <span>
                     </span>
                 </a>
-                 <a href="{{ route('user.register') }}" class="btn_theme btn_theme_active mt_40 wow fadeInDown" data-wow-duration="0.8s">
+                <a href="{{ route('user.register') }}" class="btn_theme btn_theme_active mt_40 wow fadeInDown"
+                    data-wow-duration="0.8s">
                     Register
                     <i class="fa-solid fa-arrow-right">
                     </i>
@@ -501,28 +537,34 @@
             <div class="row g-4">
                 <div class="col-12">
                     @if (session('success'))
-                        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert" style="background: rgba(40, 167, 69, 0.15); border: 1px solid rgba(40, 167, 69, 0.3); color: #28a745; border-radius: 10px;">
+                        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert"
+                            style="background: rgba(40, 167, 69, 0.15); border: 1px solid rgba(40, 167, 69, 0.3); color: #28a745; border-radius: 10px;">
                             <i class="bi bi-check-circle-fill"></i> {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="filter: brightness(1.5);"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+                                style="filter: brightness(1.5);"></button>
                         </div>
                     @endif
 
                     @if (session('error'))
-                        <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert" style="background: rgba(220, 53, 69, 0.15); border: 1px solid rgba(220, 53, 69, 0.3); color: #dc3545; border-radius: 10px;">
+                        <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert"
+                            style="background: rgba(220, 53, 69, 0.15); border: 1px solid rgba(220, 53, 69, 0.3); color: #dc3545; border-radius: 10px;">
                             <i class="bi bi-exclamation-circle-fill"></i> {{ session('error') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="filter: brightness(1.5);"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+                                style="filter: brightness(1.5);"></button>
                         </div>
                     @endif
 
                     @if ($errors->any())
-                        <div class="alert alert-warning alert-dismissible fade show mb-4" role="alert" style="background: rgba(255, 193, 7, 0.15); border: 1px solid rgba(255, 193, 7, 0.3); color: #ffc107; border-radius: 10px;">
+                        <div class="alert alert-warning alert-dismissible fade show mb-4" role="alert"
+                            style="background: rgba(255, 193, 7, 0.15); border: 1px solid rgba(255, 193, 7, 0.3); color: #ffc107; border-radius: 10px;">
                             <i class="bi bi-info-circle-fill"></i> Please fix the following errors:
                             <ul class="mb-0 mt-2">
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach
                             </ul>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="filter: brightness(1.5);"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+                                style="filter: brightness(1.5);"></button>
                         </div>
                     @endif
 
@@ -535,37 +577,56 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label>Full Name</label>
-                                    <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" placeholder="Enter your name" value="{{ old('name') }}" required>
+                                    <input type="text" name="name"
+                                        class="form-control @error('name') is-invalid @enderror"
+                                        placeholder="Enter your name" value="{{ old('name') }}" required>
                                     @error('name')
-                                        <div class="invalid-feedback" style="display: block; color: #ff6b6b; font-size: 12px; margin-top: 4px;">{{ $message }}</div>
+                                        <div class="invalid-feedback"
+                                            style="display: block; color: #ff6b6b; font-size: 12px; margin-top: 4px;">
+                                            {{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
                                     <label>Email Address</label>
-                                    <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="Enter your email" value="{{ old('email') }}" required>
+                                    <input type="email" name="email"
+                                        class="form-control @error('email') is-invalid @enderror"
+                                        placeholder="Enter your email" value="{{ old('email') }}" required>
                                     @error('email')
-                                        <div class="invalid-feedback" style="display: block; color: #ff6b6b; font-size: 12px; margin-top: 4px;">{{ $message }}</div>
+                                        <div class="invalid-feedback"
+                                            style="display: block; color: #ff6b6b; font-size: 12px; margin-top: 4px;">
+                                            {{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
                                     <label>Phone Number</label>
-                                    <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror" placeholder="Enter your phone number" value="{{ old('phone') }}">
+                                    <input type="text" name="phone"
+                                        class="form-control @error('phone') is-invalid @enderror"
+                                        placeholder="Enter your phone number" value="{{ old('phone') }}">
                                     @error('phone')
-                                        <div class="invalid-feedback" style="display: block; color: #ff6b6b; font-size: 12px; margin-top: 4px;">{{ $message }}</div>
+                                        <div class="invalid-feedback"
+                                            style="display: block; color: #ff6b6b; font-size: 12px; margin-top: 4px;">
+                                            {{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
                                     <label>Subject</label>
-                                    <input type="text" name="subject" class="form-control @error('subject') is-invalid @enderror" placeholder="Subject" value="{{ old('subject') }}">
+                                    <input type="text" name="subject"
+                                        class="form-control @error('subject') is-invalid @enderror"
+                                        placeholder="Subject" value="{{ old('subject') }}">
                                     @error('subject')
-                                        <div class="invalid-feedback" style="display: block; color: #ff6b6b; font-size: 12px; margin-top: 4px;">{{ $message }}</div>
+                                        <div class="invalid-feedback"
+                                            style="display: block; color: #ff6b6b; font-size: 12px; margin-top: 4px;">
+                                            {{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="col-12">
                                     <label>Message</label>
-                                    <textarea name="message" class="form-control @error('message') is-invalid @enderror" placeholder="Write your message here..." required>{{ old('message') }}</textarea>
+                                    <textarea name="message" class="form-control @error('message') is-invalid @enderror"
+                                        placeholder="Write your message here..." required>{{ old('message') }}</textarea>
                                     @error('message')
-                                        <div class="invalid-feedback" style="display: block; color: #ff6b6b; font-size: 12px; margin-top: 4px;">{{ $message }}</div>
+                                        <div class="invalid-feedback"
+                                            style="display: block; color: #ff6b6b; font-size: 12px; margin-top: 4px;">
+                                            {{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>

@@ -7,14 +7,14 @@ use Illuminate\Database\Seeder;
 
 class EmailTemplateSeeder extends Seeder
 {
-    public function run(): void
-    {
-        $templates = [
-            [
-                'name' => 'Welcome User - BittGold',
-                'key' => 'welcome-user',
-                'subject' => 'Welcome to {{ site_name }}',
-                'body' => <<<'HTML'
+  public function run(): void
+  {
+    $templates = [
+      [
+        'name' => 'Welcome User - BittGold',
+        'key' => 'welcome-user',
+        'subject' => 'Welcome to {{ site_name }}',
+        'body' => <<<'HTML'
 <div style="background:#0b1120;padding:20px 10px;font-family:Arial,Helvetica,sans-serif;">
     <div style="max-width:600px;margin:auto;background:#111827;border:1px solid #1f2937;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,0.5);">
 
@@ -172,26 +172,26 @@ class EmailTemplateSeeder extends Seeder
     </div>
 </div>
 HTML,
-                'variables' => [
-                    'name',
-                    'email',
-                    'mobile',
-                    'userId',
-                    'plain_password',
-                    'activation_link',
-                    'referrByName',
-                    'referrById',
-                    'referrByEmail',
-                    'logo',
-                    'site_name',
-                    'support_email',
-                ],
-            ],
-            [
-                'name' => 'User Password Reset - BittGold',
-                'key' => 'user-password-reset',
-                'subject' => 'Reset your {{ site_name }} password',
-                'body' => <<<'HTML'
+        'variables' => [
+          'name',
+          'email',
+          'mobile',
+          'userId',
+          'plain_password',
+          'activation_link',
+          'referrByName',
+          'referrById',
+          'referrByEmail',
+          'logo',
+          'site_name',
+          'support_email',
+        ],
+      ],
+      [
+        'name' => 'User Password Reset - BittGold',
+        'key' => 'user-password-reset',
+        'subject' => 'Reset your {{ site_name }} password',
+        'body' => <<<'HTML'
 <div style="background:#0b1120;padding:24px 10px;font-family:Arial,Helvetica,sans-serif;">
     <div style="max-width:600px;margin:auto;background:#111827;border:1px solid #374151;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.5);">
         <div style="background:linear-gradient(135deg,#ffb300,#ff8f00);padding:26px 20px;text-align:center;">
@@ -226,25 +226,25 @@ HTML,
     </div>
 </div>
 HTML,
-                'variables' => [
-                    'name',
-                    'email',
-                    'reset_link',
-                    'expiry_minutes',
-                    'support_email',
-                    'site_name',
-                    'site_url',
-                    'logo',
-                ],
-            ],
-        ];
+        'variables' => [
+          'name',
+          'email',
+          'reset_link',
+          'expiry_minutes',
+          'support_email',
+          'site_name',
+          'site_url',
+          'logo',
+        ],
+      ],
+    ];
 
-        /*
-         * Email clients do not reliably render the dashboard background image and
-         * external image URLs can be blocked. These two templates intentionally use
-         * the same dark navy + gold BittGold UI through email-safe inline styles.
-         */
-        $templates[0]['body'] = <<<'HTML'
+    /*
+     * Email clients do not reliably render the dashboard background image and
+     * external image URLs can be blocked. These two templates intentionally use
+     * the same dark navy + gold BittGold UI through email-safe inline styles.
+     */
+    $templates[0]['body'] = <<<'HTML'
 <div style="margin:0;padding:32px 12px;background:#030609;font-family:Arial,Helvetica,sans-serif;color:#eaf0f7;">
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td align="center">
     <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:600px;background:#09131f;border:1px solid #765b05;border-radius:18px;overflow:hidden;">
@@ -276,7 +276,7 @@ HTML,
 </div>
 HTML;
 
-        $templates[1]['body'] = <<<'HTML'
+    $templates[1]['body'] = <<<'HTML'
 <div style="margin:0;padding:32px 12px;background:#030609;font-family:Arial,Helvetica,sans-serif;color:#eaf0f7;">
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td align="center">
     <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:600px;background:#09131f;border:1px solid #765b05;border-radius:18px;overflow:hidden;">
@@ -302,24 +302,24 @@ HTML;
 </div>
 HTML;
 
-        /*
-        |--------------------------------------------------------------------------
-        | database/seeders/EmailTemplateSeeder.php mein badlaav
-        |--------------------------------------------------------------------------
-        | $templates array (jisme 'welcome-user' aur 'user-password-reset' already
-        | hain) ke turant baad, ye poora block copy-paste kar do — ye code
-        | $templates[] = [...]; se naya (teesra) template array mein push karta hai.
-        |
-        | Ye us jagah jaana chahiye jahan tumhare current do templates already
-        | define ho chuke hain, lekin foreach($templates as $template) loop se
-        | PEHLE (jo neeche seeder ke end mein hai).
-        */
+    /*
+    |--------------------------------------------------------------------------
+    | database/seeders/EmailTemplateSeeder.php mein badlaav
+    |--------------------------------------------------------------------------
+    | $templates array (jisme 'welcome-user' aur 'user-password-reset' already
+    | hain) ke turant baad, ye poora block copy-paste kar do — ye code
+    | $templates[] = [...]; se naya (teesra) template array mein push karta hai.
+    |
+    | Ye us jagah jaana chahiye jahan tumhare current do templates already
+    | define ho chuke hain, lekin foreach($templates as $template) loop se
+    | PEHLE (jo neeche seeder ke end mein hai).
+    */
 
-        $templates[] = [
-            'name' => 'Contact Us Notification - BittGold',
-            'key' => 'contact-us',
-            'subject' => 'New Contact Message from {{ name }} - {{ site_name }}',
-            'body' => <<<'HTML'
+    $templates[] = [
+      'name' => 'Contact Us Notification - BittGold',
+      'key' => 'contact-us',
+      'subject' => 'New Contact Message from {{ name }} - {{ site_name }}',
+      'body' => <<<'HTML'
 <div style="margin:0;padding:32px 12px;background:#030609;font-family:Arial,Helvetica,sans-serif;color:#eaf0f7;">
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td align="center">
     <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:600px;background:#09131f;border:1px solid #765b05;border-radius:18px;overflow:hidden;">
@@ -357,22 +357,22 @@ HTML;
   </td></tr></table>
 </div>
 HTML,
-            'variables' => [
-                'name',
-                'email',
-                'phone',
-                'subject',
-                'message',
-                'logo',
-                'site_name',
-            ],
-        ];
+      'variables' => [
+        'name',
+        'email',
+        'phone',
+        'subject',
+        'message',
+        'logo',
+        'site_name',
+      ],
+    ];
 
-        $templates[] = [
-            'name' => 'Contact Reply - BittGold',
-            'key' => 'contact-reply',
-            'subject' => 'Re: {{ subject }} - {{ site_name }}',
-            'body' => <<<'HTML'
+    $templates[] = [
+      'name' => 'Contact Reply - BittGold',
+      'key' => 'contact-reply',
+      'subject' => 'Re: {{ subject }} - {{ site_name }}',
+      'body' => <<<'HTML'
 <div style="margin:0;padding:32px 12px;background:#030609;font-family:Arial,Helvetica,sans-serif;color:#eaf0f7;">
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td align="center">
     <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:600px;background:#09131f;border:1px solid #765b05;border-radius:18px;overflow:hidden;">
@@ -402,21 +402,21 @@ HTML,
   </td></tr></table>
 </div>
 HTML,
-            'variables' => [
-                'name',
-                'subject',
-                'message',
-                'logo',
-                'site_name',
-                'support_email',
-            ],
-        ];
+      'variables' => [
+        'name',
+        'subject',
+        'message',
+        'logo',
+        'site_name',
+        'support_email',
+      ],
+    ];
 
-        $templates[] = [
-            'name' => 'User Login OTP - BittGold',
-            'key' => 'user-login-otp',
-            'subject' => 'Your {{ site_name }} Login OTP Code',
-            'body' => <<<'HTML'
+    $templates[] = [
+      'name' => 'User Login OTP - BittGold',
+      'key' => 'user-login-otp',
+      'subject' => 'Your {{ site_name }} Login OTP Code',
+      'body' => <<<'HTML'
 <div style="margin:0;padding:32px 12px;background:#030609;font-family:Arial,Helvetica,sans-serif;color:#eaf0f7;">
   <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td align="center">
     <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:600px;background:#09131f;border:1px solid #765b05;border-radius:18px;overflow:hidden;">
@@ -453,21 +453,338 @@ HTML,
   </td></tr></table>
 </div>
 HTML,
-            'variables' => [
-                'name',
-                'otp_code',
-                'expiry_minutes',
-                'logo',
-                'site_name',
-                'support_email',
-            ],
-        ];
+      'variables' => [
+        'name',
+        'otp_code',
+        'expiry_minutes',
+        'logo',
+        'site_name',
+        'support_email',
+      ],
+    ];
 
-        foreach ($templates as $template) {
-            EmailTemplate::updateOrCreate(
-                ['key' => $template['key']],
-                array_merge($template, ['is_active' => true]),
-            );
-        }
+    $templates[] = [
+      'name' => 'KYC Submitted Admin Notification - BittGold',
+      'key' => 'kyc-submitted-admin',
+      'subject' => 'New KYC Request Submitted by {{ user_name }} - {{ site_name }}',
+      'body' => <<<'HTML'
+<div style="margin:0;padding:32px 12px;background:#030609;font-family:Arial,Helvetica,sans-serif;color:#eaf0f7;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td align="center">
+    <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:600px;background:#09131f;border:1px solid #765b05;border-radius:18px;overflow:hidden;">
+      <tr><td style="padding:26px 30px;background:#07101a;border-bottom:1px solid #765b05;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr>
+          <td><img src="{{ logo }}" alt="BittGold" width="132" style="display:block;width:132px;height:auto;border:0;outline:none;text-decoration:none;"></td>
+          <td align="right" style="color:#9eb0c3;font-size:11px;font-weight:bold;letter-spacing:1px;">KYC REVIEW</td>
+        </tr></table>
+      </td></tr>
+      <tr><td style="padding:34px 30px 18px;background:linear-gradient(135deg,#0b1725,#07101a);">
+        <p style="margin:0 0 9px;color:#f5bd25;font-size:12px;font-weight:bold;letter-spacing:1.2px;">NEW KYC REQUEST</p>
+        <h1 style="margin:0;color:#ffffff;font-size:28px;line-height:1.25;">KYC submitted by {{ user_name }}</h1>
+        <p style="margin:14px 0 0;color:#b4c1cf;font-size:14px;line-height:1.7;">A new member has submitted KYC documents for review. Please review and approve or reject the request.</p>
+      </td></tr>
+      <tr><td style="padding:0 30px 30px;background:#09131f;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border:1px solid #5f4a08;border-radius:12px;background:#0b1623;"><tr><td style="padding:18px 20px;">
+          <p style="margin:0 0 12px;color:#f5bd25;font-size:11px;font-weight:bold;letter-spacing:1px;">MEMBER DETAILS</p>
+          <p style="margin:0 0 7px;color:#9eb0c3;font-size:13px;">Name <span style="color:#ffffff;font-weight:bold;float:right;">{{ user_name }}</span></p>
+          <p style="margin:0 0 7px;color:#9eb0c3;font-size:13px;">Email <span style="color:#ffffff;font-weight:bold;float:right;">{{ user_email }}</span></p>
+          <p style="margin:0 0 7px;color:#9eb0c3;font-size:13px;">Member ID <span style="color:#ffffff;font-weight:bold;float:right;">{{ member_id }}</span></p>
+          <p style="margin:0;color:#9eb0c3;font-size:13px;">Referral ID <span style="color:#f5bd25;font-weight:bold;float:right;">{{ referral_code }}</span></p>
+        </td></tr></table>
+      </td></tr>
+      <tr><td align="center" style="padding:18px 20px;background:#050a10;border-top:1px solid #263443;color:#718195;font-size:11px;">Please review the submission in the admin panel.<br><span style="display:block;margin-top:8px;">© {{ site_name }}. All rights reserved.</span></td></tr>
+    </table>
+  </td></tr></table>
+</div>
+HTML,
+      'variables' => [
+        'user_name',
+        'user_email',
+        'member_id',
+        'referral_code',
+        'site_name',
+        'logo',
+      ],
+    ];
+
+    $templates[] = [
+      'name' => 'KYC Status User Notification - BittGold',
+      'key' => 'kyc-status-user',
+      'subject' => 'Your KYC {{ status }} - {{ site_name }}',
+      'body' => <<<'HTML'
+<div style="margin:0;padding:32px 12px;background:#030609;font-family:Arial,Helvetica,sans-serif;color:#eaf0f7;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td align="center">
+    <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:600px;background:#09131f;border:1px solid #765b05;border-radius:18px;overflow:hidden;">
+      <tr><td style="padding:26px 30px;background:#07101a;border-bottom:1px solid #765b05;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr>
+          <td><img src="{{ logo }}" alt="BittGold" width="132" style="display:block;width:132px;height:auto;border:0;outline:none;text-decoration:none;"></td>
+          <td align="right" style="color:#9eb0c3;font-size:11px;font-weight:bold;letter-spacing:1px;">KYC STATUS</td>
+        </tr></table>
+      </td></tr>
+      <tr><td style="padding:34px 30px 18px;background:linear-gradient(135deg,#0b1725,#07101a);">
+        <p style="margin:0 0 9px;color:#f5bd25;font-size:12px;font-weight:bold;letter-spacing:1.2px;">UPDATE</p>
+        <h1 style="margin:0;color:#ffffff;font-size:28px;line-height:1.25;">Hello {{ user_name }}</h1>
+        <p style="margin:14px 0 0;color:#b4c1cf;font-size:14px;line-height:1.7;">Your KYC request has been <strong>{{ status }}</strong>.</p>
+      </td></tr>
+      <tr><td style="padding:0 30px 30px;background:#09131f;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border:1px solid #5f4a08;border-radius:12px;background:#0b1623;"><tr><td style="padding:18px 20px;">
+          <p style="margin:0;color:#e5ecf3;font-size:14px;line-height:1.7;white-space:pre-line;"><strong style="color:#f5bd25;">Status:</strong> {{ status }}<br><strong style="color:#f5bd25;">Message:</strong> {{ reason }}</p>
+        </td></tr></table>
+      </td></tr>
+      <tr><td align="center" style="padding:18px 20px;background:#050a10;border-top:1px solid #263443;color:#718195;font-size:11px;">For support, contact <a href="mailto:{{ support_email }}" style="color:#f5bd25;text-decoration:none;">{{ support_email }}</a><br><span style="display:block;margin-top:8px;">© {{ site_name }}. All rights reserved.</span></td></tr>
+    </table>
+  </td></tr></table>
+</div>
+HTML,
+      'variables' => [
+        'user_name',
+        'status',
+        'reason',
+        'site_name',
+        'support_email',
+        'logo',
+      ],
+    ];
+
+    $templates[] = [
+      'name' => 'Withdrawal Submitted Admin Notification - BittGold',
+      'key' => 'withdrawal-submitted-admin',
+      'subject' => 'New Withdrawal Request from {{ user_name }} - {{ site_name }}',
+      'body' => <<<'HTML'
+<div style="margin:0;padding:32px 12px;background:#030609;font-family:Arial,Helvetica,sans-serif;color:#eaf0f7;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td align="center">
+    <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:600px;background:#09131f;border:1px solid #765b05;border-radius:18px;overflow:hidden;">
+      <tr><td style="padding:26px 30px;background:#07101a;border-bottom:1px solid #765b05;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr>
+          <td><img src="{{ logo }}" alt="BittGold" width="132" style="display:block;width:132px;height:auto;border:0;outline:none;text-decoration:none;"></td>
+          <td align="right" style="color:#9eb0c3;font-size:11px;font-weight:bold;letter-spacing:1px;">WITHDRAWAL REVIEW</td>
+        </tr></table>
+      </td></tr>
+      <tr><td style="padding:34px 30px 18px;background:linear-gradient(135deg,#0b1725,#07101a);">
+        <p style="margin:0 0 9px;color:#f5bd25;font-size:12px;font-weight:bold;letter-spacing:1.2px;">NEW WITHDRAWAL REQUEST</p>
+        <h1 style="margin:0;color:#ffffff;font-size:28px;line-height:1.25;">Withdrawal requested by {{ user_name }}</h1>
+        <p style="margin:14px 0 0;color:#b4c1cf;font-size:14px;line-height:1.7;">A member has submitted a withdrawal request and needs admin review.</p>
+      </td></tr>
+      <tr><td style="padding:0 30px 30px;background:#09131f;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border:1px solid #5f4a08;border-radius:12px;background:#0b1623;"><tr><td style="padding:18px 20px;">
+          <p style="margin:0 0 12px;color:#f5bd25;font-size:11px;font-weight:bold;letter-spacing:1px;">REQUEST DETAILS</p>
+          <p style="margin:0 0 7px;color:#9eb0c3;font-size:13px;">Name <span style="color:#ffffff;font-weight:bold;float:right;">{{ user_name }}</span></p>
+          <p style="margin:0 0 7px;color:#9eb0c3;font-size:13px;">Email <span style="color:#ffffff;font-weight:bold;float:right;">{{ user_email }}</span></p>
+          <p style="margin:0 0 7px;color:#9eb0c3;font-size:13px;">Member ID <span style="color:#ffffff;font-weight:bold;float:right;">{{ member_id }}</span></p>
+          <p style="margin:0 0 7px;color:#9eb0c3;font-size:13px;">Referral ID <span style="color:#f5bd25;font-weight:bold;float:right;">{{ referral_code }}</span></p>
+          <p style="margin:0 0 7px;color:#9eb0c3;font-size:13px;">Amount <span style="color:#ffffff;font-weight:bold;float:right;">₹{{ amount }}</span></p>
+          <p style="margin:0;color:#9eb0c3;font-size:13px;">Bank Details <span style="color:#ffffff;font-weight:bold;float:right;">{{ bank_details }}</span></p>
+        </td></tr></table>
+      </td></tr>
+      <tr><td align="center" style="padding:18px 20px;background:#050a10;border-top:1px solid #263443;color:#718195;font-size:11px;">Please review the withdrawal request in the admin panel.<br><span style="display:block;margin-top:8px;">© {{ site_name }}. All rights reserved.</span></td></tr>
+    </table>
+  </td></tr></table>
+</div>
+HTML,
+      'variables' => [
+        'user_name',
+        'user_email',
+        'member_id',
+        'referral_code',
+        'amount',
+        'bank_details',
+        'site_name',
+        'logo',
+      ],
+    ];
+
+    $templates[] = [
+      'name' => 'Deposit Submitted Admin Notification - BittGold',
+      'key' => 'deposit-submitted-admin',
+      'subject' => 'New Deposit Request from {{ user_name }} - {{ site_name }}',
+      'body' => <<<'HTML'
+<div style="margin:0;padding:32px 12px;background:#030609;font-family:Arial,Helvetica,sans-serif;color:#eaf0f7;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td align="center">
+    <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:600px;background:#09131f;border:1px solid #765b05;border-radius:18px;overflow:hidden;">
+      <tr><td style="padding:26px 30px;background:#07101a;border-bottom:1px solid #765b05;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr>
+          <td><img src="{{ logo }}" alt="BittGold" width="132" style="display:block;width:132px;height:auto;border:0;outline:none;text-decoration:none;"></td>
+          <td align="right" style="color:#9eb0c3;font-size:11px;font-weight:bold;letter-spacing:1px;">DEPOSIT REVIEW</td>
+        </tr></table>
+      </td></tr>
+      <tr><td style="padding:34px 30px 18px;background:linear-gradient(135deg,#0b1725,#07101a);">
+        <p style="margin:0 0 9px;color:#f5bd25;font-size:12px;font-weight:bold;letter-spacing:1.2px;">NEW DEPOSIT REQUEST</p>
+        <h1 style="margin:0;color:#ffffff;font-size:28px;line-height:1.25;">Deposit requested by {{ user_name }}</h1>
+        <p style="margin:14px 0 0;color:#b4c1cf;font-size:14px;line-height:1.7;">A member has submitted a deposit request and needs admin review.</p>
+      </td></tr>
+      <tr><td style="padding:0 30px 30px;background:#09131f;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border:1px solid #5f4a08;border-radius:12px;background:#0b1623;"><tr><td style="padding:18px 20px;">
+          <p style="margin:0 0 12px;color:#f5bd25;font-size:11px;font-weight:bold;letter-spacing:1px;">REQUEST DETAILS</p>
+          <p style="margin:0 0 7px;color:#9eb0c3;font-size:13px;">Name <span style="color:#ffffff;font-weight:bold;float:right;">{{ user_name }}</span></p>
+          <p style="margin:0 0 7px;color:#9eb0c3;font-size:13px;">Email <span style="color:#ffffff;font-weight:bold;float:right;">{{ user_email }}</span></p>
+          <p style="margin:0 0 7px;color:#9eb0c3;font-size:13px;">Member ID <span style="color:#ffffff;font-weight:bold;float:right;">{{ member_id }}</span></p>
+          <p style="margin:0 0 7px;color:#9eb0c3;font-size:13px;">Referral ID <span style="color:#f5bd25;font-weight:bold;float:right;">{{ referral_code }}</span></p>
+          <p style="margin:0 0 7px;color:#9eb0c3;font-size:13px;">Amount <span style="color:#ffffff;font-weight:bold;float:right;">₹{{ amount }}</span></p>
+          <p style="margin:0 0 7px;color:#9eb0c3;font-size:13px;">Payment Method <span style="color:#ffffff;font-weight:bold;float:right;">{{ payment_method }}</span></p>
+          <p style="margin:0;color:#9eb0c3;font-size:13px;">Reference No <span style="color:#ffffff;font-weight:bold;float:right;">{{ reference_no }}</span></p>
+        </td></tr></table>
+      </td></tr>
+      <tr><td align="center" style="padding:18px 20px;background:#050a10;border-top:1px solid #263443;color:#718195;font-size:11px;">Please review the deposit request in the admin panel.<br><span style="display:block;margin-top:8px;">© {{ site_name }}. All rights reserved.</span></td></tr>
+    </table>
+  </td></tr></table>
+</div>
+HTML,
+      'variables' => [
+        'user_name',
+        'user_email',
+        'member_id',
+        'referral_code',
+        'amount',
+        'payment_method',
+        'reference_no',
+        'site_name',
+        'logo',
+      ],
+    ];
+
+    $templates[] = [
+      'name' => 'Investment Confirmation - BittGold',
+      'key' => 'investment-confirmation',
+      'subject' => 'Investment Successful - ₹{{ amount }} - {{ site_name }}',
+      'body' => <<<'HTML'
+<div style="margin:0;padding:32px 12px;background:#030609;font-family:Arial,Helvetica,sans-serif;color:#eaf0f7;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td align="center">
+    <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:600px;background:#09131f;border:1px solid #765b05;border-radius:18px;overflow:hidden;">
+      <tr><td style="padding:26px 30px;background:#07101a;border-bottom:1px solid #765b05;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr>
+          <td><img src="{{ logo }}" alt="BittGold" width="132" style="display:block;width:132px;height:auto;border:0;outline:none;text-decoration:none;"></td>
+          <td align="right" style="color:#9eb0c3;font-size:11px;font-weight:bold;letter-spacing:1px;">INVESTMENT CONFIRMED</td>
+        </tr></table>
+      </td></tr>
+      <tr><td style="padding:34px 30px 18px;background:linear-gradient(135deg,#0b1725,#07101a);">
+        <p style="margin:0 0 9px;color:#f5bd25;font-size:12px;font-weight:bold;letter-spacing:1.2px;">INVESTMENT SUCCESSFUL</p>
+        <h1 style="margin:0;color:#ffffff;font-size:28px;line-height:1.25;">Hello {{ user_name }}</h1>
+        <p style="margin:14px 0 0;color:#b4c1cf;font-size:14px;line-height:1.7;">Your investment has been successfully activated. Thank you for investing with {{ site_name }}.</p>
+      </td></tr>
+      <tr><td style="padding:0 30px 30px;background:#09131f;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border:1px solid #5f4a08;border-radius:12px;background:#0b1623;"><tr><td style="padding:18px 20px;">
+          <p style="margin:0 0 12px;color:#f5bd25;font-size:11px;font-weight:bold;letter-spacing:1px;">INVESTMENT DETAILS</p>
+          <p style="margin:0 0 7px;color:#9eb0c3;font-size:13px;">Amount Invested <span style="color:#ffffff;font-weight:bold;float:right;">₹{{ amount }}</span></p>
+          <p style="margin:0 0 7px;color:#9eb0c3;font-size:13px;">Investment ID <span style="color:#ffffff;font-weight:bold;float:right;">#{{ investment_id }}</span></p>
+          <p style="margin:0 0 7px;color:#9eb0c3;font-size:13px;">Activated On <span style="color:#ffffff;font-weight:bold;float:right;">{{ activated_at }}</span></p>
+          <p style="margin:0;color:#9eb0c3;font-size:13px;">Status <span style="color:#4ade80;font-weight:bold;float:right;">{{ status }}</span></p>
+        </td></tr></table>
+
+        <div style="background:#0b1623;border-left:3px solid #f5bd25;padding:16px;border-radius:6px;margin-top:16px;">
+          <p style="margin:0;color:#b4c1cf;font-size:13px;line-height:1.6;"><strong style="color:#f5bd25;">💡 What's Next?</strong><br>Your investment is now active and will start generating returns according to the plan. You can track your earnings in your dashboard.</p>
+        </div>
+      </td></tr>
+      <tr><td align="center" style="padding:18px 20px;background:#050a10;border-top:1px solid #263443;color:#718195;font-size:11px;">For support, contact <a href="mailto:{{ support_email }}" style="color:#f5bd25;text-decoration:none;">{{ support_email }}</a><br><span style="display:block;margin-top:8px;">© {{ site_name }}. All rights reserved.</span></td></tr>
+    </table>
+  </td></tr></table>
+</div>
+HTML,
+      'variables' => [
+        'user_name',
+        'user_email',
+        'amount',
+        'investment_id',
+        'activated_at',
+        'status',
+        'site_name',
+        'support_email',
+        'logo',
+      ],
+    ];
+
+    $templates[] = [
+      'name' => 'Deposit Status User Notification - BittGold',
+      'key' => 'deposit-status-user',
+      'subject' => 'Your Deposit Request {{ status }} - {{ site_name }}',
+      'body' => <<<'HTML'
+<div style="margin:0;padding:32px 12px;background:#030609;font-family:Arial,Helvetica,sans-serif;color:#eaf0f7;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td align="center">
+    <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:600px;background:#09131f;border:1px solid #765b05;border-radius:18px;overflow:hidden;">
+      <tr><td style="padding:26px 30px;background:#07101a;border-bottom:1px solid #765b05;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr>
+          <td><img src="{{ logo }}" alt="BittGold" width="132" style="display:block;width:132px;height:auto;border:0;outline:none;text-decoration:none;"></td>
+          <td align="right" style="color:#9eb0c3;font-size:11px;font-weight:bold;letter-spacing:1px;">DEPOSIT STATUS</td>
+        </tr></table>
+      </td></tr>
+      <tr><td style="padding:34px 30px 18px;background:linear-gradient(135deg,#0b1725,#07101a);">
+        <p style="margin:0 0 9px;color:#f5bd25;font-size:12px;font-weight:bold;letter-spacing:1.2px;">UPDATE</p>
+        <h1 style="margin:0;color:#ffffff;font-size:28px;line-height:1.25;">Hello {{ user_name }}</h1>
+        <p style="margin:14px 0 0;color:#b4c1cf;font-size:14px;line-height:1.7;">Your deposit request has been <strong>{{ status }}</strong>.</p>
+      </td></tr>
+      <tr><td style="padding:0 30px 30px;background:#09131f;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border:1px solid #5f4a08;border-radius:12px;background:#0b1623;"><tr><td style="padding:18px 20px;">
+          <p style="margin:0 0 10px;color:#f5bd25;font-size:11px;font-weight:bold;letter-spacing:1px;">REQUEST DETAILS</p>
+          <p style="margin:0 0 7px;color:#9eb0c3;font-size:13px;">Amount <span style="color:#ffffff;font-weight:bold;float:right;">₹{{ amount }}</span></p>
+          <p style="margin:0 0 7px;color:#9eb0c3;font-size:13px;">Payment Method <span style="color:#ffffff;font-weight:bold;float:right;">{{ payment_method }}</span></p>
+          <p style="margin:0 0 7px;color:#9eb0c3;font-size:13px;">Reference No <span style="color:#ffffff;font-weight:bold;float:right;">{{ reference_no }}</span></p>
+          <p style="margin:0;color:#9eb0c3;font-size:13px;">Status <span style="color:#f5bd25;font-weight:bold;float:right;">{{ status }}</span></p>
+        </td></tr></table>
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="margin-top:12px;border:1px solid #5f4a08;border-radius:12px;background:#0b1623;"><tr><td style="padding:18px 20px;">
+          <p style="margin:0;color:#e5ecf3;font-size:14px;line-height:1.7;white-space:pre-line;"><strong style="color:#f5bd25;">Admin Remark:</strong> {{ admin_remark }}</p>
+        </td></tr></table>
+      </td></tr>
+      <tr><td align="center" style="padding:18px 20px;background:#050a10;border-top:1px solid #263443;color:#718195;font-size:11px;">For support, contact <a href="mailto:{{ support_email }}" style="color:#f5bd25;text-decoration:none;">{{ support_email }}</a><br><span style="display:block;margin-top:8px;">© {{ site_name }}. All rights reserved.</span></td></tr>
+    </table>
+  </td></tr></table>
+</div>
+HTML,
+      'variables' => [
+        'user_name',
+        'user_email',
+        'amount',
+        'payment_method',
+        'reference_no',
+        'status',
+        'admin_remark',
+        'site_name',
+        'support_email',
+        'logo',
+      ],
+    ];
+
+    $templates[] = [
+      'name' => 'Withdrawal Status User Notification - BittGold',
+      'key' => 'withdrawal-status-user',
+      'subject' => 'Your Withdrawal Request {{ status }} - {{ site_name }}',
+      'body' => <<<'HTML'
+<div style="margin:0;padding:32px 12px;background:#030609;font-family:Arial,Helvetica,sans-serif;color:#eaf0f7;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td align="center">
+    <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:600px;background:#09131f;border:1px solid #765b05;border-radius:18px;overflow:hidden;">
+      <tr><td style="padding:26px 30px;background:#07101a;border-bottom:1px solid #765b05;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr>
+          <td><img src="{{ logo }}" alt="BittGold" width="132" style="display:block;width:132px;height:auto;border:0;outline:none;text-decoration:none;"></td>
+          <td align="right" style="color:#9eb0c3;font-size:11px;font-weight:bold;letter-spacing:1px;">WITHDRAWAL STATUS</td>
+        </tr></table>
+      </td></tr>
+      <tr><td style="padding:34px 30px 18px;background:linear-gradient(135deg,#0b1725,#07101a);">
+        <p style="margin:0 0 9px;color:#f5bd25;font-size:12px;font-weight:bold;letter-spacing:1.2px;">UPDATE</p>
+        <h1 style="margin:0;color:#ffffff;font-size:28px;line-height:1.25;">Hello {{ user_name }}</h1>
+        <p style="margin:14px 0 0;color:#b4c1cf;font-size:14px;line-height:1.7;">Your withdrawal request has been <strong>{{ status }}</strong>.</p>
+      </td></tr>
+      <tr><td style="padding:0 30px 30px;background:#09131f;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border:1px solid #5f4a08;border-radius:12px;background:#0b1623;"><tr><td style="padding:18px 20px;">
+          <p style="margin:0;color:#e5ecf3;font-size:14px;line-height:1.7;white-space:pre-line;"><strong style="color:#f5bd25;">Status:</strong> {{ status }}<br><strong style="color:#f5bd25;">Amount:</strong> ₹{{ amount }}</p>
+        </td></tr></table>
+      </td></tr>
+      <tr><td align="center" style="padding:18px 20px;background:#050a10;border-top:1px solid #263443;color:#718195;font-size:11px;">For support, contact <a href="mailto:{{ support_email }}" style="color:#f5bd25;text-decoration:none;">{{ support_email }}</a><br><span style="display:block;margin-top:8px;">© {{ site_name }}. All rights reserved.</span></td></tr>
+    </table>
+  </td></tr></table>
+</div>
+HTML,
+      'variables' => [
+        'user_name',
+        'status',
+        'amount',
+        'site_name',
+        'support_email',
+        'logo',
+      ],
+    ];
+
+    foreach ($templates as $template) {
+      EmailTemplate::updateOrCreate(
+        ['key' => $template['key']],
+        array_merge($template, ['is_active' => true]),
+      );
     }
+  }
 }

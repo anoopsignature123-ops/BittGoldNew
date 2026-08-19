@@ -94,8 +94,8 @@ class AdminUserController extends Controller
 
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
-            'mobile' => ['required', 'string', 'max:30', 'unique:users,mobile'],
+            'email' => ['required', 'email', 'max:255'],
+            'mobile' => ['required', 'string', 'max:30'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'sponsor_referral_code' => ['required', 'string', 'max:100', 'exists:users,referral_code'],
         ]);
@@ -166,8 +166,8 @@ class AdminUserController extends Controller
         }
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $user->id],
-            'mobile' => ['required', 'string', 'max:30', 'unique:users,mobile,' . $user->id],
+            'email' => ['required', 'email', 'max:255'],
+            'mobile' => ['required', 'string', 'max:30'],
             'country_code' => ['nullable', 'string', 'max:10'],
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
 

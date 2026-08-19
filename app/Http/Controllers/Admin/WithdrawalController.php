@@ -34,6 +34,17 @@ class WithdrawalController extends Controller
         $withdrawal->status = 'approved';
         $withdrawal->save();
 
+        if ($withdrawal->user && $withdrawal->user->email) {
+            send_template_email('withdrawal-status-user', $withdrawal->user->email, [
+                'user_name' => $withdrawal->user->name,
+                'status' => 'Approved',
+                'amount' => number_format($withdrawal->payable_amount, 2),
+                'site_name' => config('app.name'),
+                'support_email' => config('mail.from.address', 'support@bittgold.com'),
+                'logo' => asset('siteadmin/images/logo.png'),
+            ]);
+        }
+
         return back()->with('success', 'Withdrawal request approved successfully.');
     }
 
@@ -62,6 +73,17 @@ class WithdrawalController extends Controller
                 'remark' => 'Refund after withdrawal rejection',
             ]);
         });
+
+        if ($withdrawal->user && $withdrawal->user->email) {
+            send_template_email('withdrawal-status-user', $withdrawal->user->email, [
+                'user_name' => $withdrawal->user->name,
+                'status' => 'Rejected',
+                'amount' => number_format($withdrawal->amount, 2),
+                'site_name' => config('app.name'),
+                'support_email' => config('mail.from.address', 'support@bittgold.com'),
+                'logo' => asset('siteadmin/images/logo.png'),
+            ]);
+        }
 
         return back()->with('success', 'Withdrawal request rejected and amount refunded to user wallet.');
     }
