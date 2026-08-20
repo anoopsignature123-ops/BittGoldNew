@@ -14,9 +14,6 @@
             </div>
         </div>
 
-        {{-- @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif --}}
         @if (session('error'))
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
@@ -24,17 +21,18 @@
         <div class="card gold-card users-card detailed-users-card">
             <div class="card-body">
                 <div class="table-responsive table-responsive-scroll mt-2">
-                    <table class="table user-table detailed-user-table mb-0" style="min-width: 950px;">
+                    <table class="table user-table detailed-user-table mb-0" style="min-width: 1200px;">
                         <thead>
                             <tr>
                                 <th>Member</th>
                                 <th>Requested</th>
                                 <th>Fee (10%)</th>
                                 <th>Payable</th>
+                                
                                 <th>Bank Details</th>
-                                 <th>Date</th>
+                                <th>Type / Source</th> {{-- Naya Column --}}
+                                <th>Date</th>
                                 <th>Status</th>
-
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -42,7 +40,6 @@
                             @forelse($withdrawals as $w)
                                 <tr>
                                     <td>
-                                        
                                         <div class="member-cell">
                                             <span class="member-avatar">{{ strtoupper(substr($w->user->name ?? 'U', 0, 2)) }}</span>
                                             <div>
@@ -52,22 +49,41 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="font-weight-bold">{{ number_format($w->amount, 2) }}</td>
-                                    <td class="text-danger">-{{ number_format($w->fee, 2) }}</td>
-                                    <td class="text-success font-weight-bold">{{ number_format($w->payable_amount, 2) }}
+                                    <td class="font-weight-bold">₹ {{ number_format($w->amount, 2) }}</td>
+                                    <td class="text-danger">-₹ {{ number_format($w->fee, 2) }}</td>
+                                    <td class="text-success font-weight-bold">₹ {{ number_format($w->payable_amount, 2) }}</td>
+                                    
+                                    
+
+                                    {{-- Bank Details Column --}}
+                                    <td>
+                                        <div style="font-size: 0.78rem; line-height: 1.4;">
+                                            <span class="d-block text-white"><strong>Bank:</strong> {{ $w->user->bank_name ?? 'N/A' }}</span>
+                                            <span class="d-block text-muted"><strong>Holder:</strong> {{ $w->user->account_holder_name ?? $w->user->name ?? 'N/A' }}</span>
+                                            <span class="d-block text-warning font-monospace"><strong>A/C No:</strong> {{ $w->user->account_number ?? 'N/A' }}</span>
+                                            <span class="d-block text-info font-monospace"><strong>IFSC:</strong> {{ $w->user->ifsc_code ?? 'N/A' }}</span>
+                                            <span class="d-block text-muted"><strong>Branch:</strong> {{ $w->user->branch_name ?? 'N/A' }}</span>
+                                        </div>
                                     </td>
-                                    <td>{{ $w->bank_details }}</td>
+
+                                    {{-- Type / Source Column (Auto vs Manual) --}}
+                                    <td>
+                                        @if(isset($w->type) && $w->type === 'auto' || str_contains(strtolower($w->bank_details), 'auto'))
+                                            <span class="badge bg-info text-dark" style="font-size: 0.7rem;">Auto-Withdrawal</span>
+                                        @else
+                                            <span class="badge bg-secondary" style="font-size: 0.7rem;">Manual Request</span>
+                                        @endif
+                                    </td>
+
                                     <td>{{ $w->created_at->format('d M Y, h:i A') }}</td>
                                     <td>
-                                        <span
-                                            class="badge {{ $w->status === 'approved' ? 'bg-success' : ($w->status === 'pending' ? 'bg-warning text-dark' : 'bg-danger') }}">
+                                        <span class="badge {{ $w->status === 'approved' ? 'bg-success' : ($w->status === 'pending' ? 'bg-warning text-dark' : 'bg-danger') }}">
                                             {{ ucfirst($w->status) }}
                                         </span>
                                     </td>
                                     <td>
                                         @if ($w->status === 'pending')
-                                            <form action="{{ route('admin.withdrawals.approve', $w->id) }}" method="POST"
-                                                class="d-inline">
+                                            <form action="{{ route('admin.withdrawals.approve', $w->id) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 <button type="button" class="btn btn-sm btn-success" data-confirm-action
                                                     data-confirm-title="Approve Payout"
@@ -76,8 +92,7 @@
                                                     Approve
                                                 </button>
                                             </form>
-                                            <form action="{{ route('admin.withdrawals.reject', $w->id) }}" method="POST"
-                                                class="d-inline">
+                                            <form action="{{ route('admin.withdrawals.reject', $w->id) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 <button type="button" class="btn btn-sm btn-danger" data-confirm-action
                                                     data-confirm-title="Reject & Refund"
@@ -93,8 +108,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="text-center py-5 text-muted">No withdrawal requests found.
-                                    </td>
+                                    <td colspan="9" class="text-center py-5 text-muted">No withdrawal requests found.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -102,8 +116,7 @@
                 </div>
 
                 <div class="datatable-footer mt-3">
-                    <span>Showing {{ $withdrawals->firstItem() ?? 0 }} to {{ $withdrawals->lastItem() ?? 0 }} of
-                        {{ $withdrawals->total() }} records</span>
+                    <span>Showing {{ $withdrawals->firstItem() ?? 0 }} to {{ $withdrawals->lastItem() ?? 0 }} of {{ $withdrawals->total() }} records</span>
                     <div class="pagination-gold-wrapper">
                         {!! $withdrawals->links('gold') !!}
                     </div>

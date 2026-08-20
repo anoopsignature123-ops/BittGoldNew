@@ -27,7 +27,7 @@ class AdminAuthController extends Controller
             })
             ->first();
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return back()->withErrors(['email' => 'The provided credentials do not match our records.'])->withInput();
         }
 
