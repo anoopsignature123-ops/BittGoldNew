@@ -32,7 +32,9 @@
                                 <th>Fee (10%)</th>
                                 <th>Payable</th>
                                 <th>Bank Details</th>
+                                 <th>Date</th>
                                 <th>Status</th>
+
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -40,14 +42,22 @@
                             @forelse($withdrawals as $w)
                                 <tr>
                                     <td>
-                                        <strong>{{ $w->user->name ?? 'N/A' }}</strong>
-                                        <small class="d-block text-muted">{{ $w->user->email ?? '' }}</small>
+                                        
+                                        <div class="member-cell">
+                                            <span class="member-avatar">{{ strtoupper(substr($w->user->name ?? 'U', 0, 2)) }}</span>
+                                            <div>
+                                                <strong>{{ $w->user->name ?? 'N/A' }}</strong>
+                                                <strong class="text-warning mt-2">{{ $w->user->referral_code ?? 'N/A' }}</strong>
+                                                <small>{{ $w->user->email ?? 'N/A' }}</small>
+                                            </div>
+                                        </div>
                                     </td>
                                     <td class="font-weight-bold">{{ number_format($w->amount, 2) }}</td>
                                     <td class="text-danger">-{{ number_format($w->fee, 2) }}</td>
                                     <td class="text-success font-weight-bold">{{ number_format($w->payable_amount, 2) }}
                                     </td>
                                     <td>{{ $w->bank_details }}</td>
+                                    <td>{{ $w->created_at->format('d M Y, h:i A') }}</td>
                                     <td>
                                         <span
                                             class="badge {{ $w->status === 'approved' ? 'bg-success' : ($w->status === 'pending' ? 'bg-warning text-dark' : 'bg-danger') }}">

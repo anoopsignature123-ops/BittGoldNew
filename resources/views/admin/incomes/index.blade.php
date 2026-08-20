@@ -70,13 +70,20 @@
                                             <span class="member-avatar">{{ strtoupper(substr($inc->user->name ?? 'U', 0, 2)) }}</span>
                                             <div>
                                                 <strong>{{ $inc->user->name ?? 'N/A' }}</strong>
+                                                <strong class="text-warning mt-2">{{ $inc->user->referral_code ?? 'N/A' }}</strong>
                                                 <small>{{ $inc->user->email ?? 'N/A' }}</small>
                                             </div>
                                         </div>
                                     </td>
                                     <td>
-                                        <strong>{{ $inc->fromUser->name ?? 'N/A' }}</strong>
-                                        <small class="d-block text-muted">{{ $inc->fromUser->email ?? '' }}</small>
+                                        <div class="member-cell">
+                                            <span class="member-avatar">{{ strtoupper(substr($inc->fromUser->name ?? 'U', 0, 2)) }}</span>
+                                            <div>
+                                                <strong>{{ $inc->fromUser->name ?? 'N/A' }}</strong>
+                                                <strong class="text-warning mt-2">{{ $inc->fromUser->referral_code ?? 'N/A' }}</strong>
+                                                <small>{{ $inc->fromUser->email ?? 'N/A' }}</small>
+                                            </div>
+                                        </div>
                                     </td>
                                     <td>
                                         <span class="badge {{ $inc->income_type === 'referral' ? 'bg-warning text-dark' : ($inc->income_type === 'level' ? 'bg-info text-dark' : 'bg-success text-white') }}">

@@ -50,8 +50,9 @@
                     <table class="table user-table detailed-user-table mb-0" style="min-width: 1000px;">
                         <thead>
                             <tr>
-                                <th>Transaction</th>
+                                
                                 <th>User</th>
+                                <th>Transaction</th>
                                 <th>Wallet Type</th>
                                 <th>Type</th>
                                 <th>Amount</th>
@@ -62,17 +63,20 @@
                         <tbody>
                             @forelse($transactions as $trx)
                                 <tr>
-                                    <td class="text-white-50 font-monospace">{{ $trx->transaction_no }}</td>
+                                    
                                     <td>
                                         <div class="member-cell">
                                             <span
                                                 class="member-avatar">{{ strtoupper(substr($trx->user->name ?? 'U', 0, 2)) }}</span>
                                             <div>
                                                 <strong>{{ $trx->user->name ?? 'N/A' }}</strong>
+                                                <strong class="text-warning mt-2">{{ $trx->user->referral_code ?? 'N/A' }}</strong>
+
                                                 <small>{{ $trx->user->email ?? 'N/A' }}</small>
                                             </div>
                                         </div>
                                     </td>
+                                    <td class="text-success font-monospace">{{ $trx->transaction_no }}</td>
                                     <td>
                                         <span class="badge bg-secondary text-white">
                                             {{ ucwords(str_replace('_', ' ', $trx->wallet_type)) }}
@@ -88,7 +92,7 @@
                                         class="font-weight-bold {{ $trx->type === 'credit' ? 'text-success' : 'text-danger' }}">
                                         {{ $trx->type === 'credit' ? '+' : '-' }}{{ number_format($trx->amount, 2) }}
                                     </td>
-                                    <td>{{ $trx->remark }}</td>
+                                    <td class="text-info">{{ $trx->remark }}</td>
                                     <td>{{ $trx->created_at->format('d M Y, h:i A') }}</td>
                                 </tr>
                             @empty

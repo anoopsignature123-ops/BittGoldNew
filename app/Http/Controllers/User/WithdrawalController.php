@@ -18,7 +18,14 @@ class WithdrawalController extends Controller
         }
 
         $kycApproved = $user->kyc()->where('status', 'approved')->exists();
-        $withdrawals = Withdrawal::where('user_id', $user->id)->latest()->paginate(10);
+
+        // RULE: Agar KYC approved hai tabhi withdrawals ki history dikhegi. 
+        // Agar KYC approved nahi hai, toh collection khali (empty) rahegi taaki user ko kuch show na ho.
+        if ($kycApproved) {
+            $withdrawals = Withdrawal::where('user_id', $user->id)->latest()->paginate(10);
+        } else {
+            $withdrawals = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 10);
+        }
 
         return view('user.withdrawal.index', compact('user', 'withdrawals', 'kycApproved'));
     }

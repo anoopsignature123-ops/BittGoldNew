@@ -8,3 +8,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('leadership:distribute')->monthlyOn(1, '00:00');
+Schedule::command('withdrawals:process-auto')->dailyAt('00:00');

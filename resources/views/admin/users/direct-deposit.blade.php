@@ -98,6 +98,7 @@
                                             <span class="member-avatar">{{ strtoupper(substr($u->name, 0, 2)) }}</span>
                                             <div>
                                                 <strong>{{ $u->name }}</strong>
+                                                <strong class="mt-2 text-warning">{{ $u->referral_code }}</strong>
                                                 <small>{{ $u->email }}</small>
                                             </div>
                                         </div>
