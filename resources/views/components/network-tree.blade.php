@@ -92,7 +92,7 @@
         .genealogy-container {
             overflow-x: auto;
             overflow-y: visible !important;
-            padding: 50px 20px;
+            padding: 50px 30px;
             background: #12151c;
             border-radius: 16px;
             border: 1px solid rgba(245, 185, 27, 0.2);
@@ -101,15 +101,17 @@
         }
 
         .org-tree {
-            display: inline-flex;
+            display: flex;
             flex-direction: column;
             align-items: center;
-            min-width: 100%;
+            width: max-content;
+            margin: 0 auto;
         }
 
+        /* Vertical Stem Down (Dotted) */
         .org-stem-down {
             width: 0;
-            height: 35px;
+            height: 30px;
             border-left: 2px dashed #f5b91b;
             margin: 0 auto;
         }
@@ -120,30 +122,35 @@
             justify-content: center;
             align-items: flex-start;
             position: relative;
+            margin-top: 0;
         }
 
         .org-child-col {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 0 25px;
+            padding: 0 15px;
             position: relative;
         }
 
+        /* Horizontal Branch Top Line (Dotted) */
         .org-child-col::before {
             content: '';
             position: absolute;
             top: 0;
-            width: 50%;
+            left: 0;
+            right: 0;
             height: 0;
             border-top: 2px dashed #f5b91b;
         }
 
         .org-child-col:first-child::before {
             left: 50%;
+            right: 0;
         }
 
         .org-child-col:last-child::before {
+            left: 0;
             right: 50%;
         }
 
@@ -152,9 +159,10 @@
             display: none;
         }
 
+        /* Vertical Stem Up (Dotted) */
         .org-stem-up {
             width: 0;
-            height: 35px;
+            height: 30px;
             border-left: 2px dashed #f5b91b;
             margin: 0 auto;
         }
@@ -164,9 +172,9 @@
             background: #1a1e29;
             border: 2px solid #f5b91b;
             border-radius: 14px;
-            padding: 14px 16px;
-            min-width: 150px;
-            max-width: 180px;
+            padding: 12px 14px;
+            min-width: 140px;
+            max-width: 160px;
             text-align: center;
             cursor: pointer;
             display: flex;
@@ -205,41 +213,41 @@
         }
 
         .node-avatar {
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             background: radial-gradient(circle, #252a38 0%, #12151c 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #f5b91b;
-            margin: 0 auto 8px;
+            margin: 0 auto 6px;
             border: 2px solid #f5b91b;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
         }
 
         .node-name {
             font-weight: 600;
-            font-size: .85rem;
+            font-size: .8rem;
             color: #fff;
             margin-bottom: 3px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             width: 100%;
-            padding: 4px 8px;
+            padding: 3px 6px;
             background: #12151c;
             border-radius: 20px;
             border: 1px solid rgba(245, 185, 27, 0.2);
         }
 
         .node-id {
-            font-size: 11px;
+            font-size: 10px;
             color: #8c98a9;
             font-family: monospace;
-            margin-top: 4px;
+            margin-top: 2px;
         }
 
         #node-tooltip {
@@ -303,26 +311,36 @@
     <div class="tt-row"><span class="tt-label">Email Id</span><span class="tt-val" id="tt-email"></span></div>
     <div class="tt-row"><span class="tt-label">Mobile No.</span><span class="tt-val" id="tt-mobile"></span></div>
     <div class="tt-row"><span class="tt-label">Self ID</span><span class="tt-val" id="tt-self-id"></span></div>
-    <div class="tt-row"><span class="tt-label">Sponsor ID</span><span class="tt-val" id="tt-sponsor-id" style="color:#f5b91b; font-weight: bold;"></span></div>
-    <div class="tt-row"><span class="tt-label">Sponsor Name</span><span class="tt-val" id="tt-sponsor-name" style="color:#09b7e2; font-weight: bold;"></span></div>
-    <div class="tt-row"><span class="tt-label">Package Name</span><span class="tt-val" id="tt-pkg" style="color:#f5b91b"></span></div>
-    <div class="tt-row"><span class="tt-label">Active Investment</span><span class="tt-val" id="tt-inv" style="color:#2ecc71"></span></div>
+    <div class="tt-row"><span class="tt-label">Sponsor ID</span><span class="tt-val" id="tt-sponsor-id"
+            style="color:#f5b91b; font-weight: bold;"></span></div>
+    <div class="tt-row"><span class="tt-label">Sponsor Name</span><span class="tt-val" id="tt-sponsor-name"
+            style="color:#09b7e2; font-weight: bold;"></span></div>
+    <div class="tt-row"><span class="tt-label">Package Name</span><span class="tt-val" id="tt-pkg"
+            style="color:#f5b91b"></span></div>
+    <div class="tt-row"><span class="tt-label">Active Investment</span><span class="tt-val" id="tt-inv"
+            style="color:#2ecc71"></span></div>
 </div>
 
 <div class="genealogy-header">
     <div>
         <h2 class="mb-1 fw-bold" style="color:#fff; font-size: 1.5rem;">Network Tree View</h2>
-        <p class="text-muted mb-0" id="treeSubtitle" style="font-size: 0.85rem;">View complete downline structure and referral hierarchy.</p>
+        <p class="text-muted mb-0" id="treeSubtitle" style="font-size: 0.85rem;">View complete downline structure and
+            referral hierarchy.</p>
     </div>
 
     <form class="filter-group mb-0" method="GET" action="{{ $searchRoute }}">
         <div class="search-wrapper">
-            <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #8c98a9; font-size: 12px;"><i class="mdi mdi-magnify"></i></span>
-            <input type="text" class="search-input" name="search" id="searchInput" value="{{ $searchQuery ?: request('search') }}" placeholder="Search by name, ID..." autocomplete="off">
+            <span
+                style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #8c98a9; font-size: 12px;"><i
+                    class="mdi mdi-magnify"></i></span>
+            <input type="text" class="search-input" name="search" id="searchInput"
+                value="{{ $searchQuery ?: request('search') }}" placeholder="Search by name, ID..." autocomplete="off">
         </div>
 
         @if ($searchQuery || request('search'))
-            <a href="{{ $searchRoute }}" class="btn btn-outline-light btn-sm" style="height: 38px; display: flex; align-items: center; border-radius: 10px;" title="Reset"><i class="mdi mdi-reload"></i></a>
+            <a href="{{ $searchRoute }}" class="btn btn-outline-light btn-sm"
+                style="height: 38px; display: flex; align-items: center; border-radius: 10px;" title="Reset"><i
+                    class="mdi mdi-reload"></i></a>
         @endif
     </form>
 </div>
@@ -338,7 +356,8 @@
         <div class="stat-label">Self ID</div>
     </div>
     <div class="stat-card">
-        <div class="stat-value">{{ number_format($displayUser->investments()->where('status', 'active')->sum('amount'), 2) }}</div>
+        <div class="stat-value">
+            {{ number_format($displayUser->investments()->where('status', 'active')->sum('amount'), 2) }}</div>
         <div class="stat-label">Total Investment</div>
     </div>
     <div class="stat-card">
@@ -460,7 +479,7 @@
                 var card = e.target.closest('.node-card');
                 if (!card) return;
                 clearTimeout(hide);
-                
+
                 document.getElementById('tt-name').textContent = card.dataset.name;
                 document.getElementById('tt-email').textContent = card.dataset.email;
                 document.getElementById('tt-mobile').textContent = card.dataset.mobile;
@@ -502,14 +521,18 @@
 
         function expandTree(userId, userName) {
             var container = document.getElementById('genealogyContainer');
-            container.innerHTML = '<div style="text-align:center;padding:40px;font-size:1.2rem;color:#f5b91b">Loading Sub-Tree...</div>';
+            container.innerHTML =
+                '<div style="text-align:center;padding:40px;font-size:1.2rem;color:#f5b91b">Loading Sub-Tree...</div>';
 
             var url = G.subtree.replace('PLACEHOLDER', userId);
             fetch(url)
-                .then(function(r) { return r.json(); })
+                .then(function(r) {
+                    return r.json();
+                })
                 .then(function(data) {
                     if (data.success) {
-                        document.querySelector('.genealogy-header h2').textContent = (data.user ? data.user.name : userName) + "'s Tree";
+                        document.querySelector('.genealogy-header h2').textContent = (data.user ? data.user.name :
+                            userName) + "'s Tree";
                         var wrap = document.createElement('div');
                         wrap.id = 'genealogyTree';
                         container.innerHTML = '';
