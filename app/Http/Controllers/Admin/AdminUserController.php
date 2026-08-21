@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Deposit;
 use App\Models\Income;
+use App\Models\Investment;
 use App\Models\Role;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\UserReferral;
+use App\Models\Withdrawal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Services\MLMService;
@@ -438,11 +441,7 @@ class AdminUserController extends Controller
             'remark' => 'Package investment purchase (admin preview)',
         ]);
 
-        
-        
-        
-        
-        \App\Models\Investment::create([
+        Investment::create([
             'user_id' => $user->id,
             'amount' => $amount,
             'activated_at' => now(),
@@ -476,7 +475,7 @@ class AdminUserController extends Controller
             $user->earning_wallet -= $request->amount;
             $user->save();
 
-            \App\Models\Withdrawal::create([
+            Withdrawal::create([
                 'user_id' => $user->id,
                 'amount' => $request->amount,
                 'fee' => $fee,
@@ -504,7 +503,7 @@ class AdminUserController extends Controller
             'reference_no' => 'required|string|max:255',
         ]);
 
-        \App\Models\Deposit::create([
+        Deposit::create([
             'user_id' => $user->id,
             'amount' => $request->amount,
             'reference_no' => $request->reference_no,

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Deposit;
+use App\Models\PaymentMethod;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -45,7 +46,7 @@ class DepositController extends Controller
         }
 
         [, $type, $id] = $matches;
-        $method = \App\Models\PaymentMethod::whereKey($id)->where('type', $type)->where('is_active', true)->first();
+        $method = PaymentMethod::whereKey($id)->where('type', $type)->where('is_active', true)->first();
 
         if (! $method) {
             return back()->withInput()->withErrors(['payment_method' => 'Please select an active payment method.']);

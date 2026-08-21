@@ -19,25 +19,20 @@ class MLMService
     {
         $levelPercentages = [
             1 => 5.00,
-            2 => 4.00,
-            3 => 3.00,
-            4 => 2.00,
-            5 => 1.00,
         ];
 
         $currentSponsor = $buyer->sponsor;
         $level = 1;
 
-        while ($currentSponsor && $level <= 5) {
-            // Check if sponsor's account status is active
+        // Sirf Level 1 ke liye chalega
+        while ($currentSponsor && $level <= 1) {
             if ($currentSponsor->status === 'active') {
-                // Count active direct referrals for eligibility
                 $activeDirectsCount = User::where('sponsor_id', $currentSponsor->id)
                     ->where('status', 'active')
                     ->count();
 
                 if ($activeDirectsCount >= 1) {
-                    $percentage = $levelPercentages[$level] ?? 1.00;
+                    $percentage = $levelPercentages[$level] ?? 5.00;
                     $commissionAmount = ($investmentAmount * $percentage) / 100;
 
                     if ($commissionAmount > 0) {
@@ -72,7 +67,6 @@ class MLMService
             $level++;
         }
     }
-
     /**
      * Process Level Income up to 30 levels with Notebook Rules:
      * - L1: 10% (Requires >= 3 Directs)

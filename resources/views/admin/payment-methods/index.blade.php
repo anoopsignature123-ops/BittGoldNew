@@ -1,7 +1,31 @@
 @extends('admin.layouts.master')
 
 @push('title')
-    Payment Methods
+    Payment Methods Management
+@endpush
+
+@push('styles')
+<style>
+    /* Uniform Golden Border for all 3 Payment Cards */
+    .pm-card {
+        background: #12151c;
+        border: 2px solid #f5c842 !important;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+    .preview-qr-img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 2px solid rgba(245, 189, 50, 0.4);
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    .preview-qr-img:hover {
+        transform: scale(1.05);
+    }
+</style>
 @endpush
 
 @section('content')
@@ -10,350 +34,210 @@
             <div>
                 <span class="eyebrow">MASTER SETTINGS</span>
                 <h1>Payment <span>Methods</span></h1>
-                <p>Manage QR, UPI and Bank payment options users can select while funding their wallet.</p>
+                <p>Configure QR Code, UPI ID, and Bank Transfer details for member deposits.</p>
             </div>
-            {{-- <a href="{{ route('admin.payment-methods.diagnostics') }}" class="btn btn-outline-warning mt-3 mt-md-0">
-                <i class="mdi mdi-heart-pulse me-1"></i> System status
-            </a> --}}
         </div>
 
-        <div class="row mb-4 payment-method-summary">
-            <div class="col-sm-4 mb-3 mb-sm-0"><div class="card gold-card h-100"><div class="card-body py-3"><small class="text-muted text-uppercase">Total methods</small><h3 class="mb-0 mt-1 text-white">{{ $methods->count() }}</h3></div></div></div>
-            <div class="col-sm-4 mb-3 mb-sm-0"><div class="card gold-card h-100"><div class="card-body py-3"><small class="text-muted text-uppercase">Available to users</small><h3 class="mb-0 mt-1 text-success">{{ $activeMethods }}</h3></div></div></div>
-            <div class="col-sm-4"><div class="card gold-card h-100"><div class="card-body py-3"><small class="text-muted text-uppercase">Inactive</small><h3 class="mb-0 mt-1 text-secondary">{{ $methods->count() - $activeMethods }}</h3></div></div></div>
-        </div>
+        @php
+            $qrMethod = $methods->firstWhere('type', 'qr');
+            $upiMethod = $methods->firstWhere('type', 'upi');
+            $bankMethod = $methods->firstWhere('type', 'bank');
+        @endphp
 
-        {{-- @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show mb-4 border-0 shadow-lg"
-                style="background: #11141a; border-left: 4px solid #2ecc71 !important; color: #fff;">
-                <i class="bi bi-check-circle-fill me-2 text-success"></i> {{ session('success') }}
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
-            </div>
-        @endif --}}
-
-        @if (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show mb-4 border-0 shadow-lg"
-                style="background: #11141a; border-left: 4px solid #e74c3c !important; color: #fff;">
-                <i class="bi bi-exclamation-triangle-fill me-2 text-danger"></i> {{ session('error') }}
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
-            </div>
-        @endif
-
-        @if ($errors->any())
-            <div class="alert alert-danger mb-4">
-                <strong>Please fix the following:</strong>
-                <ul class="mb-0 mt-2">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
-            </div>
-        @endif
-
-        <div class="row align-items-start">
-            {{-- ADD PAYMENT METHOD CARD --}}
+        <div class="row">
+            {{-- ================= 1. QR CODE METHOD CARD ================= --}}
             <div class="col-lg-4 mb-4">
-                <div class="card gold-card">
-                    <div class="card-body">
-                        <h4 class="card-title mb-3">Add Payment Method</h4>
-                        <form method="POST" action="{{ route('admin.payment-methods.store') }}"
-                            enctype="multipart/form-data">
+                <div class="card pm-card h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-4 pb-2 border-bottom border-secondary">
+                            <h4 class="card-title text-warning mb-0"><i class="mdi mdi-qrcode-scan me-2"></i>QR Code Gateway</h4>
+                            <span class="badge {{ $qrMethod ? 'bg-success' : 'bg-secondary' }}">
+                                {{ $qrMethod ? 'Configured' : 'Not Set' }}
+                            </span>
+                        </div>
+
+                        <form id="qrForm" action="{{ route('admin.payment-methods.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
+                            <input type="hidden" name="type" value="qr">
 
                             <div class="mb-3">
-                                <label class="form-label text-white small">Type</label>
-                                <select name="type" id="add_type" class="form-control text-white bg-dark border-secondary" required
-                                    onchange="toggleFields('add')" style="border-radius: 8px;">
-                                    <option value="qr" {{ old('type') == 'qr' ? 'selected' : '' }}>QR Code</option>
-                                    <option value="upi" {{ old('type') == 'upi' ? 'selected' : '' }}>UPI</option>
-                                    <option value="bank" {{ old('type') == 'bank' ? 'selected' : '' }}>Bank Transfer</option>
-                                </select>
+                                <label class="form-label text-muted small">Gateway Title</label>
+                                <input type="text" name="title" id="qr_title" class="form-control text-white bg-dark border-secondary" placeholder="e.g. Official QR Scanner" value="{{ $qrMethod->title ?? '' }}" required style="border-radius: 8px;">
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label text-white small">Title</label>
-                                <input type="text" name="title" class="form-control text-white bg-dark border-secondary"
-                                    placeholder="e.g. GooglePay QR, SBI Bank" value="{{ old('title', '') }}" required style="border-radius: 8px;">
+                                <label class="form-label text-muted small">Upload QR Image</label>
+                                <div class="mb-2 text-center p-3 bg-dark rounded border border-secondary" id="qr-preview-box" style="{{ ($qrMethod && $qrMethod->qr_image) ? '' : 'display:none;' }}">
+                                    <img id="qr-preview-tag" src="{{ ($qrMethod && $qrMethod->qr_image) ? asset('storage/' . $qrMethod->qr_image) : '#' }}" alt="QR Code" class="preview-qr-img" data-bs-toggle="modal" data-bs-target="#imageModal">
+                                    <small class="d-block text-muted mt-1">Click to view full image</small>
+                                </div>
+                                <input type="file" name="qr_image" id="qr_image_input" class="form-control text-white bg-dark border-secondary" accept="image/*" style="border-radius: 8px;" {{ $qrMethod ? '' : 'required' }}>
                             </div>
 
-                            <div class="mb-3">
-                                <label class="form-label text-white small">Sort Order</label>
-                                <input type="number" name="sort_order" class="form-control text-white bg-dark border-secondary"
-                                    value="{{ old('sort_order', 0) }}" min="0" style="border-radius: 8px;">
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label text-white small">Active Status</label>
-                                <select name="is_active" class="form-control text-white bg-dark border-secondary" style="border-radius: 8px;">
-                                    <option value="1" {{ old('is_active', 1) == 1 ? 'selected' : '' }}>Yes</option>
-                                    <option value="0" {{ old('is_active', 1) == 0 ? 'selected' : '' }}>No</option>
-                                </select>
-                            </div>
-
-                            {{-- DYNAMIC FIELDS CONTAINER --}}
-                            <div id="add_qr_container" class="dynamic-field-group">
-                                <div class="mb-3">
-                                    <label class="form-label text-white small">QR Image</label>
-                                <input type="file" name="qr_image" class="form-control text-white bg-dark border-secondary method-qr-input" accept="image/*" style="border-radius: 8px;">
-                                <small class="text-muted">JPG, PNG or WEBP, maximum 2 MB.</small>
-                                </div>
-                            </div>
-
-                            <div id="add_upi_container" class="dynamic-field-group" style="display: none;">
-                                <div class="mb-3">
-                                    <label class="form-label text-white small">UPI ID</label>
-                                    <input type="text" name="upi_id" class="form-control text-white bg-dark border-secondary"
-                                        placeholder="example@upi" value="{{ old('upi_id', '') }}" style="border-radius: 8px;">
-                                </div>
-                            </div>
-
-                            <div id="add_bank_container" class="dynamic-field-group" style="display: none;">
-                                <div class="mb-3">
-                                    <label class="form-label text-white small">Bank Name</label>
-                                    <input type="text" name="bank_name" class="form-control text-white bg-dark border-secondary"
-                                        placeholder="Bank name" value="{{ old('bank_name', '') }}" style="border-radius: 8px;">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label text-white small">Account Holder Name</label>
-                                    <input type="text" name="account_holder_name" class="form-control text-white bg-dark border-secondary"
-                                        placeholder="Account holder name" value="{{ old('account_holder_name', '') }}" style="border-radius: 8px;">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label text-white small">Account Number</label>
-                                    <input type="text" name="account_number" class="form-control text-white bg-dark border-secondary"
-                                        placeholder="Account number" value="{{ old('account_number', '') }}" style="border-radius: 8px;">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label text-white small">IFSC Code</label>
-                                    <input type="text" name="ifsc_code" class="form-control text-white bg-dark border-secondary"
-                                        placeholder="IFSC code" value="{{ old('ifsc_code', '') }}" style="border-radius: 8px;">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label text-white small">Branch Name</label>
-                                    <input type="text" name="branch_name" class="form-control text-white bg-dark border-secondary"
-                                        placeholder="Branch name" value="{{ old('branch_name', '') }}" style="border-radius: 8px;">
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label text-white small">Notes (Optional)</label>
-                                <textarea name="notes" class="form-control text-white bg-dark border-secondary" rows="2" placeholder="Extra instructions for users" style="border-radius: 8px;">{{ old('notes', '') }}</textarea>
-                            </div>
-
-                            <button type="submit" class="btn btn-gold w-100 py-2" style="border-radius: 8px; font-weight: 600;">Save Payment Method</button>
+                            <button type="submit" class="btn btn-gold w-100 py-2 fw-bold" style="border-radius: 8px;">
+                                <i class="mdi mdi-content-save me-1"></i> Save QR Method
+                            </button>
                         </form>
+
+                        @if($qrMethod)
+                            <form action="{{ route('admin.payment-methods.destroy', $qrMethod->id) }}" method="POST" class="mt-2" onsubmit="return confirm('Are you sure you want to remove this QR method?');">
+                                @csrf @method('DELETE')
+                                <button type="submit" class="btn btn-outline-danger btn-sm w-100" style="border-radius: 8px;">Remove Method</button>
+                            </form>
+                        @endif
                     </div>
                 </div>
             </div>
 
-            {{-- SAVED PAYMENT METHODS TABLE --}}
-            <div class="col-lg-8 mb-4">
-                <div class="card gold-card users-card detailed-users-card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <div><h4 class="card-title mb-1">Saved Payment Methods</h4><small class="text-muted">Active methods are visible on the user deposit page.</small></div>
-                            <span class="badge bg-warning text-dark">{{ $methods->count() }} Total</span>
+            {{-- ================= 2. UPI METHOD CARD ================= --}}
+            <div class="col-lg-4 mb-4">
+                <div class="card pm-card h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-4 pb-2 border-bottom border-secondary">
+                            <h4 class="card-title text-info mb-0"><i class="mdi mdi-cellphone-iphone me-2"></i>UPI Gateway</h4>
+                            <span class="badge {{ $upiMethod ? 'bg-success' : 'bg-secondary' }}">
+                                {{ $upiMethod ? 'Configured' : 'Not Set' }}
+                            </span>
                         </div>
-                        <div class="table-responsive table-responsive-scroll">
-                            <table class="table user-table detailed-user-table mb-0" style="min-width: 900px;">
-                                <thead>
-                                    <tr>
-                                        <th>Type</th>
-                                        <th>Title</th>
-                                        <th>Details</th>
-                                        <th>Status</th>
-                                        <th>Order</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse($methods as $method)
-                                        <tr>
-                                            <td>
-                                                <span class="badge bg-warning text-dark text-uppercase px-2 py-1">{{ $method->type }}</span>
-                                            </td>
-                                            <td><strong>{{ $method->title }}</strong></td>
-                                            <td>
-                                                @if ($method->type === 'qr' && $method->qr_image)
-                                                    <img src="{{ asset('storage/' . $method->qr_image) }}"
-                                                        alt="{{ $method->title }}"
-                                                        style="max-width:40px; max-height:40px; border-radius:6px; object-fit: cover;">
-                                                @elseif ($method->type === 'upi')
-                                                    <small class="text-info">{{ $method->upi_id }}</small>
-                                                @elseif ($method->type === 'bank')
-                                                    <small class="text-muted">{{ $method->bank_name }}<br><span class="text-white">{{ $method->account_number }}</span></small>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <span class="badge {{ $method->is_active ? 'bg-success' : 'bg-secondary' }}">
-                                                    {{ $method->is_active ? 'Active' : 'Inactive' }}
-                                                </span>
-                                            </td>
-                                            <td>{{ $method->sort_order }}</td>
-                                            <td>
-                                                <div class="d-flex gap-2">
-                                                    <button type="button" class="btn btn-sm btn-outline-warning px-3"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#editPaymentMethod{{ $method->id }}" style="border-radius: 6px;">
-                                                        Edit
-                                                    </button>
-                                                    <form method="POST"
-                                                        action="{{ route('admin.payment-methods.destroy', $method) }}"
-                                                        onsubmit="return confirm('Delete this payment method?');">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit"
-                                                            class="btn btn-sm btn-outline-danger px-3" style="border-radius: 6px;">Delete</button>
-                                                    </form>
-                                                    <form method="POST" action="{{ route('admin.payment-methods.toggle', $method) }}">
-                                                        @csrf
-                                                        @method('PATCH')
-                                                        <button type="submit" class="btn btn-sm {{ $method->is_active ? 'btn-outline-secondary' : 'btn-outline-success' }} px-3" style="border-radius: 6px;">
-                                                            {{ $method->is_active ? 'Disable' : 'Enable' }}
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="6" class="text-center py-5 text-muted">No payment methods added yet.</td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
+
+                        <form method="POST" action="{{ $upiMethod ? route('admin.payment-methods.update', $upiMethod->id) : route('admin.payment-methods.store') }}">
+                            @csrf
+                            @if($upiMethod) @method('PUT') @endif
+                            <input type="hidden" name="type" value="upi">
+
+                            <div class="mb-3">
+                                <label class="form-label text-muted small">Gateway Title</label>
+                                <input type="text" name="title" class="form-control text-white bg-dark border-secondary" placeholder="e.g. GooglePay / PhonePe" value="{{ old('title', $upiMethod->title ?? '') }}" required style="border-radius: 8px;">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label text-muted small">UPI ID / VPA</label>
+                                <input type="text" name="upi_id" class="form-control text-white bg-dark border-secondary font-monospace" placeholder="merchant@oksbi" value="{{ old('upi_id', $upiMethod->upi_id ?? '') }}" required style="border-radius: 8px;">
+                            </div>
+
+                            <button type="submit" class="btn btn-gold w-100 py-2 fw-bold mt-4" style="border-radius: 8px;">
+                                <i class="mdi mdi-content-save me-1"></i> {{ $upiMethod ? 'Update UPI Method' : 'Save UPI Method' }}
+                            </button>
+                        </form>
+
+                        @if($upiMethod)
+                            <form action="{{ route('admin.payment-methods.destroy', $upiMethod->id) }}" method="POST" class="mt-2" onsubmit="return confirm('Are you sure you want to remove this UPI method?');">
+                                @csrf @method('DELETE')
+                                <button type="submit" class="btn btn-outline-danger btn-sm w-100" style="border-radius: 8px;">Remove Method</button>
+                            </form>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            {{-- ================= 3. BANK TRANSFER METHOD CARD ================= --}}
+            <div class="col-lg-4 mb-4">
+                <div class="card pm-card h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center justify-content-between mb-4 pb-2 border-bottom border-secondary">
+                            <h4 class="card-title text-success mb-0"><i class="mdi mdi-bank me-2"></i>Bank Transfer</h4>
+                            <span class="badge {{ $bankMethod ? 'bg-success' : 'bg-secondary' }}">
+                                {{ $bankMethod ? 'Configured' : 'Not Set' }}
+                            </span>
                         </div>
+
+                        <form method="POST" action="{{ $bankMethod ? route('admin.payment-methods.update', $bankMethod->id) : route('admin.payment-methods.store') }}">
+                            @csrf
+                            @if($bankMethod) @method('PUT') @endif
+                            <input type="hidden" name="type" value="bank">
+
+                            <div class="mb-2">
+                                <label class="form-label text-muted small" style="font-size:11px;">Gateway Title</label>
+                                <input type="text" name="title" class="form-control form-control-sm text-white bg-dark border-secondary" placeholder="e.g. HDFC Direct Bank" value="{{ old('title', $bankMethod->title ?? '') }}" required style="border-radius: 6px;">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6 mb-2">
+                                    <label class="form-label text-muted small" style="font-size:11px;">Bank Name</label>
+                                    <input type="text" name="bank_name" class="form-control form-control-sm text-white bg-dark border-secondary" placeholder="Bank Name" value="{{ old('bank_name', $bankMethod->bank_name ?? '') }}" required style="border-radius: 6px;">
+                                </div>
+                                <div class="col-6 mb-2">
+                                    <label class="form-label text-muted small" style="font-size:11px;">Holder Name</label>
+                                    <input type="text" name="account_holder_name" class="form-control form-control-sm text-white bg-dark border-secondary" placeholder="Holder Name" value="{{ old('account_holder_name', $bankMethod->account_holder_name ?? '') }}" required style="border-radius: 6px;">
+                                </div>
+                            </div>
+
+                            <div class="mb-2">
+                                <label class="form-label text-muted small" style="font-size:11px;">Account Number</label>
+                                <input type="text" name="account_number" class="form-control form-control-sm text-white bg-dark border-secondary font-monospace" placeholder="Account Number" value="{{ old('account_number', $bankMethod->account_number ?? '') }}" required style="border-radius: 6px;">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-6 mb-2">
+                                    <label class="form-label text-muted small" style="font-size:11px;">IFSC Code</label>
+                                    <input type="text" name="ifsc_code" class="form-control form-control-sm text-white bg-dark border-secondary font-monospace" placeholder="IFSC Code" value="{{ old('ifsc_code', $bankMethod->ifsc_code ?? '') }}" required style="border-radius: 6px;">
+                                </div>
+                                <div class="col-6 mb-2">
+                                    <label class="form-label text-muted small" style="font-size:11px;">Branch Name</label>
+                                    <input type="text" name="branch_name" class="form-control form-control-sm text-white bg-dark border-secondary" placeholder="Branch Name" value="{{ old('branch_name', $bankMethod->branch_name ?? '') }}" style="border-radius: 6px;">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-gold w-100 py-2 fw-bold mt-2" style="border-radius: 8px;">
+                                <i class="mdi mdi-content-save me-1"></i> {{ $bankMethod ? 'Update Bank Details' : 'Save Bank Details' }}
+                            </button>
+                        </form>
+
+                        @if($bankMethod)
+                            <form action="{{ route('admin.payment-methods.destroy', $bankMethod->id) }}" method="POST" class="mt-2" onsubmit="return confirm('Are you sure you want to remove this bank method?');">
+                                @csrf @method('DELETE')
+                                <button type="submit" class="btn btn-outline-danger btn-sm w-100" style="border-radius: 8px;">Remove Method</button>
+                            </form>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- STANDARDIZED EDIT MODALS RENDERED OUTSIDE TO AVOID BREAKING LAYOUT --}}
-    @foreach ($methods as $method)
-        <div class="modal fade" id="editPaymentMethod{{ $method->id }}" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content shadow-lg"
-                    style="background-color: #11141a; color: #fff; border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 14px;">
-                    <form method="POST" action="{{ route('admin.payment-methods.update', $method) }}"
-                        enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
-                        <div class="modal-header border-bottom border-secondary px-4 py-3">
-                            <h5 class="modal-title fw-bold">Edit Method: {{ $method->title }}</h5>
-                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                        </div>
-                        <div class="modal-body px-4 py-3">
-                            <div class="mb-3">
-                                <label class="form-label small text-muted">Type</label>
-                                <select name="type" id="edit_type_{{ $method->id }}"
-                                    class="form-control text-white bg-dark border-secondary" required
-                                    onchange="toggleEditFields({{ $method->id }})" style="border-radius: 8px;">
-                                    <option value="qr" {{ $method->type === 'qr' ? 'selected' : '' }}>QR Code</option>
-                                    <option value="upi" {{ $method->type === 'upi' ? 'selected' : '' }}>UPI</option>
-                                    <option value="bank" {{ $method->type === 'bank' ? 'selected' : '' }}>Bank Transfer</option>
-                                </select>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label small text-muted">Title</label>
-                                <input type="text" name="title" class="form-control text-white bg-dark border-secondary"
-                                    value="{{ $method->title }}" required style="border-radius: 8px;">
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label small text-muted">Sort Order</label>
-                                <input type="number" name="sort_order" class="form-control text-white bg-dark border-secondary"
-                                    value="{{ $method->sort_order }}" min="0" style="border-radius: 8px;">
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label small text-muted">Status</label>
-                                <select name="is_active" class="form-control text-white bg-dark border-secondary" style="border-radius: 8px;">
-                                    <option value="1" {{ $method->is_active ? 'selected' : '' }}>Active</option>
-                                    <option value="0" {{ !$method->is_active ? 'selected' : '' }}>Inactive</option>
-                                </select>
-                            </div>
-
-                            {{-- DYNAMIC EDIT FIELDS --}}
-                            <div class="mb-3 edit_qr_container_{{ $method->id }}"
-                                style="{{ $method->type === 'qr' ? '' : 'display:none;' }}">
-                                <label class="form-label small text-muted">QR Image</label>
-                                @if ($method->qr_image)
-                                    <div class="mb-2">
-                                        <img src="{{ asset('storage/' . $method->qr_image) }}" width="60" style="border-radius:6px; border: 1px solid #444;">
-                                    </div>
-                                @endif
-                                <input type="file" name="qr_image" class="form-control text-white bg-dark border-secondary method-qr-input"
-                                    accept="image/*" style="border-radius: 8px;">
-                            </div>
-
-                            <div class="mb-3 edit_upi_container_{{ $method->id }}"
-                                style="{{ $method->type === 'upi' ? '' : 'display:none;' }}">
-                                <label class="form-label small text-muted">UPI ID</label>
-                                <input type="text" name="upi_id" class="form-control text-white bg-dark border-secondary"
-                                    value="{{ old('upi_id', $method->upi_id ?? '') }}" style="border-radius: 8px;">
-                            </div>
-
-                            <div class="edit_bank_container_{{ $method->id }}"
-                                style="{{ $method->type === 'bank' ? '' : 'display:none;' }}">
-                                <div class="mb-3">
-                                    <label class="form-label small text-muted">Bank Name</label>
-                                    <input type="text" name="bank_name" class="form-control text-white bg-dark border-secondary"
-                                        value="{{ old('bank_name', $method->bank_name ?? '') }}" style="border-radius: 8px;">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label small text-muted">Account Holder Name</label>
-                                    <input type="text" name="account_holder_name"
-                                        class="form-control text-white bg-dark border-secondary"
-                                        value="{{ old('account_holder_name', $method->account_holder_name ?? '') }}" style="border-radius: 8px;">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label small text-muted">Account Number</label>
-                                    <input type="text" name="account_number" class="form-control text-white bg-dark border-secondary"
-                                        value="{{ old('account_number', $method->account_number ?? '') }}" style="border-radius: 8px;">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label small text-muted">IFSC Code</label>
-                                    <input type="text" name="ifsc_code" class="form-control text-white bg-dark border-secondary"
-                                        value="{{ old('ifsc_code', $method->ifsc_code ?? '') }}" style="border-radius: 8px;">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label small text-muted">Branch Name</label>
-                                    <input type="text" name="branch_name" class="form-control text-white bg-dark border-secondary"
-                                        value="{{ old('branch_name', $method->branch_name ?? '') }}" style="border-radius: 8px;">
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label small text-muted">Notes</label>
-                                <textarea name="notes" class="form-control text-white bg-dark border-secondary" rows="2" style="border-radius: 8px;">{{ old('notes', $method->notes ?? '') }}</textarea>
-                            </div>
-                        </div>
-                        <div class="modal-footer border-top border-secondary px-4 py-3">
-                            <button type="button" class="btn btn-secondary px-3 py-2" data-bs-dismiss="modal" style="border-radius: 8px;">Cancel</button>
-                            <button type="submit" class="btn btn-gold px-4 py-2" style="border-radius: 8px;">Update Method</button>
-                        </div>
-                    </form>
+    {{-- FULL IMAGE VIEWER MODAL --}}
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content bg-dark border-secondary text-center p-3" style="border-radius: 14px;">
+                <div class="modal-body p-0">
+                    <img id="modalImagePreview" src="" alt="Full QR Preview" class="img-fluid rounded border border-warning" style="max-height: 450px;">
+                </div>
+                <div class="modal-footer border-0 justify-content-center pt-3 pb-0">
+                    <button type="button" class="btn btn-secondary btn-sm px-4" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
-    @endforeach
+    </div>
 @endsection
 
 @push('scripts')
-    <script>
-        function toggleFields(prefix) {
-            let type = document.getElementById(prefix + '_type').value;
-            document.getElementById(prefix + '_qr_container').style.display = (type === 'qr') ? 'block' : 'none';
-            document.getElementById(prefix + '_upi_container').style.display = (type === 'upi') ? 'block' : 'none';
-            document.getElementById(prefix + '_bank_container').style.display = (type === 'bank') ? 'block' : 'none';
-            document.querySelector('#' + prefix + '_qr_container .method-qr-input').required = type === 'qr';
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const qrInput = document.getElementById('qr_image_input');
+        const previewBox = document.getElementById('qr-preview-box');
+        const previewTag = document.getElementById('qr-preview-tag');
+        const modalImg = document.getElementById('modalImagePreview');
+
+        if(qrInput) {
+            qrInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        previewTag.src = event.target.result;
+                        modalImg.src = event.target.result;
+                        previewBox.style.display = 'block';
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
         }
 
-        function toggleEditFields(id) {
-            let type = document.getElementById('edit_type_' + id).value;
-            document.querySelector('.edit_qr_container_' + id).style.display = (type === 'qr') ? 'block' : 'none';
-            document.querySelector('.edit_upi_container_' + id).style.display = (type === 'upi') ? 'block' : 'none';
-            document.querySelector('.edit_bank_container_' + id).style.display = (type === 'bank') ? 'block' : 'none';
+        if(previewTag) {
+            previewTag.addEventListener('click', function() {
+                modalImg.src = this.src;
+            });
         }
-
-        document.addEventListener('DOMContentLoaded', () => toggleFields('add'));
-    </script>
+    });
+</script>
 @endpush

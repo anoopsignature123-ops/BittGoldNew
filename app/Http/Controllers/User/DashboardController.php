@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Income;
 use App\Services\MLMService;
-use Illuminate\Http\Request;
 use Carbon\Carbon;
 
 class DashboardController extends Controller
@@ -33,7 +32,7 @@ class DashboardController extends Controller
         $today = now()->toDateString();
 
         // 1. MLM Service se Power Leg aur Weaker Leg calculate karein (Jaise Rank Report mein aata hai)
-        $mlmService = new \App\Services\MLMService();
+        $mlmService = new MLMService();
         [$powerLegBusiness, $weakerLegBusiness] = $mlmService->calculateLegBusiness($user);
 
         // 2. Latest Leadership Salary fetch karein
@@ -44,7 +43,7 @@ class DashboardController extends Controller
 
         $leadershipDetails = [
             'amount' => $latestLeadershipIncome ? $latestLeadershipIncome->amount : 0,
-            'month' => $latestLeadershipIncome ? \Carbon\Carbon::parse($latestLeadershipIncome->created_at)->format('F Y') : 'No Salary Credited Yet',
+            'month' => $latestLeadershipIncome ? Carbon::parse($latestLeadershipIncome->created_at)->format('F Y') : 'No Salary Credited Yet',
         ];
 
         // 3. Earnings data
