@@ -66,9 +66,20 @@
                                             {{ ucfirst(str_replace('_', ' ', $inc->income_type)) }}
                                         </span>
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         <strong>{{ $inc->fromUser->name ?? 'N/A' }}</strong>
                                         <small class="d-block text-muted">{{ $inc->fromUser->email ?? '' }}</small>
+                                    </td> --}}
+
+                                    <td>
+                                         <div class="member-cell">
+                                            <span class="member-avatar">{{ strtoupper(substr($inc->fromUser->name ?? 'U', 0, 2)) }}</span>
+                                            <div>
+                                                <strong>{{ $inc->fromUser->name ?? 'N/A' }}</strong>
+                                                <strong class="text-warning mt-2">{{ $inc->fromUser->referral_code ?? 'N/A' }}</strong>
+                                                <small>{{ $inc->fromUser->email ?? 'N/A' }}</small>
+                                            </div>
+                                        </div>
                                     </td>
                                     <td>Level {{ $inc->level }}</td>
                                     <td>{{ number_format($inc->package_amount, 2) }}</td>
