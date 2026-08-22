@@ -75,6 +75,93 @@ class MLMService
      * - L4: 2% (Requires >= 10 Directs)
      * - L5-L30: 1% (Requires >= 11 Directs)
      */
+    // public function distributeLevelIncome(User $buyer, float $investmentAmount)
+    // {
+    //     $levelPercentages = [
+    //         1 => 10.00,
+    //         2 => 5.00,
+    //         3 => 3.00,
+    //         4 => 2.00,
+    //     ];
+
+    //     // Automatically set 1.00% for levels 5 to 30
+    //     for ($i = 5; $i <= 30; $i++) {
+    //         $levelPercentages[$i] = 1.00;
+    //     }
+
+    //     $currentUpline = $buyer->sponsor;
+    //     $level = 1;
+
+    //     while ($currentUpline && $level <= 30) {
+    //         if ($currentUpline->status === 'active') {
+    //             $activeDirectsCount = User::where('sponsor_id', $currentUpline->id)
+    //                 ->where('status', 'active')
+    //                 ->count();
+
+    //             $isEligible = false;
+
+    //             // Check direct requirements per level tier
+    //             if ($level == 1 && $activeDirectsCount >= 3) {
+    //                 $isEligible = true;
+    //             } elseif ($level == 2 && $activeDirectsCount >= 6) {
+    //                 $isEligible = true;
+    //             } elseif ($level == 3 && $activeDirectsCount >= 9) {
+    //                 $isEligible = true;
+    //             } elseif ($level == 4 && $activeDirectsCount >= 10) {
+    //                 $isEligible = true;
+    //             } elseif ($level >= 5 && $level <= 30 && $activeDirectsCount >= 11) {
+    //                 $isEligible = true;
+    //             }
+
+    //             if ($isEligible) {
+    //                 $percentage = $levelPercentages[$level] ?? 1.00;
+    //                 $commissionAmount = ($investmentAmount * $percentage) / 100;
+
+    //                 if ($commissionAmount > 0) {
+    //                     // Credit to earning wallet
+    //                     $currentUpline->earning_wallet += $commissionAmount;
+    //                     $currentUpline->save();
+
+    //                     // Log income entry
+    //                     Income::create([
+    //                         'user_id' => $currentUpline->id,
+    //                         'from_user_id' => $buyer->id,
+    //                         'income_type' => 'level',
+    //                         'level' => $level,
+    //                         'package_amount' => $investmentAmount,
+    //                         'percentage' => $percentage,
+    //                         'amount' => $commissionAmount,
+    //                     ]);
+
+    //                     // Log transaction ledger
+    //                     Transaction::create([
+    //                         'user_id' => $currentUpline->id,
+    //                         'wallet_type' => 'earning_wallet',
+    //                         'type' => 'credit',
+    //                         'amount' => $commissionAmount,
+    //                         'remark' => 'Level ' . $level . ' commission from ' . $buyer->name,
+    //                     ]);
+    //                 }
+    //             }
+    //         }
+
+    //         $currentUpline = $currentUpline->sponsor;
+    //         $level++;
+    //     }
+    // }
+
+    /**
+     * Process Level Income up to 30 levels with Notebook Rules:
+     * - L1: 10% (Requires >= 3 Directs)
+     * - L2: 5% (Requires >= 6 Directs)
+     * - L3: 3% (Requires >= 9 Directs)
+     * - L4: 2% (Requires >= 10 Directs)
+     * - L5-L30: 1% (Requires >= 11 Directs)
+     *
+     * New Rule (Self-Investment Target Requirement after Grace Period):
+     * - Upline must complete required self-investment within 60 days of activation.
+     * - After 60 days, if self-investment target is not met, level income will stop.
+     */
     public function distributeLevelIncome(User $buyer, float $investmentAmount)
     {
         $levelPercentages = [
@@ -94,35 +181,89 @@ class MLMService
 
         while ($currentUpline && $level <= 30) {
             if ($currentUpline->status === 'active') {
+                // 1. Count active direct referrals of the current upline
                 $activeDirectsCount = User::where('sponsor_id', $currentUpline->id)
                     ->where('status', 'active')
                     ->count();
 
                 $isEligible = false;
+                $directsEligible = false;
 
-                // Check direct requirements per level tier
+                // 2. Evaluate direct referral eligibility based on the current level being processed
                 if ($level == 1 && $activeDirectsCount >= 3) {
-                    $isEligible = true;
+                    $directsEligible = true;
                 } elseif ($level == 2 && $activeDirectsCount >= 6) {
-                    $isEligible = true;
+                    $directsEligible = true;
                 } elseif ($level == 3 && $activeDirectsCount >= 9) {
-                    $isEligible = true;
+                    $directsEligible = true;
                 } elseif ($level == 4 && $activeDirectsCount >= 10) {
-                    $isEligible = true;
+                    $directsEligible = true;
                 } elseif ($level >= 5 && $level <= 30 && $activeDirectsCount >= 11) {
-                    $isEligible = true;
+                    $directsEligible = true;
                 }
 
+                // 3. Check eligibility if directs criteria is met (Apply 60-day rule)
+                if ($directsEligible) {
+                    // --- START: Implemented 60-Day Self-Investment Rule ---
+
+                    // Get the upline's latest active package to determine activation date
+                    $activePackageRecord = $currentUpline->userPackages()
+                        ->where('status', 'active')
+                        ->latest('activated_at')
+                        ->first();
+
+                    $passedDays = 0;
+                    if ($activePackageRecord && $activePackageRecord->activated_at) {
+                        // Calculate days passed since package activation
+                        $passedDays = $activePackageRecord->activated_at->diffInDays(now());
+                    }
+
+                    // Get current upline's total active self-investment amount
+                    $selfInvestment = $currentUpline->investments()
+                        ->where('status', 'active')
+                        ->sum('amount');
+
+                    // Define required self-investment targets per level tier
+                    $requiredSelfInvestment = 0;
+                    if ($level == 1) {
+                        $requiredSelfInvestment = 25000;
+                    } elseif ($level == 2) {
+                        $requiredSelfInvestment = 50000;
+                    } elseif ($level == 3) {
+                        $requiredSelfInvestment = 100000;
+                    } elseif ($level == 4) {
+                        $requiredSelfInvestment = 200000;
+                    } elseif ($level >= 5) {
+                        $requiredSelfInvestment = 250000;
+                    }
+
+                    // Eligibility Logic:
+                    // Option A: If self-investment target is already met, they are eligible.
+                    if ($selfInvestment >= $requiredSelfInvestment) {
+                        $isEligible = true;
+                    }
+                    // Option B: If self-investment not met, but still within 60 days (Grace Period), they are eligible.
+                    elseif ($passedDays <= 60) {
+                        $isEligible = true;
+                    }
+                    // Option C: 60 days passed AND self-investment not met -> Not eligible.
+                    else {
+                        $isEligible = false;
+                    }
+                    // --- END: Implemented 60-Day Self-Investment Rule ---
+                }
+
+                // 4. Proceed to credit income if all eligibility conditions are met
                 if ($isEligible) {
                     $percentage = $levelPercentages[$level] ?? 1.00;
                     $commissionAmount = ($investmentAmount * $percentage) / 100;
 
                     if ($commissionAmount > 0) {
-                        // Credit to earning wallet
+                        // Credit commission to earning wallet
                         $currentUpline->earning_wallet += $commissionAmount;
                         $currentUpline->save();
 
-                        // Log income entry
+                        // Log income record
                         Income::create([
                             'user_id' => $currentUpline->id,
                             'from_user_id' => $buyer->id,
@@ -133,7 +274,7 @@ class MLMService
                             'amount' => $commissionAmount,
                         ]);
 
-                        // Log transaction ledger
+                        // Log transaction ledger entry
                         Transaction::create([
                             'user_id' => $currentUpline->id,
                             'wallet_type' => 'earning_wallet',
@@ -145,6 +286,7 @@ class MLMService
                 }
             }
 
+            // Move to the next upline in the sponsor tree
             $currentUpline = $currentUpline->sponsor;
             $level++;
         }
