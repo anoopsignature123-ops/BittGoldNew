@@ -11,6 +11,7 @@ use App\Http\Controllers\User\SupportController;
 use App\Http\Controllers\User\TeamController;
 use App\Http\Controllers\User\TransactionController;
 use App\Http\Controllers\User\UserAuthController;
+use App\Http\Controllers\User\UserKycController;
 use App\Http\Controllers\User\WithdrawalController;
 use App\Http\Middleware\UserGuestMiddleware;
 use App\Http\Middleware\UserMiddleware;
@@ -45,7 +46,7 @@ Route::prefix('user')->name('user.')->group(function () {
             Route::post('/logout', 'logout')->name('logout');
         });
 
-        Route::controller(\App\Http\Controllers\User\UserKycController::class)->group(function () {
+        Route::controller(UserKycController::class)->group(function () {
             Route::get('/kyc', 'index')->name('kyc.index');
             Route::post('/kyc', 'store')->name('kyc.store');
         });

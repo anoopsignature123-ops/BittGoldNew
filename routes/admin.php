@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\AdminKycController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -31,7 +32,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('/logout', 'logout')->name('logout');
         });
 
-        Route::controller(\App\Http\Controllers\Admin\AdminKycController::class)->group(function () {
+        Route::controller(AdminKycController::class)->group(function () {
             Route::get('/kycs', 'index')->name('kycs.index');
             Route::post('/kycs/{kyc}/approve', 'approve')->name('kycs.approve');
             Route::post('/kycs/{kyc}/reject', 'reject')->name('kycs.reject');
