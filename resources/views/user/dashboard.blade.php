@@ -1094,92 +1094,104 @@
             <div class="db-stat-card">
                 <div class="db-stat-card-info">
                     <small>Active Package</small>
-                    <h3>
-                        @if (is_numeric(str_replace([',', ' '], '', $activePackage)))
-                            ₹ {{ $activePackage }}
-                        @else
-                            {{ $activePackage }}
-                        @endif
-                    </h3>
+                <h3>
+                    @if (is_numeric(str_replace([',', ' '], '', $activePackage)))
+                        ₹ {{ $activePackage }}
+                    @else
+                        {{ $activePackage }}
+                    @endif
+                </h3>
                 </div>
                 <div class="db-stat-card-icon">
                     <i class="mdi mdi-gift-outline"></i>
                 </div>
-            </div>
+                </div>
+                <div class="db-stat-card">
+                    <div class="db-stat-card-info">
+                        <small>ROC Wallet</small>
+                        <h3>{{ $formattedRocWallet }}</h3>
+                    </div>
+                    <div class="db-stat-card-icon">
+                        <i class="mdi mdi-account-multiple"></i>
+                    </div>
+                </div>
 
-            <div class="db-stat-card">
-                <div class="db-stat-card-info">
-                    <small>Direct Referrals</small>
-                    <h3>{{ $directReferrals }}</h3>
+                <div class="db-stat-card">
+                    <div class="db-stat-card-info">
+                        <small>Direct Referrals</small>
+                        <h3>{{ $directReferrals }}</h3>
+                    </div>
+                    <div class="db-stat-card-icon">
+                        <i class="mdi mdi-account-multiple"></i>
+                    </div>
                 </div>
-                <div class="db-stat-card-icon">
-                    <i class="mdi mdi-account-multiple"></i>
+
                 </div>
-            </div>
-        </div>
-        @if (($kycStatus ?? 'none') !== 'approved')
-            <div class="db-card db-card-accent p-3 mb-4"
-                style="background: linear-gradient(135deg, #2d1e05 0%, #1a1202 100%); border: 1px solid #f5c842;">
-                <div class="d-flex align-items-center justify-content-between">
-                    <div class="d-flex align-items-center gap-3">
-                        <div style="font-size: 2rem; color: #f5c842;">
-                            <i class="mdi mdi-shield-alert-outline"></i>
-                        </div>
-                        <div>
-                            <h5 class="text-white mb-0">KYC Verification Pending</h5>
-                            <p class="text-muted mb-0" style="font-size: 0.85rem;">
-                                @if (($kycStatus ?? 'none') === 'pending')
-                                    Your KYC is currently under review. Please wait for admin approval.
-                                @else
-                                    Your KYC is not completed. Please complete it to unlock withdrawals.
-                                @endif
-                            </p>
+                @if (($kycStatus ?? 'none') !== 'approved')
+                    <div class="db-card db-card-accent p-3 mb-4"
+                        style="background: linear-gradient(135deg, #2d1e05 0%, #1a1202 100%); border: 1px solid #f5c842;">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center gap-3">
+                                <div style="font-size: 2rem; color: #f5c842;">
+                                    <i class="mdi mdi-shield-alert-outline"></i>
+                                </div>
+                                <div>
+                                    <h5 class="text-white mb-0">KYC Verification Pending</h5>
+                                    <p class="text-muted mb-0" style="font-size: 0.85rem;">
+                                        @if (($kycStatus ?? 'none') === 'pending')
+                                            Your KYC is currently under review. Please wait for admin approval.
+                                        @else
+                                            Your KYC is not completed. Please complete it to unlock withdrawals.
+                                        @endif
+                                    </p>
+                                </div>
+                            </div>
+                            @if (($kycStatus ?? 'none') === 'none')
+                                <a href="{{ route('user.kyc.index') }}" class="btn btn-warning btn-sm fw-bold">
+                                    Complete KYC Now
+                                </a>
+                            @endif
                         </div>
                     </div>
-                    @if (($kycStatus ?? 'none') === 'none')
-                        <a href="{{ route('user.kyc.index') }}" class="btn btn-warning btn-sm fw-bold">
-                            Complete KYC Now
-                        </a>
-                    @endif
-                </div>
-            </div>
-        @endif
+                @endif
 
-        {{-- ================================================
-         EARNINGS SUMMARY + QUICK ACTIONS
-         ================================================ --}}
-        <div class="db-main-row">
+                {{-- ================================================
+                EARNINGS SUMMARY + QUICK ACTIONS
+                ================================================ --}}
+                <div class="db-main-row">
 
-            {{-- Earnings Summary --}}
-           <div class="db-earnings-card">
-        <div class="db-earnings-head">
-            <div>
-                <span class="db-section-eyebrow">Financial Overview</span>
-                <h4>Earnings Summary</h4>
-            </div>
-            <a href="{{ route('user.income.index') }}" class="db-view-history">
-                View History <i class="mdi mdi-arrow-right"></i>
-            </a>
-        </div>
-        <table class="db-earnings-table">
-            <thead>
-                <tr>
-                    <th>Income Type / Metric</th>
-                    <th>Today Income</th>
-                    <th>Total Income / Volume</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{-- Team Business Row Added --}}
-                <tr>
-                    <td>
-                        <span class="db-income-type">
-                            <i class="mdi mdi-account-group" style="color:#f5c842;"></i>
-                            Total Team Business
-                        </span>
-                    </td>
-                    <td>-</td>
-                    <td class="text-warning">₹ {{ number_format((float)str_replace(',', '', $powerLeg ?? '0') + (float)str_replace(',', '', $weakerLeg ?? '0'), 2) }}</td>
+                    {{-- Earnings Summary --}}
+                    <div class="db-earnings-card">
+                        <div class="db-earnings-head">
+                            <div>
+                                <span class="db-section-eyebrow">Financial Overview</span>
+                                <h4>Earnings Summary</h4>
+                            </div>
+                            <a href="{{ route('user.income.index') }}" class="db-view-history">
+                                View History <i class="mdi mdi-arrow-right"></i>
+                            </a>
+                        </div>
+                        <table class="db-earnings-table">
+                            <thead>
+                                <tr>
+                                    <th>Income Type / Metric</th>
+                                    <th>Today Income</th>
+                                    <th>Total Income / Volume</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{-- Team Business Row Added --}}
+                                <tr>
+                                    <td>
+                                        <span class="db-income-type">
+                                            <i class="mdi mdi-account-group" style="color:#f5c842;"></i>
+                                            Total Team Business
+                                        </span>
+                                    </td>
+                                    <td>-</td>
+                                    <td class="text-warning">₹
+                                        {{ number_format((float) str_replace(',', '', $powerLeg ?? '0') + (float) str_replace(',', '', $weakerLeg ?? '0'), 2) }}
+                                    </td>
                 </tr>
                 <tr>
                     <td>

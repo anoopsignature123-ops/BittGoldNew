@@ -69,9 +69,14 @@ class DashboardController extends Controller
         $totalEarned = Income::where('user_id', $userId)->sum('amount');
         $directReferralsCount = User::where('sponsor_id', $userId)->count();
 
-        $activeInvestment = $user->investments()->where('status', 'active')->latest()->first();
-        $activePackage = $activeInvestment ? number_format($activeInvestment->amount, 2) : 'No Package';
+        $activeInvestment = $user->investments()->where('status', 'active')->sum('amount');
 
+
+        $activePackage = $activeInvestment ? number_format($activeInvestment, 2) : 'No Package';
+        $rocWalletAmount = $activeInvestment * 1.5;
+
+        // Format karein view mein dikhane ke liye (optional currency symbol ke sath)
+        $formattedRocWallet = number_format($rocWalletAmount, 2);
         // Chart data last 7 days
         $chartDays = [];
         $chartDaysTotal = [];
@@ -88,6 +93,7 @@ class DashboardController extends Controller
 
         $kycStatus = $user->kyc()->latest()->first();
         return view('user.dashboard', [
+            'formattedRocWallet' => $formattedRocWallet,
             'user' => $user,
             'kycStatus' => $kycStatus ? $kycStatus->status : 'none',
             'earningWallet' => number_format($user->earning_wallet ?? 0, 2),

@@ -265,10 +265,13 @@ class AdminUserController extends Controller
 
         $totalEarned = Income::where('user_id', $userId)->sum('amount');
         $directReferralsCount = User::where('sponsor_id', $userId)->count();
-        $activeInvestment = $user->investments()->where('status', 'active')->latest()->first();
-        $activePackage = $activeInvestment ? '' . number_format($activeInvestment->amount, 2) : 'No Package';
+        $activeInvestment = $user->investments()->where('status', 'active')->sum('amount');
+        $activePackage = $activeInvestment ? '' . number_format($activeInvestment, 2) : 'No Package';
         $currentRank = optional($user->rank)->name ?? 'Unranked';
+        $rocWalletAmount = $activeInvestment * 1.5;
 
+        // Format karein view mein dikhane ke liye (optional currency symbol ke sath)
+        $formattedRocWallet = number_format($rocWalletAmount, 2);
         $chartLabels = [];
         $chartDays = [];
         $chartDaysTotal = [];
@@ -286,6 +289,7 @@ class AdminUserController extends Controller
         }
 
         return view('user.dashboard', [
+            'formattedRocWallet' => $formattedRocWallet,
             'user' => $user,
             'headerUser' => $user,
             'previewMode' => true,
