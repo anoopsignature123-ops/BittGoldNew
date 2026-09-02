@@ -1068,7 +1068,7 @@
         </section>
 
         {{-- ================================================
-         STAT CARDS
+         FINANCIAL STAT CARDS
          ================================================ --}}
         <div class="db-stat-row mt-4">
             <div class="db-stat-card">
@@ -1094,39 +1094,78 @@
             <div class="db-stat-card">
                 <div class="db-stat-card-info">
                     <small>Active Package</small>
-                <h3>
-                    @if (is_numeric(str_replace([',', ' '], '', $activePackage)))
-                        ₹ {{ $activePackage }}
-                    @else
-                        {{ $activePackage }}
-                    @endif
-                </h3>
+                    <h3>
+                        @if (is_numeric(str_replace([',', ' '], '', $activePackage)))
+                            ₹ {{ $activePackage }}
+                        @else
+                            {{ $activePackage }}
+                        @endif
+                    </h3>
                 </div>
                 <div class="db-stat-card-icon">
                     <i class="mdi mdi-gift-outline"></i>
                 </div>
-                </div>
-                <div class="db-stat-card">
-                    <div class="db-stat-card-info">
-                        <small>ROC Wallet</small>
-                        <h3>{{ $formattedRocWallet }}</h3>
-                    </div>
-                    <div class="db-stat-card-icon">
-                        <i class="mdi mdi-account-multiple"></i>
-                    </div>
-                </div>
+            </div>
 
-                <div class="db-stat-card">
-                    <div class="db-stat-card-info">
-                        <small>Direct Referrals</small>
-                        <h3>{{ $directReferrals }}</h3>
-                    </div>
-                    <div class="db-stat-card-icon">
-                        <i class="mdi mdi-account-multiple"></i>
-                    </div>
+            <div class="db-stat-card">
+                <div class="db-stat-card-info">
+                    <small>ROC Wallet</small>
+                    <h3>{{ $formattedRocWallet }}</h3>
                 </div>
+                <div class="db-stat-card-icon">
+                    <i class="mdi mdi-calculator-variant-outline"></i>
+                </div>
+            </div>
+        </div>
 
+        {{-- ================================================
+         NETWORK & TEAM STAT CARDS
+         ================================================ --}}
+        <div class="db-stat-row">
+            <a href="{{ route('user.team.index', ['status' => 'active', 'level' => 1]) }}" class="db-stat-card text-decoration-none">
+                <div class="db-stat-card-info">
+                    <small>Direct Active Team</small>
+                    <h3 class="text-success">{{ $directActiveTeam ?? 0 }}</h3>
+                    <span class="stat-subtext" style="font-size: 0.72rem; color: var(--text-lo);">Level 1 Active (Total: {{ $directReferrals ?? 0 }})</span>
                 </div>
+                <div class="db-stat-card-icon">
+                    <i class="mdi mdi-account-check-outline" style="color: #67dfac;"></i>
+                </div>
+            </a>
+
+            <a href="{{ route('user.team.index', ['status' => 'inactive', 'level' => 1]) }}" class="db-stat-card text-decoration-none">
+                <div class="db-stat-card-info">
+                    <small>Direct Inactive Team</small>
+                    <h3 class="text-warning">{{ $directInactiveTeam ?? 0 }}</h3>
+                    <span class="stat-subtext" style="font-size: 0.72rem; color: var(--text-lo);">Level 1 Inactive</span>
+                </div>
+                <div class="db-stat-card-icon">
+                    <i class="mdi mdi-account-off-outline" style="color: #ffd369;"></i>
+                </div>
+            </a>
+
+            <a href="{{ route('user.team.index', ['status' => 'active']) }}" class="db-stat-card text-decoration-none">
+                <div class="db-stat-card-info">
+                    <small>Total Active Team</small>
+                    <h3 class="text-success">{{ $totalActiveTeam ?? 0 }}</h3>
+                    <span class="stat-subtext" style="font-size: 0.72rem; color: var(--text-lo);">All Downlines Active (Total: {{ $totalTeam ?? 0 }})</span>
+                </div>
+                <div class="db-stat-card-icon">
+                    <i class="mdi mdi-account-group-outline" style="color: #67dfac;"></i>
+                </div>
+            </a>
+
+            <a href="{{ route('user.team.index', ['status' => 'inactive']) }}" class="db-stat-card text-decoration-none">
+                <div class="db-stat-card-info">
+                    <small>Total Inactive Team</small>
+                    <h3 class="text-warning">{{ $totalInactiveTeam ?? 0 }}</h3>
+                    <span class="stat-subtext" style="font-size: 0.72rem; color: var(--text-lo);">All Downlines Inactive</span>
+                </div>
+                <div class="db-stat-card-icon">
+                    <i class="mdi mdi-account-multiple-minus-outline" style="color: #ffd369;"></i>
+                </div>
+            </a>
+        </div>
                 @if (($kycStatus ?? 'none') !== 'approved')
                     <div class="db-card db-card-accent p-3 mb-4"
                         style="background: linear-gradient(135deg, #2d1e05 0%, #1a1202 100%); border: 1px solid #f5c842;">

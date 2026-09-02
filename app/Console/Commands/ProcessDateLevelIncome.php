@@ -121,13 +121,8 @@ class ProcessDateLevelIncome extends Command
                         $percentage = $levelPercentages[$level] ?? 1.00;
                         $commissionAmount = round(($inv->amount * $percentage) / 100, 2);
 
-                        // Check if already paid/credited (Idempotency Protection)
-                        $alreadyExists = Income::where('user_id', $currentUpline->id)
-                            ->where('from_user_id', $buyer->id)
-                            ->where('income_type', 'level')
-                            ->where('level', $level)
-                            ->where('package_amount', $inv->amount)
-                            ->exists();
+                        // Check if already paid/credited for this specific staking/investment (Idempotency Protection)
+                        $alreadyExists = $this->isLevelIncomeAlreadyProcessed($inv, $buyer, $currentUpline, $level, $inv->amount);
 
                         if ($alreadyExists) {
                             $status = '<fg=yellow>ALREADY CREDITED (SKIP)</>';
@@ -244,7 +239,7 @@ class ProcessDateLevelIncome extends Command
                     'wallet_type' => 'earning_wallet',
                     'type' => 'credit',
                     'amount' => $commissionAmount,
-                    'remark' => 'Level ' . $level . ' commission from ' . $buyer->name . ' (Activation Date: ' . $parsedDate . ')',
+                    'remark' => 'Level ' . $level . ' commission from ' . $buyer->name . ' (Inv #' . $inv->id . ', Date: ' . $parsedDate . ')',
                     'created_at' => $inv->created_at ?? now(),
                     'updated_at' => now(),
                 ]);
@@ -271,5 +266,59 @@ class ProcessDateLevelIncome extends Command
         $this->info("Total Amount Credited: ₹" . number_format($totalCommissionToDistribute, 2));
 
         return 0;
+    }
+
+    /**
+     * Check if the given investment / staking has already had its level income processed for this upline.
+     *
+     * @param Investment $inv
+     * @param User $buyer
+     * @param User $upline
+     * @param int $level
+     * @param float $amount
+     * @return bool
+     */
+    private function isLevelIncomeAlreadyProcessed(Investment $inv, User $buyer, User $upline, int $level, float $amount): bool
+    {
+        // 1. Check if Transaction ledger explicitly mentions this investment ID
+        $txExists = Transaction::where('user_id', $upline->id)
+            ->where('wallet_type', 'earning_wallet')
+            ->where('remark', 'like', "%Inv #{$inv->id}%")
+            ->exists();
+
+        if ($txExists) {
+            return true;
+        }
+
+        // 2. Check if an Income record exists matching the exact creation timestamp of the investment
+        $exactTimeIncomeExists = Income::where('user_id', $upline->id)
+            ->where('from_user_id', $buyer->id)
+            ->where('income_type', 'level')
+            ->where('level', $level)
+            ->where('package_amount', $amount)
+            ->where('created_at', $inv->created_at)
+            ->exists();
+
+        if ($exactTimeIncomeExists) {
+            return true;
+        }
+
+        // 3. Sequential index check: Ensure we don't double credit if multiple investments have same amount
+        // Count how many investments of this amount the buyer made up to this investment ID
+        $investmentSeqNumber = Investment::where('user_id', $buyer->id)
+            ->where('amount', $amount)
+            ->where('status', 'active')
+            ->where('id', '<=', $inv->id)
+            ->count();
+
+        // Count how many Level Income records this upline has received from this buyer for this level & amount
+        $existingIncomesCount = Income::where('user_id', $upline->id)
+            ->where('from_user_id', $buyer->id)
+            ->where('income_type', 'level')
+            ->where('level', $level)
+            ->where('package_amount', $amount)
+            ->count();
+
+        return $existingIncomesCount >= $investmentSeqNumber;
     }
 }

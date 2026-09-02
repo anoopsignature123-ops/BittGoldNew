@@ -288,17 +288,43 @@ class AdminUserController extends Controller
                 ->sum('amount');
         }
 
+        $mlmService = new MLMService();
+        $teamStats = $mlmService->getTeamStats($userId);
+        [$powerLegBusiness, $weakerLegBusiness] = $mlmService->calculateLegBusiness($user);
+
+        $latestLeadershipIncome = Income::where('user_id', $userId)
+            ->where('income_type', 'leadership')
+            ->latest('created_at')
+            ->first();
+
+        $leadershipDetails = [
+            'amount' => $latestLeadershipIncome ? $latestLeadershipIncome->amount : 0,
+            'month' => $latestLeadershipIncome ? \Carbon\Carbon::parse($latestLeadershipIncome->created_at)->format('F Y') : 'No Salary Credited Yet',
+        ];
+
+        $kycStatus = $user->kyc()->latest()->first();
+
         return view('user.dashboard', [
             'formattedRocWallet' => $formattedRocWallet,
             'user' => $user,
             'headerUser' => $user,
             'previewMode' => true,
+            'kycStatus' => $kycStatus ? $kycStatus->status : 'none',
             'earningWallet' => number_format($user->earning_wallet ?? 0, 2),
             'depositWallet' => number_format($user->deposit_wallet ?? 0, 2),
             'totalEarned' => number_format($totalEarned, 2),
             'activePackage' => $activePackage,
             'currentRank' => $currentRank,
-            'directReferrals' => $directReferralsCount,
+            'powerLeg' => number_format($powerLegBusiness, 2),
+            'weakerLeg' => number_format($weakerLegBusiness, 2),
+            'leadershipDetails' => $leadershipDetails,
+            'directReferrals' => $teamStats['direct_total'],
+            'directActiveTeam' => $teamStats['direct_active'],
+            'directInactiveTeam' => $teamStats['direct_inactive'],
+            'totalActiveTeam' => $teamStats['total_active'],
+            'totalInactiveTeam' => $teamStats['total_inactive'],
+            'totalTeam' => $teamStats['total_team'],
+            'teamStats' => $teamStats,
             'earnings' => $earnings,
             'chartLabels' => $chartLabels,
             'chartDays' => $chartDays,
@@ -391,7 +417,28 @@ class AdminUserController extends Controller
 
     public function teamReport(Request $request, User $user)
     {
-        $query = User::where('sponsor_id', $user->id)->with('investments', 'rank');
+        $mlmService = new MLMService();
+        $teamStats = $mlmService->getTeamStats($user->id);
+        $downlineLevels = $teamStats['downline_levels'];
+        $availableLevels = $teamStats['available_levels'];
+
+        if ($request->filled('level')) {
+            $targetLevel = (int) $request->level;
+            $targetUserIds = [];
+            foreach ($downlineLevels as $memberId => $lvl) {
+                if ($lvl === $targetLevel) {
+                    $targetUserIds[] = $memberId;
+                }
+            }
+        } else {
+            $targetUserIds = array_keys($downlineLevels);
+        }
+
+        if (empty($targetUserIds)) {
+            $query = User::whereRaw('1 = 0');
+        } else {
+            $query = User::whereIn('id', $targetUserIds)->with(['investments', 'rank', 'sponsor']);
+        }
 
         if ($request->filled('status')) {
             $query->where('status', $request->status);
@@ -402,16 +449,30 @@ class AdminUserController extends Controller
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
-                    ->orWhere('referral_code', 'like', "%{$search}%");
+                    ->orWhere('referral_code', 'like', "%{$search}%")
+                    ->orWhere('mobile', 'like', "%{$search}%");
             });
         }
 
         $teamMembers = $query->latest()->paginate(10)->withQueryString();
 
-        $totalDirects = User::where('sponsor_id', $user->id)->count();
-        $activeDirects = User::where('sponsor_id', $user->id)->where('status', 'active')->count();
+        $teamMembers->getCollection()->transform(function ($member) use ($downlineLevels) {
+            $member->level = $downlineLevels[$member->id] ?? 1;
+            return $member;
+        });
 
-        return view('admin.users.team', compact('user', 'teamMembers', 'totalDirects', 'activeDirects'));
+        return view('admin.users.team', [
+            'user' => $user,
+            'teamMembers' => $teamMembers,
+            'teamStats' => $teamStats,
+            'availableLevels' => $availableLevels,
+            'totalDirects' => $teamStats['direct_total'],
+            'activeDirects' => $teamStats['direct_active'],
+            'inactiveDirects' => $teamStats['direct_inactive'],
+            'totalTeam' => $teamStats['total_team'],
+            'activeTeam' => $teamStats['total_active'],
+            'inactiveTeam' => $teamStats['total_inactive'],
+        ]);
     }
 
     public function proxyInvestment(Request $request, User $user)

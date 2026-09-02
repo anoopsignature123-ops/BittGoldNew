@@ -20,6 +20,32 @@
 
         <div class="card gold-card users-card detailed-users-card">
             <div class="card-body">
+                <form method="GET" action="{{ route('admin.withdrawals.index') }}" id="filter-form">
+                    <div class="list-toolbar">
+                        <div>
+                            <h4 class="card-title mb-1">All Withdrawal Requests</h4>
+                            <small>Manage pending and processed payout requests.</small>
+                        </div>
+
+                        <div class="table-filters">
+                            <div class="search-box">
+                                <i class="mdi mdi-magnify"></i>
+                                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search name or referral ID...">
+                            </div>
+                            <select name="status" class="js-select2" onchange="this.form.submit()">
+                                <option value="">All Status</option>
+                                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                                <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Approved</option>
+                                <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                            </select>
+                            <input type="date" name="date" value="{{ request('date') }}" class="form-control" aria-label="Withdrawal date" onchange="this.form.submit()">
+                            @if (request('status') || request('date'))
+                                <a href="{{ route('admin.withdrawals.index') }}" class="btn btn-sm btn-outline-warning">Clear Filter</a>
+                            @endif
+                        </div>
+                    </div>
+                </form>
+
                 <div class="table-responsive table-responsive-scroll mt-2">
                     <table class="table user-table detailed-user-table mb-0" style="min-width: 1200px;">
                         <thead>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\MLMService;
 use Illuminate\Http\Request;
 
 class TeamController extends Controller
@@ -16,7 +17,29 @@ class TeamController extends Controller
             return redirect()->route('user.login');
         }
 
-        $query = User::where('sponsor_id', $user->id)->with('investments', 'rank');
+        $mlmService = new MLMService();
+        $teamStats = $mlmService->getTeamStats($user->id);
+        $downlineLevels = $teamStats['downline_levels'];
+        $availableLevels = $teamStats['available_levels'];
+
+        // Determine which user IDs to include based on level filter
+        if ($request->filled('level')) {
+            $targetLevel = (int) $request->level;
+            $targetUserIds = [];
+            foreach ($downlineLevels as $memberId => $lvl) {
+                if ($lvl === $targetLevel) {
+                    $targetUserIds[] = $memberId;
+                }
+            }
+        } else {
+            $targetUserIds = array_keys($downlineLevels);
+        }
+
+        if (empty($targetUserIds)) {
+            $query = User::whereRaw('1 = 0');
+        } else {
+            $query = User::whereIn('id', $targetUserIds)->with(['investments', 'rank', 'sponsor']);
+        }
 
         if ($request->filled('status')) {
             $query->where('status', $request->status);
@@ -27,17 +50,31 @@ class TeamController extends Controller
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
-                    ->orWhere('referral_code', 'like', "%{$search}%");
+                    ->orWhere('referral_code', 'like', "%{$search}%")
+                    ->orWhere('mobile', 'like', "%{$search}%");
             });
         }
 
         $teamMembers = $query->latest()->paginate(10)->withQueryString();
 
-        // Total team stats
-        $totalDirects = User::where('sponsor_id', $user->id)->count();
-        $activeDirects = User::where('sponsor_id', $user->id)->where('status', 'active')->count();
+        // Attach the level attribute to each member model for the view
+        $teamMembers->getCollection()->transform(function ($member) use ($downlineLevels) {
+            $member->level = $downlineLevels[$member->id] ?? 1;
+            return $member;
+        });
 
-        return view('user.team.index', compact('user', 'teamMembers', 'totalDirects', 'activeDirects'));
+        return view('user.team.index', [
+            'user' => $user,
+            'teamMembers' => $teamMembers,
+            'teamStats' => $teamStats,
+            'availableLevels' => $availableLevels,
+            'totalDirects' => $teamStats['direct_total'],
+            'activeDirects' => $teamStats['direct_active'],
+            'inactiveDirects' => $teamStats['direct_inactive'],
+            'totalTeam' => $teamStats['total_team'],
+            'activeTeam' => $teamStats['total_active'],
+            'inactiveTeam' => $teamStats['total_inactive'],
+        ]);
     }
 
     public function tree(User $user = null)

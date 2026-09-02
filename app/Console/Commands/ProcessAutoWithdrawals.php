@@ -38,7 +38,7 @@ class ProcessAutoWithdrawals extends Command
                 $user->earning_wallet -= $amountToWithdraw;
                 $user->save();
 
-                $exactTimestamp = $targetDate->copy()->setTime(0, 0, 0);
+                 $exactTimestamp = $targetDate->copy()->setTime(0, 0, 0); // Raat 12:00 AM set kar dete hain
 
                 // 1. Withdrawal request manually create karo bina automatic timestamp ke
                 $withdrawal = new Withdrawal();

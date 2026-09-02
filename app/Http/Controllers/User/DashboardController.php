@@ -34,6 +34,7 @@ class DashboardController extends Controller
         // 1. MLM Service se Power Leg aur Weaker Leg calculate karein (Jaise Rank Report mein aata hai)
         $mlmService = new MLMService();
         [$powerLegBusiness, $weakerLegBusiness] = $mlmService->calculateLegBusiness($user);
+        $teamStats = $mlmService->getTeamStats($userId);
 
         // 2. Latest Leadership Salary fetch karein
         $latestLeadershipIncome = Income::where('user_id', $userId)
@@ -67,7 +68,7 @@ class DashboardController extends Controller
         ];
 
         $totalEarned = Income::where('user_id', $userId)->sum('amount');
-        $directReferralsCount = User::where('sponsor_id', $userId)->count();
+        $directReferralsCount = $teamStats['direct_total'];
 
         $activeInvestment = $user->investments()->where('status', 'active')->sum('amount');
 
@@ -105,6 +106,12 @@ class DashboardController extends Controller
             'weakerLeg' => number_format($weakerLegBusiness, 2),
             'leadershipDetails' => $leadershipDetails,
             'directReferrals' => $directReferralsCount,
+            'directActiveTeam' => $teamStats['direct_active'],
+            'directInactiveTeam' => $teamStats['direct_inactive'],
+            'totalActiveTeam' => $teamStats['total_active'],
+            'totalInactiveTeam' => $teamStats['total_inactive'],
+            'totalTeam' => $teamStats['total_team'],
+            'teamStats' => $teamStats,
             'earnings' => $earnings,
             'chartLabels' => array_values($chartLabels),
             'chartDays' => array_values($chartDays),

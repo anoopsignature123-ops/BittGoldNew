@@ -18,7 +18,19 @@ class WithdrawalController extends Controller
             $query->where('status', $request->status);
         }
 
-        $withdrawals = $query->latest()->paginate(10)->withQueryString();
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->whereHas('user', function ($userQuery) use ($search) {
+                $userQuery->where('name', 'like', "%{$search}%")
+                    ->orWhere('referral_code', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('date')) {
+            $query->whereDate('created_at', $request->date);
+        }
+
+        $withdrawals = $query->orderByDesc('created_at')->orderByDesc('id')->paginate(10)->withQueryString();
 
         return view('admin.withdrawals.index', compact('withdrawals'));
     }
