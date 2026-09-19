@@ -10,16 +10,34 @@ class InvestmentController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Investment::with('user');
+        $query = Investment::with(['user.sponsor']);
 
-        // Search by user name or email
+        // Search by user or sponsor (name, email, referral code)
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->whereHas('user', function($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhere('referral_code', 'like', "%{$search}%");
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('user', function ($u) use ($search) {
+                    $u->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('referral_code', 'like', "%{$search}%");
+                })->orWhereHas('user.sponsor', function ($s) use ($search) {
+                    $s->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('referral_code', 'like', "%{$search}%");
+                });
             });
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('from_date')) {
+            $query->whereDate('created_at', '>=', $request->from_date);
+        }
+
+        if ($request->filled('to_date')) {
+            $query->whereDate('created_at', '<=', $request->to_date);
         }
 
         $investments = $query->latest()->paginate(10)->withQueryString();

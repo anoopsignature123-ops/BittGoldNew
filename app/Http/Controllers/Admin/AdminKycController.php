@@ -20,13 +20,36 @@ class AdminKycController extends Controller
         return null;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         if ($redirect = $this->authorizeAdmin()) {
             return $redirect;
         }
 
-        $kycs = Kyc::with('user')->latest()->get();
+        $query = Kyc::with('user');
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->whereHas('user', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('referral_code', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('from_date')) {
+            $query->whereDate('created_at', '>=', $request->from_date);
+        }
+
+        if ($request->filled('to_date')) {
+            $query->whereDate('created_at', '<=', $request->to_date);
+        }
+
+        $kycs = $query->latest()->paginate(10)->withQueryString();
 
         return view('admin.kycs.index', compact('kycs'));
     }

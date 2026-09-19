@@ -2,6 +2,59 @@
 
 @push('title') Website Contact Inquiries @endpush
 
+@push('styles')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
+    <style>
+        .date-filter-box {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+        .date-filter-box i {
+            position: absolute;
+            left: 12px;
+            color: #d4af37;
+            z-index: 5;
+            pointer-events: none;
+            font-size: 16px;
+        }
+        .date-filter-box .form-control {
+            padding-left: 34px !important;
+            background-color: #0f172a !important;
+            border: 1px solid rgba(212, 175, 55, 0.3) !important;
+            color: #ffffff !important;
+            border-radius: 6px;
+            height: 38px;
+            min-width: 140px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        .date-filter-box .form-control:focus {
+            border-color: #d4af37 !important;
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.25) !important;
+        }
+        .flatpickr-calendar {
+            background: #0f172a !important;
+            border: 1px solid #d4af37 !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6) !important;
+        }
+        .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
+            background: #d4af37 !important;
+            border-color: #d4af37 !important;
+            color: #000 !important;
+            font-weight: bold;
+        }
+        .flatpickr-day:hover {
+            background: rgba(212, 175, 55, 0.2) !important;
+        }
+        .flatpickr-current-month .flatpickr-monthDropdown-months, .flatpickr-current-month input.cur-year {
+            color: #d4af37 !important;
+            font-weight: bold;
+        }
+    </style>
+@endpush
+
 @section('content')
 <div class="content-wrapper">
     <div class="page-heading mb-4">
@@ -12,13 +65,6 @@
         </div>
     </div>
 
-    {{-- @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert" style="background: rgba(40, 167, 69, 0.15); border: 1px solid rgba(40, 167, 69, 0.3); color: #28a745; border-radius: 10px;">
-            <i class="mdi mdi-check-circle"></i> {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="filter: brightness(1.5);"></button>
-        </div>
-    @endif --}}
-
     @if(session('error'))
         <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert" style="background: rgba(220, 53, 69, 0.15); border: 1px solid rgba(220, 53, 69, 0.3); color: #dc3545; border-radius: 10px;">
             <i class="mdi mdi-alert-circle"></i> {{ session('error') }}
@@ -28,19 +74,43 @@
 
     <div class="card gold-card" style="background: #12151c; border: 1px solid rgba(245, 185, 27, 0.3); border-radius: 14px;">
         <div class="card-body p-4">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h5 class="card-title mb-0">Contact Form Submissions</h5>
-                <div>
-                    @if(request('status'))
-                        <a href="{{ route('admin.contacts.index') }}" class="btn btn-sm btn-outline-light">
-                            <i class="mdi mdi-filter-remove"></i> Clear Filter
-                        </a>
-                    @endif
-                    <a href="{{ route('admin.contacts.index', ['status' => 'unread']) }}" class="btn btn-sm {{ request('status') === 'unread' ? 'btn-warning text-dark' : 'btn-outline-warning' }}">
-                        <i class="mdi mdi-email-unopened"></i> Unread
-                    </a>
+            <form method="GET" action="{{ route('admin.contacts.index') }}" id="filter-form" class="mb-4">
+                <div class="list-toolbar">
+                    <div>
+                        <h4 class="card-title mb-1">Contact Form Submissions</h4>
+                        <small>Showing {{ $contacts->firstItem() ?? 0 }} to {{ $contacts->lastItem() ?? 0 }} of {{ $contacts->total() }} submissions</small>
+                    </div>
+
+                    <div class="table-filters">
+                        <select name="status" class="js-select2" onchange="this.form.submit()">
+                            <option value="">All Status</option>
+                            <option value="unread" {{ request('status') == 'unread' ? 'selected' : '' }}>Unread</option>
+                            <option value="read" {{ request('status') == 'read' ? 'selected' : '' }}>Read</option>
+                        </select>
+
+                        <div class="date-filter-box">
+                            <i class="mdi mdi-calendar-range"></i>
+                            <input type="text" name="from_date" id="from_date" value="{{ request('from_date') }}" class="form-control" placeholder="From Date" readonly>
+                        </div>
+
+                        <div class="date-filter-box">
+                            <i class="mdi mdi-calendar-range"></i>
+                            <input type="text" name="to_date" id="to_date" value="{{ request('to_date') }}" class="form-control" placeholder="To Date" readonly>
+                        </div>
+
+                        <div class="search-box">
+                            <i class="mdi mdi-magnify"></i>
+                            <input type="text" name="search" id="member-search" value="{{ request('search') }}" placeholder="Search contact or subject...">
+                        </div>
+
+                        @if (request()->anyFilled(['search', 'status', 'from_date', 'to_date']))
+                            <a href="{{ route('admin.contacts.index') }}" class="btn btn-sm btn-outline-secondary ms-1" title="Clear Filters">
+                                <i class="mdi mdi-close"></i> Clear
+                            </a>
+                        @endif
+                    </div>
                 </div>
-            </div>
+            </form>
 
             <div class="table-responsive">
                 <table class="table table-dark table-striped align-middle mb-0">
@@ -95,3 +165,43 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            flatpickr('#from_date', {
+                dateFormat: 'Y-m-d',
+                altInput: true,
+                altFormat: 'd M Y',
+                altInputClass: 'form-control',
+                allowInput: false,
+                onChange: function() {
+                    document.getElementById('filter-form').submit();
+                }
+            });
+
+            flatpickr('#to_date', {
+                dateFormat: 'Y-m-d',
+                altInput: true,
+                altFormat: 'd M Y',
+                altInputClass: 'form-control',
+                allowInput: false,
+                onChange: function() {
+                    document.getElementById('filter-form').submit();
+                }
+            });
+
+            let timeout = null;
+            const searchInput = document.getElementById('member-search');
+            if (searchInput) {
+                searchInput.addEventListener('keyup', function() {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => {
+                        document.getElementById('filter-form').submit();
+                    }, 600);
+                });
+            }
+        });
+    </script>
+@endpush

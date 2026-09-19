@@ -12,7 +12,7 @@ class WithdrawalController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Withdrawal::with('user');
+        $query = Withdrawal::with(['user.kyc']);
 
         if ($request->filled('status')) {
             $query->where('status', $request->status);
@@ -24,6 +24,14 @@ class WithdrawalController extends Controller
                 $userQuery->where('name', 'like', "%{$search}%")
                     ->orWhere('referral_code', 'like', "%{$search}%");
             });
+        }
+
+        if ($request->filled('from_date')) {
+            $query->whereDate('created_at', '>=', $request->from_date);
+        }
+
+        if ($request->filled('to_date')) {
+            $query->whereDate('created_at', '<=', $request->to_date);
         }
 
         if ($request->filled('date')) {

@@ -26,7 +26,24 @@ class ContactController extends Controller
             }
         }
 
-        $contacts = $query->latest()->paginate(15);
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('subject', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('from_date')) {
+            $query->whereDate('created_at', '>=', $request->from_date);
+        }
+
+        if ($request->filled('to_date')) {
+            $query->whereDate('created_at', '<=', $request->to_date);
+        }
+
+        $contacts = $query->latest()->paginate(10)->withQueryString();
         
         return view('admin.contacts.index', compact('contacts'));
     }
@@ -59,8 +76,8 @@ class ContactController extends Controller
 
         try {
             send_template_email('contact-reply', $contact->email, [
-                'name'      => $contact->name,
-                'subject'   => $contact->subject ?? 'General Enquiry',
+                'name' => $contact->name,
+                'subject' => $contact->subject ?? 'General Enquiry',
                 'message'   => $request->reply_message,
                 'logo'      => url('assets/images/logo/logo.png'),
                 'site_name' => config('app.name', 'BittGold'),

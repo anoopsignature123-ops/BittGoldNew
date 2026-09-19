@@ -71,9 +71,17 @@ class AdminUserController extends Controller
             }
         }
 
+        if ($request->filled('from_date')) {
+            $memberQuery->whereDate('created_at', '>=', $request->from_date);
+        }
+
+        if ($request->filled('to_date')) {
+            $memberQuery->whereDate('created_at', '<=', $request->to_date);
+        }
+
         $users = $memberQuery->withCount('referrals')
             // ->orderByDesc('created_at')
-            ->paginate(15)
+            ->paginate(10)
             ->withQueryString();
 
         return view('admin.users.index', compact('users', 'stats'));
