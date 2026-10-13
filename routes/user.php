@@ -66,6 +66,7 @@ Route::prefix('user')->name('user.')->group(function () {
         Route::controller(InvestmentController::class)->group(function () {
             Route::get('/investment', 'index')->name('investment.index');
             Route::post('/investment', 'store')->name('investment.store');
+            Route::post('/investment/{id}/cancel', 'cancel')->name('investment.cancel');
         });
 
         Route::controller(IncomeController::class)->group(function () {

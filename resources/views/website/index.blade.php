@@ -102,7 +102,7 @@
                                     </li>
                                     <li>
                                         <a class="list-group-item list-group-item-action"
-                                           href="siteadmin/images/plan.pdf" target="_blank">
+                                            href="siteadmin/images/plan.pdf" target="_blank">
                                             Business Plan
                                         </a>
                                     </li>
@@ -112,8 +112,7 @@
                                         </a>
                                     </li>-->
                                     <li>
-                                        <a class="list-group-item list-group-item-action" 
-                                        href="{{ route('contact') }}">
+                                        <a class="list-group-item list-group-item-action" href="{{ route('contact') }}">
                                             Contact Us
                                         </a>
                                     </li>
@@ -196,11 +195,10 @@
                     </a>
                 </li>
                 <li>
-                                        <a class="list-group-item list-group-item-action"
-                                           href="siteadmin/images/plan.pdf" target="_blank">
-                                            Business Plan
-                                        </a>
-                                    </li>
+                    <a class="list-group-item list-group-item-action" href="siteadmin/images/plan.pdf" target="_blank">
+                        Business Plan
+                    </a>
+                    </li>
                 <!--<li>
                     <a href="#resources">
                         Resources
@@ -221,7 +219,7 @@
                     <span>
                     </span>
                 </a>
-                 <a href="{{ route('user.register') }}" class="btn_theme btn_theme_active mt_40 wow fadeInDown" data-wow-duration="0.8s">
+                <a href="{{ route('user.register') }}" class="btn_theme btn_theme_active mt_40 wow fadeInDown" data-wow-duration="0.8s">
                     Register
                     <i class="fa-solid fa-arrow-right">
                     </i>
@@ -367,9 +365,7 @@
             ====================================================== -->
             <div class="price-card">
 
-                <img src="siteadmin/images/bittgold-card.png"
-                     alt="BittGold Debit Card"
-                     class="bittgold-debit-card">
+                <img src="siteadmin/images/bittgold-card.png" alt="BittGold Debit Card" class="bittgold-debit-card">
 
             </div>
 
@@ -669,7 +665,7 @@
                     </p>
                     <!-- Paragraph 5 -->
                     <p>
-                        We are giving the best business opportunity in the market 
+                        We are giving the best business opportunity in the market
                         with our very unique BitGold Card (Prepaid Debit Card).
                     </p>
                 </div>
@@ -690,7 +686,7 @@
                         Discover the Power of
                         <span>Gold Investment.</span>
                     </h2>
-                 
+
                 </div>
             </div>
 
@@ -703,15 +699,8 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="video-card">
                         <div class="video-box">
-                            <video class="w-100 h-100 bitt-video"
-                                   autoplay
-                                   muted
-                                   loop
-                                   playsinline
-                                   webkit-playsinline
-                                   preload="auto">
-                                <source src="siteadmin/images/video/vid1.mp4"
-                                        type="video/mp4">
+                            <video class="w-100 h-100 bitt-video" autoplay muted loop playsinline webkit-playsinline preload="auto">
+                                <source src="siteadmin/images/video/vid1.mp4" type="video/mp4">
                                 Your browser does not support
                                 the video tag.
 
@@ -746,15 +735,8 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="video-card">
                         <div class="video-box">
-                            <video class="w-100 h-100 bitt-video"
-                                   autoplay
-                                   muted
-                                   loop
-                                   playsinline
-                                   webkit-playsinline
-                                   preload="auto">
-                                <source src="siteadmin/images/video/vid2.mp4"
-                                        type="video/mp4">
+                            <video class="w-100 h-100 bitt-video" autoplay muted loop playsinline webkit-playsinline preload="auto">
+                                <source src="siteadmin/images/video/vid2.mp4" type="video/mp4">
                                 Your browser does not support
                                 the video tag.
 
@@ -998,8 +980,7 @@
                     <div class="performance-chart">
                         <svg viewBox="0 0 180 55" preserveAspectRatio="none">
                             <!-- Glow -->
-                            <polyline class="chart-glow"
-                                points="
+                            <polyline class="chart-glow" points="
                                       0,48
                                       8,45
                                       15,47
@@ -1025,8 +1006,7 @@
                                       180,5
                                       " />
                             <!-- Main line -->
-                            <polyline class="chart-line"
-                                points="
+                            <polyline class="chart-line" points="
                                       0,48
                                       8,45
                                       15,47
@@ -1069,8 +1049,7 @@
 
                     <div class="performance-chart">
                         <svg viewBox="0 0 180 55" preserveAspectRatio="none">
-                            <polyline class="chart-glow"
-                                points="
+                            <polyline class="chart-glow" points="
                                       0,48
                                       9,45
                                       17,47
@@ -1095,8 +1074,7 @@
                                       173,3
                                       180,1
                                       " />
-                            <polyline class="chart-line"
-                                points="
+                            <polyline class="chart-line" points="
                                       0,48
                                       9,45
                                       17,47
@@ -1139,8 +1117,7 @@
 
                     <div class="performance-chart">
                         <svg viewBox="0 0 180 55" preserveAspectRatio="none">
-                            <polyline class="chart-glow"
-                                points="
+                            <polyline class="chart-glow" points="
                                       0,48
                                       8,45
                                       16,47
@@ -1165,8 +1142,7 @@
                                       173,2
                                       180,0
                                       " />
-                            <polyline class="chart-line"
-                                points="
+                            <polyline class="chart-line" points="
                                       0,48
                                       8,45
                                       16,47
@@ -1209,8 +1185,7 @@
 
                     <div class="performance-chart">
                         <svg viewBox="0 0 180 55" preserveAspectRatio="none">
-                            <polyline class="chart-glow"
-                                points="
+                            <polyline class="chart-glow" points="
                                       0,48
                                       9,44
                                       17,46
@@ -1235,8 +1210,7 @@
                                       172,2
                                       180,0
                                       " />
-                            <polyline class="chart-line"
-                                points="
+                            <polyline class="chart-line" points="
                                       0,48
                                       9,44
                                       17,46
@@ -1270,7 +1244,54 @@
         </div>
     </section>
 
-
+    <section class="bittgold-cta-section  mt-5">
+        <div class="container-fluid">
+            <div class="bittgold-cta">
+                <div class="row align-items-center g-0">
+                    <!-- =========================
+                                     GOLD IMAGE
+                                ========================== -->
+                    <div class="col-12 col-md-3 col-lg-3">
+                        <div class="gold-image1 bg-light">
+                            <img src="{{ asset('siteadmin/images/bitt_bazaar.png') }}" alt="Gold Investment"
+                                class="img-fluid">
+                        </div>
+                    </div>
+    
+                    <!-- =========================
+                                                                                                                 CONTENT
+                                                                                                            ========================== -->
+                    <div class="col-12 col-md-6 col-lg-6">
+                        <div class="cta-content">
+                            <h2>
+                                Bitt Bazaar
+                            </h2>
+                            <p>
+                                “Your Everyday Needs, Our Everyday Promise.”
+                            </p>
+                            <p>
+                                Discover a world of convenience with Bitt Bazaar,</br> where quality products and
+                                endless choices come
+                                together.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- =========================
+                                                                                                                                                 BUTTON
+                                                                                                                                            ========================== -->
+                    <div class="col-12 col-md-3 col-lg-3">
+                        <div class="cta-action">
+                            <a href="{{ route('bitt-bazaar') }}" class="bittgold-btn">
+                                <span>View More</span>
+                                <b>→</b>
+                            </a>
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                    </section>
 
 
 
@@ -1524,8 +1545,7 @@
                                         <svg class="gold-chart" viewBox="0 0 700 100" preserveAspectRatio="none">
 
                                             <defs>
-                                                <linearGradient id="goldArea" x1="0" y1="0"
-                                                    x2="0" y2="1">
+                                                <linearGradient id="goldArea" x1="0" y1="0" x2="0" y2="1">
                                                     <stop offset="0%" stop-color="#dcae3f" stop-opacity=".35" />
                                                     <stop offset="100%" stop-color="#dcae3f" stop-opacity="0" />
                                                 </linearGradient>
@@ -1687,7 +1707,7 @@
     <!--main-content-end-->
     <!--===== FOOTER AREA START =======-->
     <div class="footer2 _relative" id="contact">
-       
+
         <!-- Copyright / Footer Bottom -->
         <div class="copyright-area" id="contact">
             <div class="container-fluid">
@@ -1716,7 +1736,7 @@
 
     <!--===== FOOTER AREA END =======-->
     <script src="{{ asset('siteadmin/js/bootstrap.min.js') }}"></script>
-     
+
 
     <script src="{{ asset('siteadmin/js/aos.js') }}"></script>
     <script src="{{ asset('siteadmin/js/fontawesome.js') }}"></script>
@@ -1756,7 +1776,7 @@
 
         if (window.innerWidth > 991) {
 
-            document.addEventListener("mousemove", function(event) {
+            document.addEventListener("mousemove", function (event) {
 
                 const x =
                     (event.clientX / window.innerWidth) - 0.5;
@@ -1784,7 +1804,7 @@
          JAVASCRIPT
     ========================================================= -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+                    document.addEventListener("DOMContentLoaded", function () {
 
 
             /* =====================================================
@@ -1959,7 +1979,7 @@
 
 
                 const points = data.map(
-                    function(value, index) {
+                    function (value, index) {
 
                         const x =
                             side +
@@ -2003,7 +2023,7 @@
 
 
                 points.forEach(
-                    function(p, index) {
+                    function (p, index) {
 
                         if (index === 0) {
 
@@ -2061,7 +2081,7 @@
 
 
                 svg.onmousemove =
-                    function(event) {
+                    function (event) {
 
                         const rect =
                             svg.getBoundingClientRect();
@@ -2081,7 +2101,7 @@
 
 
                         points.forEach(
-                            function(p) {
+                            function (p) {
 
                                 if (
                                     Math.abs(
@@ -2120,7 +2140,7 @@
 
 
                 svg.onmouseleave =
-                    function() {
+                    function () {
 
                         point.style.opacity = "0";
 
@@ -2167,11 +2187,11 @@
             document
                 .querySelectorAll(".period-btn")
                 .forEach(
-                    function(button) {
+                    function (button) {
 
                         button.addEventListener(
                             "click",
-                            function(event) {
+                            function (event) {
 
                                 event.preventDefault();
 
@@ -2181,7 +2201,7 @@
                                         ".period-btn"
                                     )
                                     .forEach(
-                                        function(btn) {
+                                        function (btn) {
 
                                             btn.classList
                                                 .remove(
@@ -2217,11 +2237,11 @@
             document
                 .querySelectorAll(".purity-tab")
                 .forEach(
-                    function(button) {
+                    function (button) {
 
                         button.addEventListener(
                             "click",
-                            function(event) {
+                            function (event) {
 
                                 event.preventDefault();
 
@@ -2231,7 +2251,7 @@
                                         ".purity-tab"
                                     )
                                     .forEach(
-                                        function(btn) {
+                                        function (btn) {
 
                                             btn.classList
                                                 .remove(

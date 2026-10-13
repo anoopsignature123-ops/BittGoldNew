@@ -65,16 +65,21 @@ class DashboardController extends Controller
                 'today' => Income::where('user_id', $userId)->where('income_type', 'leadership')->whereDate('created_at', $today)->sum('amount'),
                 'total' => Income::where('user_id', $userId)->where('income_type', 'leadership')->sum('amount'),
             ],
+            'roc' => [
+                'today' => Income::where('user_id', $userId)->where('income_type', 'roc')->whereDate('created_at', $today)->sum('amount'),
+                'total' => Income::where('user_id', $userId)->where('income_type', 'roc')->sum('amount'),
+            ],
         ];
 
         $totalEarned = Income::where('user_id', $userId)->sum('amount');
         $directReferralsCount = $teamStats['direct_total'];
 
         $activeInvestment = $user->investments()->where('status', 'active')->sum('amount');
-
+        $totalRocTarget = $activeInvestment * 1.5;
+        $totalRocPaid = Income::where('user_id', $userId)->where('income_type', 'roc')->sum('amount');
+        $rocWalletAmount = max(0, $totalRocTarget - $totalRocPaid);
 
         $activePackage = $activeInvestment ? number_format($activeInvestment, 2) : 'No Package';
-        $rocWalletAmount = $activeInvestment * 1.5;
 
         // Format karein view mein dikhane ke liye (optional currency symbol ke sath)
         $formattedRocWallet = number_format($rocWalletAmount, 2);
@@ -91,10 +96,14 @@ class DashboardController extends Controller
 
         // 4. Ab saare variables view ko pass kar dein
 
+        $latestActiveInvestment = $user->investments()->whereNotNull('activated_at')->latest('activated_at')->first();
 
         $kycStatus = $user->kyc()->latest()->first();
         return view('user.dashboard', [
             'formattedRocWallet' => $formattedRocWallet,
+            'totalRocTarget' => $totalRocTarget,
+            'totalRocPaid' => $totalRocPaid,
+            'latestActiveInvestment' => $latestActiveInvestment,
             'user' => $user,
             'kycStatus' => $kycStatus ? $kycStatus->status : 'none',
             'earningWallet' => number_format($user->earning_wallet ?? 0, 2),

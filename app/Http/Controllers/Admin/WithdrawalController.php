@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\RocPayout;
 use App\Models\Transaction;
 use App\Models\Withdrawal;
 use Illuminate\Http\Request;
@@ -54,6 +55,9 @@ class WithdrawalController extends Controller
         $withdrawal->status = 'approved';
         $withdrawal->save();
 
+        // Also update linked RocPayout status if this withdrawal belongs to an ROC auto-payout
+        RocPayout::where('withdrawal_id', $withdrawal->id)->update(['status' => 'approved']);
+
         if ($withdrawal->user && $withdrawal->user->email) {
             send_template_email('withdrawal-status-user', $withdrawal->user->email, [
                 'user_name' => $withdrawal->user->name,
@@ -79,6 +83,9 @@ class WithdrawalController extends Controller
         DB::transaction(function () use ($withdrawal) {
             $withdrawal->status = 'rejected';
             $withdrawal->save();
+
+            // Also update linked RocPayout status if this withdrawal belongs to an ROC auto-payout
+            RocPayout::where('withdrawal_id', $withdrawal->id)->update(['status' => 'rejected']);
 
             // Refund amount back to user's earning wallet
             $user = $withdrawal->user;

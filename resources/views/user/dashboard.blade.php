@@ -1043,6 +1043,17 @@
                 <div class="db-hero-eyebrow">
                     <i class="mdi mdi-account-circle"></i>
                     Member Dashboard
+                    <span class="ms-2 ps-2 border-start border-secondary">
+                        @if(($kycStatus ?? 'none') === 'approved')
+                            <span class="text-success fw-bold"><i class="mdi mdi-check-circle"></i> KYC Verified</span>
+                        @elseif(($kycStatus ?? 'none') === 'pending')
+                            <span class="text-warning fw-bold"><i class="mdi mdi-clock"></i> KYC Pending</span>
+                        @elseif(($kycStatus ?? 'none') === 'rejected')
+                            <span class="text-danger fw-bold"><i class="mdi mdi-close-circle"></i> KYC Rejected</span>
+                        @else
+                            <span class="text-warning fw-bold"><i class="mdi mdi-alert-circle"></i> KYC Incomplete</span>
+                        @endif
+                    </span>
                 </div>
                 <h1 class="db-hero-title">
                     Welcome back, <span>{{ $user->name ?? 'User' }}</span>
@@ -1068,9 +1079,105 @@
         </section>
 
         {{-- ================================================
+         HIGHLIGHTED KYC STATUS BANNER
+         ================================================ --}}
+        @php
+            $kStatus = strtolower($kycStatus ?? 'none');
+        @endphp
+
+        <div class="db-kyc-banner mt-3 mb-2 p-3 rounded-3" style="
+            @if($kStatus === 'approved')
+                background: linear-gradient(135deg, rgba(16, 185, 129, 0.18) 0%, rgba(6, 78, 59, 0.35) 100%);
+                border: 1px solid rgba(16, 185, 129, 0.45);
+                box-shadow: 0 4px 20px rgba(16, 185, 129, 0.15);
+            @elseif($kStatus === 'pending')
+                background: linear-gradient(135deg, rgba(245, 158, 11, 0.18) 0%, rgba(120, 53, 15, 0.35) 100%);
+                border: 1px solid rgba(245, 158, 11, 0.45);
+                box-shadow: 0 4px 20px rgba(245, 158, 11, 0.15);
+            @elseif($kStatus === 'rejected')
+                background: linear-gradient(135deg, rgba(239, 68, 68, 0.18) 0%, rgba(127, 29, 29, 0.35) 100%);
+                border: 1px solid rgba(239, 68, 68, 0.45);
+                box-shadow: 0 4px 20px rgba(239, 68, 68, 0.15);
+            @else
+                background: linear-gradient(135deg, rgba(245, 189, 50, 0.18) 0%, rgba(100, 70, 0, 0.4) 100%);
+                border: 1px solid rgba(245, 189, 50, 0.5);
+                box-shadow: 0 4px 20px rgba(245, 189, 50, 0.18);
+            @endif
+        ">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                <div class="d-flex align-items-center gap-3">
+                    <div style="
+                        width: 48px; height: 48px; border-radius: 12px;
+                        display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0;
+                        @if($kStatus === 'approved')
+                            background: rgba(16, 185, 129, 0.25); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.4);
+                        @elseif($kStatus === 'pending')
+                            background: rgba(245, 158, 11, 0.25); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4);
+                        @elseif($kStatus === 'rejected')
+                            background: rgba(239, 68, 68, 0.25); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4);
+                        @else
+                            background: rgba(245, 189, 50, 0.25); color: #f5c842; border: 1px solid rgba(245, 189, 50, 0.4);
+                        @endif
+                    ">
+                        @if($kStatus === 'approved')
+                            <i class="mdi mdi-shield-check"></i>
+                        @elseif($kStatus === 'pending')
+                            <i class="mdi mdi-clock-outline"></i>
+                        @elseif($kStatus === 'rejected')
+                            <i class="mdi mdi-shield-remove"></i>
+                        @else
+                            <i class="mdi mdi-shield-alert-outline"></i>
+                        @endif
+                    </div>
+                    <div>
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <span style="font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #94a3b8;">KYC Verification Status:</span>
+                            @if($kStatus === 'approved')
+                                <span class="badge bg-success text-white fw-bold px-2.5 py-1" style="font-size: 0.75rem; letter-spacing: 0.05em;">VERIFIED ✓</span>
+                            @elseif($kStatus === 'pending')
+                                <span class="badge bg-warning text-dark fw-bold px-2.5 py-1" style="font-size: 0.75rem; letter-spacing: 0.05em;">UNDER REVIEW ⏳</span>
+                            @elseif($kStatus === 'rejected')
+                                <span class="badge bg-danger text-white fw-bold px-2.5 py-1" style="font-size: 0.75rem; letter-spacing: 0.05em;">REJECTED ✖</span>
+                            @else
+                                <span class="badge bg-warning text-dark fw-bold px-2.5 py-1" style="font-size: 0.75rem; letter-spacing: 0.05em;">NOT SUBMITTED ⚠️</span>
+                            @endif
+                        </div>
+                        <p class="mb-0 text-white-50 small" style="font-size: 0.83rem; line-height: 1.4;">
+                            @if($kStatus === 'approved')
+                                Your KYC is verified. Auto & manual withdrawals are enabled for your account.
+                            @elseif($kStatus === 'pending')
+                                Your KYC application is currently under review by admin. Please wait for approval.
+                            @elseif($kStatus === 'rejected')
+                                Your KYC application was rejected. Please re-submit valid bank & ID proof documents.
+                            @else
+                                KYC verification is incomplete. Please submit your bank details & ID proof to unlock withdrawals.
+                            @endif
+                        </p>
+                    </div>
+                </div>
+
+                <div>
+                    @if($kStatus !== 'approved')
+                        <a href="{{ route('user.kyc.index') }}" class="btn btn-sm fw-bold px-3 py-2 text-dark" style="
+                            background: linear-gradient(135deg, #f5c842 0%, #e8a800 100%);
+                            border-radius: 8px; font-size: 0.8rem; box-shadow: 0 4px 12px rgba(245, 189, 50, 0.3);
+                        ">
+                            <i class="mdi mdi-account-card-details-outline me-1"></i>
+                            @if($kStatus === 'pending') View Status @elseif($kStatus === 'rejected') Re-submit KYC @else Complete KYC Now @endif
+                        </a>
+                    @else
+                        <a href="{{ route('user.kyc.index') }}" class="btn btn-sm btn-outline-success px-3 py-1.5" style="font-size: 0.78rem;">
+                            <i class="mdi mdi-eye-outline me-1"></i> View Details
+                        </a>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        {{-- ================================================
          FINANCIAL STAT CARDS
          ================================================ --}}
-        <div class="db-stat-row mt-4">
+        <div class="db-stat-row mt-3">
             <div class="db-stat-card">
                 <div class="db-stat-card-info">
                     <small>Deposit Wallet</small>
@@ -1109,8 +1216,31 @@
 
             <div class="db-stat-card">
                 <div class="db-stat-card-info">
-                    <small>ROC Wallet</small>
-                    <h3>{{ $formattedRocWallet }}</h3>
+                    <small>ROC Wallet (Remaining Target)</small>
+                    <h3>₹ {{ $formattedRocWallet }}</h3>
+                    @if (!empty($latestActiveInvestment) && $latestActiveInvestment->roc_payouts_count < 6 && $latestActiveInvestment->activated_at)
+                        @php
+                            $nextInstallment = $latestActiveInvestment->roc_payouts_count + 1;
+                            $nextDate = \Carbon\Carbon::parse($latestActiveInvestment->activated_at)->addMonths($nextInstallment);
+                            $nextAmount = round(($latestActiveInvestment->roc_amount ?? ($latestActiveInvestment->amount * 1.5)) / 6, 2);
+                            $isDueNow = $nextDate->lte(now());
+                        @endphp
+                        @if ($isDueNow)
+                            <span class="stat-subtext text-warning font-weight-bold" style="font-size: 0.73rem;">
+                                <i class="mdi mdi-clock-alert-outline me-1"></i>Next Payout #{{ $nextInstallment }}/6: <strong class="text-warning">Due Now / Processing</strong> (₹{{ number_format($nextAmount, 2) }})
+                            </span>
+                        @else
+                            <span class="stat-subtext text-warning font-weight-bold" style="font-size: 0.73rem;">
+                                <i class="mdi mdi-clock-outline me-1"></i>Next Payout #{{ $nextInstallment }}/6: <strong>{{ $nextDate->format('d M Y, h:i A') }}</strong> (₹{{ number_format($nextAmount, 2) }})
+                            </span>
+                        @endif
+                    @elseif(!empty($latestActiveInvestment) && $latestActiveInvestment->roc_payouts_count >= 6)
+                        <span class="stat-subtext text-success" style="font-size: 0.73rem; font-weight: 600;">
+                            <i class="mdi mdi-check-decagram me-1"></i>All 6 Monthly ROC Payouts Completed
+                        </span>
+                    @else
+                        <span class="stat-subtext" style="font-size: 0.72rem; color: var(--text-lo);">1/6th Monthly Auto-Withdrawal (₹{{ number_format(($totalRocTarget ?? 0) / 6, 2) }}/mo · Paid: ₹{{ number_format($totalRocPaid ?? 0, 2) }})</span>
+                    @endif
                 </div>
                 <div class="db-stat-card-icon">
                     <i class="mdi mdi-calculator-variant-outline"></i>
@@ -1271,6 +1401,16 @@
                     </td>
                     <td>₹ {{ number_format($earnings['leadership']['today'], 2) }}</td>
                     <td>₹ {{ number_format($earnings['leadership']['total'], 2) }}</td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="db-income-type">
+                            <i class="mdi mdi-restore text-warning"></i>
+                            ROC Income
+                        </span>
+                    </td>
+                    <td>₹ {{ number_format($earnings['roc']['today'] ?? 0, 2) }}</td>
+                    <td>₹ {{ number_format($earnings['roc']['total'] ?? 0, 2) }}</td>
                 </tr>
             </tbody>
         </table>

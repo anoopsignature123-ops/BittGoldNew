@@ -92,6 +92,14 @@
             </a>
         </li>
 
+        {{-- ROC Auto Payouts Report --}}
+        <li class="nav-item menu-items {{ request()->routeIs('admin.roc-payouts.*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.roc-payouts.index') }}">
+                <span class="menu-icon"><i class="mdi mdi-restore"></i></span>
+                <span class="menu-title">ROC Auto Payouts</span>
+            </a>
+        </li>
+
         {{-- Commission & Income History --}}
         <li
             class="nav-item menu-items {{ request()->routeIs('admin.commissions.*') && !request('type') ? 'active' : '' }}">

@@ -57,7 +57,7 @@ class InvestmentController extends Controller
                 if (! $lockedUser->activated_at) $lockedUser->activated_at = now();
                 $lockedUser->save();
                 Transaction::create(['user_id' => $lockedUser->id, 'wallet_type' => 'deposit_wallet', 'type' => 'debit', 'amount' => $amount, 'remark' => 'Package investment purchase']);
-                Investment::create(['user_id' => $lockedUser->id, 'amount' => $amount, 'activated_at' => now(), 'status' => 'active']);
+                Investment::create(['user_id' => $lockedUser->id, 'amount' => $amount, 'roc_amount' => $amount * 1.5, 'activated_at' => now(), 'status' => 'active']);
             });
         } catch (\DomainException $exception) {
             return back()->withInput()->with('error', $exception->getMessage());
@@ -89,5 +89,76 @@ class InvestmentController extends Controller
         }
 
         return redirect()->route('user.investment.index')->with('success', 'Successfully invested ' . number_format($amount, 2) . '! Your account is now active.');
+    }
+
+    public function cancel(Request $request, $id)
+    {
+        $user = $this->authenticatedUser();
+
+        if (!$user || $user->role?->slug !== 'user') {
+            return redirect()->route('user.login');
+        }
+
+        $investment = Investment::where('user_id', $user->id)->findOrFail($id);
+
+        if ($investment->status !== 'active') {
+            return back()->with('error', 'Only active investments can be refunded.');
+        }
+
+        $request->validate([
+            'refund_amount' => 'required|numeric|min:1|max:' . $investment->amount,
+        ]);
+
+        $refundAmount = round((float) $request->refund_amount, 2);
+
+        if ($refundAmount <= 0 || $refundAmount > $investment->amount) {
+            return back()->with('error', 'Invalid refund amount. Maximum refundable: ₹' . number_format($investment->amount, 2));
+        }
+
+        $isFullRefund = ($refundAmount >= $investment->amount);
+
+        try {
+            DB::transaction(function () use ($user, $investment, $refundAmount, $isFullRefund) {
+                if ($isFullRefund) {
+                    // Full refund: mark status as cancelled
+                    $investment->status = 'cancelled';
+                    $investment->roc_amount = 0;
+                } else {
+                    // Partial refund: reduce investment amount and recalculate ROC target (1.5x)
+                    $investment->amount = round($investment->amount - $refundAmount, 2);
+                    $investment->roc_amount = round($investment->amount * 1.5, 2);
+                }
+                $investment->save();
+
+                // Credit refund amount back to user's deposit_wallet
+                $lockedUser = User::lockForUpdate()->findOrFail($user->id);
+                $lockedUser->deposit_wallet = ($lockedUser->deposit_wallet ?? 0) + $refundAmount;
+                $lockedUser->save();
+
+                // Create Transaction Ledger entry
+                Transaction::create([
+                    'user_id' => $lockedUser->id,
+                    'wallet_type' => 'deposit_wallet',
+                    'type' => 'credit',
+                    'amount' => $refundAmount,
+                    'remark' => ($isFullRefund ? "Full refund" : "Partial refund of ₹" . number_format($refundAmount, 2)) . " for investment #INV-" . str_pad($investment->id, 5, '0', STR_PAD_LEFT),
+                ]);
+
+                if ($isFullRefund) {
+                    // Cancel any pending ROC payouts for this investment
+                    \App\Models\RocPayout::where('investment_id', $investment->id)
+                        ->where('status', 'pending')
+                        ->update(['status' => 'cancelled']);
+                }
+            });
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to process refund: ' . $e->getMessage());
+        }
+
+        $msg = $isFullRefund
+            ? 'Investment #INV-' . str_pad($investment->id, 5, '0', STR_PAD_LEFT) . ' has been fully cancelled and ₹' . number_format($refundAmount, 2) . ' refunded back to your Deposit Wallet!'
+            : 'Partial refund of ₹' . number_format($refundAmount, 2) . ' processed successfully for Investment #INV-' . str_pad($investment->id, 5, '0', STR_PAD_LEFT) . '! Remaining active package: ₹' . number_format($investment->amount, 2);
+
+        return back()->with('success', $msg);
     }
 }

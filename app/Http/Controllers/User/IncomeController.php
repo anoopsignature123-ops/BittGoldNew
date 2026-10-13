@@ -35,6 +35,34 @@ class IncomeController extends Controller
         $reportCount = (clone $query)->count();
         $incomes = $query->latest()->paginate(10)->withQueryString();
 
-        return view('user.income.index', compact('user', 'incomes', 'reportTotal', 'reportCount'));
+        // Calculate ROC statistics for the user
+        $totalRocTarget = $user->investments()->where('status', '!=', 'cancelled')->get()->sum(fn($i) => $i->roc_amount ?? ($i->amount * 1.5));
+        $totalRocPaid = Income::where('user_id', $user->id)->where('income_type', 'roc')->sum('amount');
+        $remainingRoc = max(0, $totalRocTarget - $totalRocPaid);
+
+        $nextPayoutInv = $user->investments()
+            ->where('status', 'active')
+            ->where('roc_payouts_count', '<', 6)
+            ->whereNotNull('activated_at')
+            ->orderBy('activated_at', 'asc')
+            ->first();
+
+        $nextPayoutDate = null;
+        if ($nextPayoutInv) {
+            $activationDate = \Carbon\Carbon::parse($nextPayoutInv->activated_at);
+            $nextInstallmentNo = $nextPayoutInv->roc_payouts_count + 1;
+            $nextPayoutDate = $activationDate->copy()->addMonths($nextInstallmentNo);
+        }
+
+        return view('user.income.index', compact(
+            'user', 
+            'incomes', 
+            'reportTotal', 
+            'reportCount',
+            'totalRocTarget',
+            'totalRocPaid',
+            'remainingRoc',
+            'nextPayoutDate'
+        ));
     }
 }

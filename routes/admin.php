@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\InvestmentController;
 use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\RankController;
+use App\Http\Controllers\Admin\RocPayoutController;
 use App\Http\Controllers\Admin\SupportController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\WithdrawalController;
@@ -28,6 +29,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
     Route::middleware([AdminMiddleware::class])->group(function () {
+        Route::get('/roc-payouts', [RocPayoutController::class, 'index'])->name('roc-payouts.index');
         Route::controller(AdminAuthController::class)->group(function () {
             Route::post('/logout', 'logout')->name('logout');
         });
@@ -84,6 +86,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         });
 
         Route::get('/investments', [InvestmentController::class, 'index'])->name('investments.index');
+        Route::post('/investments/{id}/cancel-refund', [InvestmentController::class, 'cancelAndRefund'])->name('investments.cancel-refund');
         Route::get('/commissions', [IncomeController::class, 'index'])->name('commissions.index');
         Route::get('/ranks-report', [RankController::class, 'index'])->name('ranks.index');
         Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');

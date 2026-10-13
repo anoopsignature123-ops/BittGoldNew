@@ -4,6 +4,23 @@
     Buy / Invest Package
 @endpush
 
+@push('styles')
+    <style>
+        .modal-backdrop {
+            z-index: 1050 !important;
+        }
+        .modal {
+            z-index: 1060 !important;
+        }
+        .modal-content {
+            background-color: #0f172a !important;
+            border: 1px solid rgba(212, 175, 55, 0.4) !important;
+            color: #ffffff !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+        }
+    </style>
+@endpush
+
 @section('content')
     <div class="content-wrapper">
         <div class="page-heading">
@@ -70,36 +87,125 @@
                         </div>
 
                         <div class="table-responsive table-responsive-scroll mt-3">
-                            <table class="table user-table detailed-user-table mb-0" style="min-width: 600px;">
+                            <table class="table user-table detailed-user-table mb-0" style="min-width: 750px;">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Amount</th>
+                                        <th>Package Amount</th>
+                                        <th>Total ROC Target</th>
+                                        <th>ROC Payout Progress</th>
+                                        <th>Next Payout Date</th>
                                         <th>Status</th>
                                         <th>Activation Date</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse($investments as $inv)
+                                        @php
+                                            $totalRoc = $inv->roc_amount ?? ($inv->amount * 1.5);
+                                            $monthlyPayout = round($totalRoc / 6, 2);
+                                        @endphp
                                         <tr>
-                                            <td>#INV{{ str_pad($inv->id, 5, '0', STR_PAD_LEFT) }}</td>
-                                            <td class="wallet-value font-weight-bold text-success">
-                                                ₹{{ number_format($inv->amount, 2) }}</td>
-                                            <td>
-                                                <span class="status-badge status-active">{{ ucfirst($inv->status) }}</span>
+                                            <td class="text-info font-weight-bold">#INV {{ str_pad($inv->id, 5, '0', STR_PAD_LEFT) }}</td>
+                                            <td class="wallet-value font-weight-bold text-white">
+                                                ₹{{ number_format($inv->amount, 2) }}
                                             </td>
-                                            <td>{{ $inv->activated_at ? \Carbon\Carbon::parse($inv->activated_at)->format('d M Y, h:i A') : 'N/A' }}
+                                            <td class="text-warning font-weight-bold">
+                                                ₹{{ number_format($totalRoc, 2) }}
+                                            </td>
+                                            <td>
+                                                <span class="badge {{ $inv->roc_payouts_count >= 6 ? 'bg-success' : ($inv->status === 'cancelled' ? 'bg-secondary' : 'bg-warning text-dark') }} font-weight-bold">
+                                                    Month {{ $inv->roc_payouts_count }} / 6
+                                                </span>
+                                            </td>
+                                            <td>
+                                                @if($inv->status === 'cancelled')
+                                                    <span class="text-muted small"><i class="mdi mdi-close-circle"></i> Cancelled</span>
+                                                @elseif($inv->roc_payouts_count < 6 && $inv->activated_at)
+                                                     @php
+                                                         $nextInstallment = $inv->roc_payouts_count + 1;
+                                                         $nextDate = \Carbon\Carbon::parse($inv->activated_at)->addMonths($nextInstallment);
+                                                         $isDueNow = $nextDate->lte(now());
+                                                     @endphp
+                                                     @if ($isDueNow)
+                                                         <span class="badge bg-warning text-dark font-weight-bold" style="font-size: 0.72rem;">
+                                                             <i class="mdi mdi-clock-alert-outline"></i> Due Now / Processing
+                                                         </span>
+                                                         <small class="d-block text-muted mt-1">(Month #{{ $nextInstallment }}: ₹{{ number_format($monthlyPayout, 2) }})</small>
+                                                     @else
+                                                         <span class="text-warning small font-weight-bold">
+                                                             <i class="mdi mdi-calendar-clock"></i> {{ $nextDate->format('d M Y, h:i A') }}
+                                                         </span>
+                                                         <small class="d-block text-muted">(Month #{{ $nextInstallment }}: ₹{{ number_format($monthlyPayout, 2) }})</small>
+                                                     @endif
+                                                @else
+                                                     <span class="text-success small font-weight-bold"><i class="mdi mdi-check-circle"></i> Completed</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($inv->status === 'active')
+                                                    <span class="badge bg-success">Active</span>
+                                                @elseif($inv->status === 'cancelled')
+                                                    <span class="badge bg-danger">Cancelled & Refunded</span>
+                                                @elseif($inv->status === 'completed')
+                                                    <span class="badge bg-info">Completed</span>
+                                                @else
+                                                    <span class="badge bg-secondary">{{ ucfirst($inv->status) }}</span>
+                                                @endif
+                                            </td>
+                                            <td>{{ $inv->activated_at ? \Carbon\Carbon::parse($inv->activated_at)->format('d M Y, h:i A') : 'N/A' }}</td>
+                                            <td>
+                                                @if ($inv->status === 'active')
+                                                    <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#userRefundModal{{ $inv->id }}">
+                                                        <i class="mdi mdi-undo-variant me-1"></i> Refund
+                                                    </button>
+                                                @elseif ($inv->status === 'cancelled')
+                                                    <span class="text-muted small"><i class="mdi mdi-check-all"></i> Refunded</span>
+                                                @else
+                                                    <span class="text-muted small">-</span>
+                                                @endif
                                             </td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="4" class="text-center py-4 text-muted">No investment records
-                                                found.</td>
+                                            <td colspan="8" class="text-center py-4 text-muted">No investment records found.</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
                             </table>
                         </div>
+
+                        {{-- User Refund Modals (rendered outside table to ensure smooth Bootstrap modal performance) --}}
+                        @foreach($investments as $inv)
+                            @if ($inv->status === 'active')
+                                <div class="modal fade" id="userRefundModal{{ $inv->id }}" tabindex="-1" aria-labelledby="userRefundModalLabel{{ $inv->id }}" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content bg-dark text-white gold-card border border-warning">
+                                            <div class="modal-header border-bottom border-secondary py-2">
+                                                <h5 class="modal-title fs-6 text-warning" id="userRefundModalLabel{{ $inv->id }}"><i class="mdi mdi-undo-variant me-1"></i> Refund Investment #INV-{{ str_pad($inv->id, 5, '0', STR_PAD_LEFT) }}</h5>
+                                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <form action="{{ route('user.investment.cancel', $inv->id) }}" method="POST">
+                                                @csrf
+                                                <div class="modal-body py-3">
+                                                    <p class="small text-white-50 mb-2">Total Active Package: <strong class="text-success">₹{{ number_format($inv->amount, 2) }}</strong></p>
+                                                    <div class="form-group mb-3 text-start">
+                                                        <label class="form-label small text-warning fw-bold">Enter Refund Amount (₹) *</label>
+                                                        <input type="number" step="any" min="1" max="{{ $inv->amount }}" name="refund_amount" value="{{ $inv->amount }}" class="form-control bg-dark text-white border-secondary" placeholder="Enter amount to refund" required>
+                                                        <small class="text-muted d-block mt-1" style="font-size: 0.73rem;">You can refund full amount (₹{{ number_format($inv->amount, 0) }}) or partial amount back to your Deposit Wallet.</small>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer border-top border-secondary py-2 justify-content-end">
+                                                    <button type="button" class="btn btn-outline-light btn-sm" data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="mdi mdi-check me-1"></i> Confirm Refund</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
 
                         <div class="datatable-footer mt-3">
                             <span>Showing {{ $investments->firstItem() ?? 0 }} to {{ $investments->lastItem() ?? 0 }} of

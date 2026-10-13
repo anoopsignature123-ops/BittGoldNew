@@ -95,6 +95,9 @@
                     <li class="nav-item"><a class="nav-link"
                             href="{{ route('user.income.index', ['type' => 'leadership']) }}">Leadership Report</a>
                     </li>
+                    <li class="nav-item"><a class="nav-link"
+                            href="{{ route('user.income.index', ['type' => 'roc']) }}">ROC Income Report</a>
+                    </li>
                 </ul>
             </div>
         </li>

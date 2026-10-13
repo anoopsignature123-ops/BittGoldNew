@@ -4,6 +4,7 @@
     elseif(request('type') == 'level') $reportTitle = 'Level Income Report';
     elseif(request('type') == 'trade_profit') $reportTitle = 'Trade Profit Report';
     elseif(request('type') == 'leadership') $reportTitle = 'Leadership Report';
+    elseif(request('type') == 'roc') $reportTitle = 'ROC Income Report';
 @endphp
 
 @extends('admin.layouts.master')
@@ -87,7 +88,7 @@
                         <div class="table-filters">
                             <select name="type" class="js-select2" onchange="this.form.submit()">
                                 <option value="">All Incomes</option>
-                                @foreach (['referral' => 'Referral', 'level' => 'Level', 'trade_profit' => 'Trade Profit', 'leadership' => 'Leadership'] as $value => $label)
+                                @foreach (['referral' => 'Referral', 'level' => 'Level', 'trade_profit' => 'Trade Profit', 'leadership' => 'Leadership', 'roc' => 'ROC Income'] as $value => $label)
                                     <option value="{{ $value }}" @selected(request('type') === $value)>{{ $label }}</option>
                                 @endforeach
                             </select>
@@ -123,8 +124,8 @@
                                 <th>Receiver User</th>
                                 <th>From Downline</th>
                                 <th>Type</th>
-                                <th>Level</th>
-                                <th>Package Amount</th>
+                                <th>{{ request('type') == 'roc' ? 'Installment' : 'Level' }}</th>
+                                <th>{{ request('type') == 'roc' ? 'Total ROC Target' : 'Package Amount' }}</th>
                                 <th>Percentage</th>
                                 <th>Commission</th>
                                 <th>Date</th>
@@ -154,14 +155,33 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <span class="badge {{ $inc->income_type === 'referral' ? 'bg-warning text-dark' : ($inc->income_type === 'level' ? 'bg-info text-dark' : 'bg-success text-white') }}">
+                                        <span class="badge {{ $inc->income_type === 'referral' ? 'bg-warning text-dark' : ($inc->income_type === 'level' ? 'bg-info text-dark' : ($inc->income_type === 'roc' ? 'bg-primary text-white' : 'bg-success text-white')) }}">
                                             {{ ucfirst(str_replace('_', ' ', $inc->income_type)) }}
                                         </span>
                                     </td>
-                                    <td>Level {{ $inc->level }}</td>
-                                    <td>{{ number_format($inc->package_amount, 2) }}</td>
-                                    <td>{{ $inc->percentage }}%</td>
-                                    <td class="wallet-value font-weight-bold text-success">+{{ number_format($inc->amount, 2) }}</td>
+                                    <td>{{ $inc->income_type === 'roc' ? 'Month ' . $inc->level . ' / 6' : 'Level ' . $inc->level }}</td>
+                                    <td>
+                                        @if ($inc->income_type === 'roc')
+                                            <strong class="text-warning">₹ {{ number_format($inc->package_amount * 1.5, 2) }}</strong>
+                                            <small class="d-block text-muted" style="font-size: 0.72rem;">(Package: ₹{{ number_format($inc->package_amount, 2) }})</small>
+                                        @else
+                                            ₹ {{ number_format($inc->package_amount, 2) }}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($inc->income_type === 'roc')
+                                            <span>25.00% / mo</span>
+                                            <small class="d-block text-muted" style="font-size: 0.72rem;">(1/6th Monthly)</small>
+                                        @else
+                                            {{ $inc->percentage }}%
+                                        @endif
+                                    </td>
+                                    <td class="wallet-value font-weight-bold text-success">
+                                        +₹ {{ number_format($inc->amount, 2) }}
+                                        @if ($inc->income_type === 'roc')
+                                            <small class="d-block text-muted font-weight-normal" style="font-size: 0.72rem;">(₹{{ number_format($inc->package_amount * 1.5, 0) }} ÷ 6)</small>
+                                        @endif
+                                    </td>
                                     <td>{{ $inc->created_at->format('d M Y, h:i A') }}</td>
                                 </tr>
                             @empty

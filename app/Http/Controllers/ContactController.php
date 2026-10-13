@@ -15,6 +15,10 @@ class ContactController extends Controller
     {
         return view('website.contact');
     }
+    public function bittBazaar()
+    {
+        return view('website.bitt_bazaar');
+    }
 
     /**
      * Handle the Contact Us form submission.

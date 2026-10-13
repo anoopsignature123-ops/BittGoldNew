@@ -269,6 +269,10 @@ class AdminUserController extends Controller
                 'today' => Income::where('user_id', $userId)->where('income_type', 'leadership')->whereDate('created_at', $today)->sum('amount'),
                 'total' => Income::where('user_id', $userId)->where('income_type', 'leadership')->sum('amount'),
             ],
+            'roc' => [
+                'today' => Income::where('user_id', $userId)->where('income_type', 'roc')->whereDate('created_at', $today)->sum('amount'),
+                'total' => Income::where('user_id', $userId)->where('income_type', 'roc')->sum('amount'),
+            ],
         ];
 
         $totalEarned = Income::where('user_id', $userId)->sum('amount');
@@ -276,7 +280,9 @@ class AdminUserController extends Controller
         $activeInvestment = $user->investments()->where('status', 'active')->sum('amount');
         $activePackage = $activeInvestment ? '' . number_format($activeInvestment, 2) : 'No Package';
         $currentRank = optional($user->rank)->name ?? 'Unranked';
-        $rocWalletAmount = $activeInvestment * 1.5;
+        $totalRocTarget = $activeInvestment * 1.5;
+        $totalRocPaid = Income::where('user_id', $userId)->where('income_type', 'roc')->sum('amount');
+        $rocWalletAmount = max(0, $totalRocTarget - $totalRocPaid);
 
         // Format karein view mein dikhane ke liye (optional currency symbol ke sath)
         $formattedRocWallet = number_format($rocWalletAmount, 2);
@@ -310,10 +316,14 @@ class AdminUserController extends Controller
             'month' => $latestLeadershipIncome ? \Carbon\Carbon::parse($latestLeadershipIncome->created_at)->format('F Y') : 'No Salary Credited Yet',
         ];
 
+        $latestActiveInvestment = $user->investments()->whereNotNull('activated_at')->latest('activated_at')->first();
         $kycStatus = $user->kyc()->latest()->first();
 
         return view('user.dashboard', [
             'formattedRocWallet' => $formattedRocWallet,
+            'totalRocTarget' => $totalRocTarget,
+            'totalRocPaid' => $totalRocPaid,
+            'latestActiveInvestment' => $latestActiveInvestment,
             'user' => $user,
             'headerUser' => $user,
             'previewMode' => true,
@@ -517,6 +527,7 @@ class AdminUserController extends Controller
         Investment::create([
             'user_id' => $user->id,
             'amount' => $amount,
+            'roc_amount' => $amount * 1.5,
             'activated_at' => now(),
             'status' => 'active',
         ]);

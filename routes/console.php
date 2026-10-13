@@ -9,3 +9,4 @@ Artisan::command('inspire', function () {
 
 Schedule::command('leadership:distribute')->monthlyOn(1, '00:00');
 Schedule::command('withdrawals:process-auto')->dailyAt('00:00');
+Schedule::command('roc:process-monthly')->dailyAt('00:00');

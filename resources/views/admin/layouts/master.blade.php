@@ -82,6 +82,11 @@
 @stack('scripts')
 <script>
     $(document).ready(function() {
+        // Append modals to body on show event to avoid backdrop overlay & blur issues
+        $(document).on('show.bs.modal', '.modal', function () {
+            $(this).appendTo('body');
+        });
+
         // Initialize Select2 elements
         $('.js-select2').select2();
           $('select').select2?.();

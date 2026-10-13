@@ -10,5 +10,6 @@ Route::get('/', function () {
 })->name('website.index');
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.submit');
+Route::get('/bitt/bazaar', [ContactController::class, 'bittBazaar'])->name('bitt-bazaar');
 require __DIR__ . '/admin.php';
 require __DIR__ . '/user.php';
